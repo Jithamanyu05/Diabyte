@@ -1,0 +1,33 @@
+POST http://localhost:5000/users/signup
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "password": "password123",
+    "age": 35,
+    "gender": "Male",
+    "diabetesType": "Type 2",
+    "fastingSugarLevel": 110,
+    "preMealSugarLevel": 120,
+    "postMealSugarLevel": 140,
+    "dietaryPreference": "Vegetarian",
+    "dailyCaloricIntake": 2000,
+    "foodAllergies": ["Peanuts"],
+    "mealTypePreference": "Balanced",
+    "activityLevel": "Moderate",
+    "weight": 75,
+    "height": 175
+}
+
+
+
+
+#### User login
+POST http://localhost:5000/users/login
+Content-Type: application/json
+
+{
+    "username":"hemanth",
+    "password":"Hemanth@123"
+}
