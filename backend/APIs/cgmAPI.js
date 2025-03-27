@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const CGM = require("../models/CGM");
+const User = require("../models/User");  // Import the User model
 const axios = require("axios");
 require("dotenv").config();
 
@@ -14,17 +14,27 @@ router.post("/save", authMiddleware, async (req, res) => {
 
         const { mealType, fastingSugarLevel, preMealSugarLevel, postMealSugarLevel, date } = req.body;
 
-        const newEntry = new CGM({
-            userId, 
+        // Create the new CGM entry to be added to the sugarLevels array
+        const newEntry = {
             mealType, 
             fastingSugarLevel, 
             preMealSugarLevel, 
             postMealSugarLevel, 
             date
-        });
+        };
 
-        await newEntry.save();
+        // Push the new entry into the sugarLevels array of the User document
+        const updatedUser = await User.findOneAndUpdate(
+            { userId: userId },  // Find the user by userId
+            { $push: { sugarLevels: newEntry } },  // Push the new CGM entry into the sugarLevels array
+            { new: true }  // Return the updated user document
+        );
 
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Perform AI Analysis
         const analysis = await analyzeCGMData(userId);
 
         res.json({ message: "Data saved successfully in your log!", analysis });
@@ -50,13 +60,13 @@ router.get("/trends", authMiddleware, async (req, res) => {
 router.get("/history", authMiddleware, async (req, res) => {
     try {
         const userId = req.user.id;
-        const history = await CGM.find({ userId }).sort({ date: 1 });
+        const user = await User.findOne({ userId });
 
-        if (!history.length) {
+        if (!user || !user.sugarLevels.length) {
             return res.json({ message: "No CGM history found." });
         }
 
-        res.json(history);
+        res.json(user.sugarLevels);
     } catch (error) {
         console.error("Error in /history:", error);
         res.status(500).json({ error: error.message });
@@ -77,11 +87,23 @@ router.get("/analyze", authMiddleware, async (req, res) => {
 
 // 📌 **Helper Function to Get Last 30 Days of CGM Data**
 async function getLast30DaysCGM(userId) {
+    const user = await User.findOne({ userId });
+
+    if (!user || !user.sugarLevels.length) {
+        return [];
+    }
+
     const today = new Date();
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(today.getDate() - 30);
 
-    return await CGM.find({ userId, date: { $gte: thirtyDaysAgo } }).sort({ date: 1 }).limit(30);
+    // Filter the sugarLevels array for the last 30 days
+    const recentData = user.sugarLevels.filter(entry => {
+        const entryDate = new Date(entry.date);
+        return entryDate >= thirtyDaysAgo;
+    });
+
+    return recentData.sort((a, b) => new Date(a.date) - new Date(b.date)).slice(0, 30);
 }
 
 // 📌 **Helper Function to Analyze CGM Data**
@@ -117,8 +139,7 @@ async function analyzeCGMData(userId) {
 
                                     Strictly return only the bullet points without extra text or explanations.  
 
-                                    Glucose Data: ${JSON.stringify(formattedData)}
-                                    `
+                                    Glucose Data: ${JSON.stringify(formattedData)}`
                             }
                         ]
                     }
