@@ -3,14 +3,12 @@ Content-Type: application/json
 
 {
     "name": "John Doe",
-    "email": "johndoe@example.com",
+    "email": "johndoe1@example.com",
     "password": "password123",
     "age": 35,
     "gender": "Male",
     "diabetesType": "Type 2",
-    "fastingSugarLevel": 110,
-    "preMealSugarLevel": 120,
-    "postMealSugarLevel": 140,
+    "sugarLevels": [{"mealType":"yoyoyo","fastingSugarLevel":12,"preMealSugarLevel":12,"postMealSugarLevel":12,"date":1234}],
     "dietaryPreference": "Vegetarian",
     "dailyCaloricIntake": 2000,
     "foodAllergies": ["Peanuts"],

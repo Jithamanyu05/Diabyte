@@ -36,7 +36,6 @@ UserApp.post('/signup', expressAsyncHandler(async (req, res) => {
             dietaryPreference, dailyCaloricIntake, foodAllergies, 
             mealTypePreference, activityLevel, weight, height, BMI
         });
-
         // push initial sugar levels
         const date = new Date();
         newUser.sugarLevels.push({
@@ -102,6 +101,7 @@ UserApp.post('/log-sugar-levels', verifyToken ,expressAsyncHandler(async(req,res
         if(currentUser.sugarLevels.length < 30)
         {
             currentUser.sugarLevels.push({
+                mealType,
                 fastingSugarLevel,
                 preMealSugarLevel,
                 postMealSugarLevel,
@@ -114,6 +114,7 @@ UserApp.post('/log-sugar-levels', verifyToken ,expressAsyncHandler(async(req,res
             currentUser.sugarLevels.shift();
             // add latest
             currentUser.sugarLevels.push({
+                mealType,
                 fastingSugarLevel,
                 preMealSugarLevel,
                 postMealSugarLevel,
