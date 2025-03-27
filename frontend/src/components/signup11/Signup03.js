@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";  // Import axios
-import "./styless.css";
+import axios from "axios";
+import "/DiaBite/frontend/src/components/signup11/styless.css"
 
 const Signup03 = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const prevData = location.state || {};  // Get previous form data
+  const prevData = location.state || {};
 
-  // State to hold the final step form data
   const [formData, setFormData] = useState({
     activityLevel: "",
     weight: "",
@@ -16,74 +15,58 @@ const Signup03 = () => {
     dailyCaloricIntake: "",
     mealTypePreference: "",
     foodAllergies: "",
-    ...prevData,  // Add the previous data from earlier steps
+    ...prevData,
   });
 
-  // Handle form input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle form submission and send the data to the server
   const handleSubmit = async () => {
     try {
-      // Send the final form data to your backend API
-      const response = await axios.post("http://localhost:5000/users/signup", formData);
-      console.log("User registered:", response.data);
-      alert("Signup Complete! Check console for submitted data.");
-      navigate("/login");  // Redirect to the login page after successful signup
+      await axios.post("http://localhost:5000/users/signup", formData);
+      alert("🎉 Signup Complete!");
+      navigate("/signin"); // Redirect to login
     } catch (error) {
-      console.error("Error submitting data:", error);
-      alert("Error submitting data. Please try again.");
+      alert("❌ Error submitting data. Please try again.");
     }
   };
 
   return (
-    <div className="container">
-      <h2>Sign Up - Step 3</h2>
+    <div className="signup-container">
+      <h2>🏃 Lifestyle & Preferences</h2>
 
-      {/* Input fields */}
+      <label>Select your activity level:</label>
       <select name="activityLevel" onChange={handleChange}>
-        <option value="">Select Activity Level</option>
+        <option value="">Choose one</option>
         <option value="Sedentary">Sedentary</option>
         <option value="Moderate">Moderate</option>
         <option value="Active">Active</option>
       </select>
 
-      <input
-        type="number"
-        name="weight"
-        placeholder="Weight (kg)"
-        onChange={handleChange}
-      />
-      <input
-        type="number"
-        name="height"
-        placeholder="Height (cm)"
-        onChange={handleChange}
-      />
-      <input
-        type="number"
-        name="dailyCaloricIntake"
-        placeholder="Daily Caloric Intake"
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        name="mealTypePreference"
-        placeholder="Meal Type Preference"
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        name="foodAllergies"
-        placeholder="Food Allergies (comma-separated)"
-        onChange={handleChange}
-      />
+      <label>What is your weight (kg)?</label>
+      <input type="number" name="weight" onChange={handleChange} placeholder="Weight in kg" />
 
-      {/* Navigation buttons */}
-      <button onClick={() => navigate("/signup2")}>Back</button>
-      <button onClick={handleSubmit}>Submit</button>
+      <label>What is your height (cm)?</label>
+      <input type="number" name="height" onChange={handleChange} placeholder="Height in cm" />
+
+      <label>Daily caloric intake (kcal)?</label>
+      <input type="number" name="dailyCaloricIntake" onChange={handleChange} placeholder="kcal" />
+
+      <label>Preferred meal type:</label>
+      <select name="mealTypePreference" onChange={handleChange}>
+        <option value="">Choose one</option>
+        <option value="Veg">Vegetarian</option>
+        <option value="Non-Veg">Non-Vegetarian</option>
+        <option value="Vegan">Vegan</option>
+        <option value="Keto">Keto</option>
+      </select>
+
+      <label>Any food allergies?</label>
+      <input type="text" name="foodAllergies" onChange={handleChange} placeholder="e.g., Peanuts, Dairy" />
+
+      <button onClick={() => navigate("/signup2")}>⬅️ Back</button>
+      <button onClick={handleSubmit}>✅ Submit</button>
     </div>
   );
 };

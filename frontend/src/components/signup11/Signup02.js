@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import "./styless.css";
-
+import "/DiaBite/frontend/src/components/signup11/styless.css"
 const Signup02 = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,20 +20,32 @@ const Signup02 = () => {
   };
 
   return (
-    <div className="container">
-      <h2>Sign Up - Step 2</h2>
+    <div className="signup-container">
+      <h2>🔬 Let's talk about your health.</h2>
+      <p>This will help us provide better recommendations.</p>
+
+      <label>What type of diabetes do you have?</label>
       <select name="diabetesType" onChange={handleChange}>
-        <option value="">Select Diabetes Type</option>
+        <option value="">Choose one</option>
         <option value="Type 1">Type 1</option>
         <option value="Type 2">Type 2</option>
         <option value="Gestational">Gestational</option>
       </select>
-      <input type="number" name="fastingSugarLevel" placeholder="Fasting Sugar Level" onChange={handleChange} />
-      <input type="number" name="preMealSugarLevel" placeholder="Pre-Meal Sugar Level" onChange={handleChange} />
-      <input type="number" name="postMealSugarLevel" placeholder="Post-Meal Sugar Level" onChange={handleChange} />
-      <input type="text" name="dietaryPreference" placeholder="Dietary Preference" onChange={handleChange} />
-      <button onClick={() => navigate("/")}>Back</button>
-      <button onClick={() => navigate("/signup3", { state: formData })}>Next</button>
+
+      <label>What is your fasting sugar level?</label>
+      <input type="number" name="fastingSugarLevel" onChange={handleChange} placeholder="mg/dL" />
+
+      <label>What is your pre-meal sugar level?</label>
+      <input type="number" name="preMealSugarLevel" onChange={handleChange} placeholder="mg/dL" />
+
+      <label>What is your post-meal sugar level?</label>
+      <input type="number" name="postMealSugarLevel" onChange={handleChange} placeholder="mg/dL" />
+
+      <label>Any dietary preferences?</label>
+      <input type="text" name="dietaryPreference" onChange={handleChange} placeholder="e.g., Vegetarian, Vegan, Keto" />
+
+      <button onClick={() => navigate("/signup1")}>⬅️ Back</button>
+      <button onClick={() => navigate("/signup3", { state: formData })}>Next ➡️</button>
     </div>
   );
 };

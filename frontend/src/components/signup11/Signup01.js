@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./styless.css";
+import "/DiaBite/frontend/src/components/signup11/styless.css"
 
 const Signup01 = () => {
   const navigate = useNavigate();
@@ -17,19 +17,31 @@ const Signup01 = () => {
   };
 
   return (
-    <div className="container">
-      <h2>Sign Up - Step 1</h2>
-      <input type="text" name="name" placeholder="Full Name" onChange={handleChange} />
-      <input type="email" name="email" placeholder="Email" onChange={handleChange} />
-      <input type="password" name="password" placeholder="Password" onChange={handleChange} />
-      <input type="number" name="age" placeholder="Age" onChange={handleChange} />
+    <div className="signup-container">
+      <h2>👋 Welcome! Let's get started.</h2>
+      <p>Tell us a little about yourself.</p>
+
+      <label>What is your full name?</label>
+      <input type="text" name="name" onChange={handleChange} placeholder="Enter your name" />
+
+      <label>What is your email?</label>
+      <input type="email" name="email" onChange={handleChange} placeholder="Enter your email" />
+
+      <label>Set a password</label>
+      <input type="password" name="password" onChange={handleChange} placeholder="Choose a strong password" />
+
+      <label>How old are you?</label>
+      <input type="number" name="age" onChange={handleChange} placeholder="Your age" />
+
+      <label>Select your gender:</label>
       <select name="gender" onChange={handleChange}>
-        <option value="">Select Gender</option>
+        <option value="">Choose one</option>
         <option value="Male">Male</option>
         <option value="Female">Female</option>
         <option value="Other">Other</option>
       </select>
-      <button onClick={() => navigate("/signup2", { state: formData })}>Next</button>
+
+      <button onClick={() => navigate("/signup2", { state: formData })}>Next ➡️</button>
     </div>
   );
 };
