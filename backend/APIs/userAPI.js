@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const expressAsyncHandler = require('express-async-handler');
 const User = require('../models/User');
+import verifyToken from '../middlewares/verifyToken';
 
 const UserApp = express.Router();
 
@@ -10,7 +11,7 @@ const UserApp = express.Router();
 UserApp.post('/signup', expressAsyncHandler(async (req, res) => {
     try {
         const {
-            name, email, password, age, gender, diabetesType,
+            userId,name, email, password, age, gender, diabetesType,
             fastingSugarLevel, preMealSugarLevel, postMealSugarLevel,
             dietaryPreference, dailyCaloricIntake, foodAllergies, 
             mealTypePreference, activityLevel, weight, height
@@ -30,12 +31,21 @@ UserApp.post('/signup', expressAsyncHandler(async (req, res) => {
 
         // Create new user
         const newUser = new User({
-            name, email, password: hashedPassword, age, gender, diabetesType,
+            userId,name, email, password: hashedPassword, age, gender, diabetesType,
             fastingSugarLevel, preMealSugarLevel, postMealSugarLevel,
             dietaryPreference, dailyCaloricIntake, foodAllergies, 
             mealTypePreference, activityLevel, weight, height, BMI
         });
 
+        // push initial sugar levels
+        const date = new Date();
+        newUser.sugarLevels.push({
+            fastingSugarLevel,
+            preMealSugarLevel,
+            postMealSugarLevel,
+            date
+        })
+        // Save user to DB
         // Save user to the database
         await newUser.save();
 
@@ -78,5 +88,45 @@ UserApp.post('/login', expressAsyncHandler(async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 }));
+
+// Log the sugar levels after login
+UserApp.post('/log-sugar-levels', verifyToken ,expressAsyncHandler(async(req,res)=>{
+    try {
+
+        const {userId,fastingSugarLevel,preMealSugarLevel,postMealSugarLevel} = req.body;
+        const currentUser = await User.findOne({userId});
+        if (!currentUser) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        const date = new Date();
+        if(currentUser.sugarLevels.length < 30)
+        {
+            currentUser.sugarLevels.push({
+                fastingSugarLevel,
+                preMealSugarLevel,
+                postMealSugarLevel,
+                date
+            });
+            await User.save();
+        }
+        else{
+            // remove first
+            currentUser.sugarLevels.shift();
+            // add latest
+            currentUser.sugarLevels.push({
+                fastingSugarLevel,
+                preMealSugarLevel,
+                postMealSugarLevel,
+                date
+            });
+            await User.save();
+        }
+        return res.status(201).json({message : "sugar levels logged successfully",currentUser});
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}))
 
 module.exports = UserApp;
