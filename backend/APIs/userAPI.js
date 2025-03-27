@@ -25,8 +25,8 @@ UserApp.post('/signup', expressAsyncHandler(async (req, res) => {
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Calculate BMI
-        const BMI = weight / ((height / 100) ** 2);
+        // Calculate BMI (Body Mass Index)
+        const BMI = weight / ((height / 100) ** 2);  // height in cm
 
         // Create new user
         const newUser = new User({
@@ -36,11 +36,10 @@ UserApp.post('/signup', expressAsyncHandler(async (req, res) => {
             mealTypePreference, activityLevel, weight, height, BMI
         });
 
-        // Save user to DB
+        // Save user to the database
         await newUser.save();
 
         res.status(201).json({ message: 'User registered successfully' });
-
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error' });
@@ -50,22 +49,30 @@ UserApp.post('/signup', expressAsyncHandler(async (req, res) => {
 // **User Login**
 UserApp.post('/login', expressAsyncHandler(async (req, res) => {
     try {
-        let { email, password } = req.body;
-        let dbUser = await User.findOne({ email });
+        const { email, password } = req.body;
+        
+        // Check if user exists by email
+        const dbUser = await User.findOne({ email });
 
         if (!dbUser) {
             return res.status(400).json({ message: "Invalid email or password" });
         }
 
-        let isMatch = await bcrypt.compare(password, dbUser.password);
+        // Compare hashed password with the provided password
+        const isMatch = await bcrypt.compare(password, dbUser.password);
         if (!isMatch) {
             return res.status(400).json({ message: "Invalid email or password" });
         }
 
-        let token = jwt.sign({ id: dbUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        // Create a JWT token (authentication)
+        const token = jwt.sign({ id: dbUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-        res.json({ message: "Login successful", token , payload: dbUser});
-
+        // Send back response with the token
+        res.json({
+            message: "Login successful",
+            token,
+            payload: dbUser // You can optionally send back the user data excluding password
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error' });
