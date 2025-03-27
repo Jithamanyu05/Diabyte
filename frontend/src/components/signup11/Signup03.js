@@ -31,7 +31,7 @@ const Signup03 = () => {
       const response = await axios.post("http://localhost:5000/users/signup", formData);
       console.log("User registered:", response.data);
       alert("Signup Complete! Check console for submitted data.");
-      navigate("/login");  // Redirect to the login page after successful signup
+      navigate("/signin");  // Redirect to the login page after successful signup
     } catch (error) {
       console.error("Error submitting data:", error);
       alert("Error submitting data. Please try again.");
