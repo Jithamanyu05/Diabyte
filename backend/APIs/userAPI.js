@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const expressAsyncHandler = require('express-async-handler');
 const User = require('../models/User');
-import verifyToken from '../middlewares/verifyToken';
+const verifyToken = require('../middlewares/verifyToken');
 
 const UserApp = express.Router();
 
