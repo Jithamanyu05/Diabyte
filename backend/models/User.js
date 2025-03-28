@@ -3,6 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 
 
 const sugarLevelsSchema  = new mongoose.Schema({
+    mealType: { type:String,required:true , default: "initial"},
     fastingSugarLevel: { type: Number, required: true ,default:-1},
     preMealSugarLevel: { type: Number, required: true,default:-1 },
     postMealSugarLevel: { type: Number, required: true,default:-1 },
