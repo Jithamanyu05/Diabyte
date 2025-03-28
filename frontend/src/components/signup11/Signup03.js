@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
-import "/DiaBite/frontend/src/components/signup11/styless.css"
+import "./styless.css";
 
 const Signup03 = () => {
   const navigate = useNavigate();
@@ -9,12 +8,9 @@ const Signup03 = () => {
   const prevData = location.state || {};
 
   const [formData, setFormData] = useState({
-    activityLevel: "",
-    weight: "",
-    height: "",
-    dailyCaloricIntake: "",
-    mealTypePreference: "",
+    dailyCalorieIntake: "",
     foodAllergies: "",
+    mealTypePreference: "",
     ...prevData,
   });
 
@@ -22,51 +18,44 @@ const Signup03 = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async () => {
-    try {
-      await axios.post("http://localhost:5000/users/signup", formData);
-      alert("🎉 Signup Complete!");
-      navigate("/signin"); // Redirect to login
-    } catch (error) {
-      alert("❌ Error submitting data. Please try again.");
-    }
+  const handleSubmit = () => {
+    console.log("Final Form Data:", formData);
+    alert("🎉 Signup Complete! Your details have been saved.");
+    navigate("/welcome");
   };
 
   return (
     <div className="signup-container">
-      <h2>🏃 Lifestyle & Preferences</h2>
+      <div className="status-bar">
+        <div className="status-step completed">Step 1: Basic Info</div>
+        <div className="status-step completed">Step 2: Health Details</div>
+        <div className="status-step active">Step 3: Preferences</div>
+      </div>
 
-      <label>Select your activity level:</label>
-      <select name="activityLevel" onChange={handleChange}>
-        <option value="">Choose one</option>
-        <option value="Sedentary">Sedentary</option>
-        <option value="Moderate">Moderate</option>
-        <option value="Active">Active</option>
-      </select>
+      <div className="signup-box">
+        <h2>🎯 Final Touches</h2>
 
-      <label>What is your weight (kg)?</label>
-      <input type="number" name="weight" onChange={handleChange} placeholder="Weight in kg" />
+        <label>Daily Calorie Intake (kcal):</label>
+        <input type="number" name="dailyCalorieIntake" onChange={handleChange} placeholder="e.g., 2000" />
 
-      <label>What is your height (cm)?</label>
-      <input type="number" name="height" onChange={handleChange} placeholder="Height in cm" />
+        <label>Food Allergies (if any):</label>
+        <input type="text" name="foodAllergies" onChange={handleChange} placeholder="e.g., Nuts, Dairy" />
 
-      <label>Daily caloric intake (kcal)?</label>
-      <input type="number" name="dailyCaloricIntake" onChange={handleChange} placeholder="kcal" />
+        <label>Meal Type Preference:</label>
+        <select name="mealTypePreference" onChange={handleChange}>
+          <option value="">Select</option>
+          <option value="Indian">Indian</option>
+          <option value="Japanese">Japanese</option>
+          <option value="Chinese">Chinese</option>
+          <option value="Mediterranean">Mediterranean</option>
+          <option value="Continental">Continental</option>
+        </select>
 
-      <label>Preferred meal type:</label>
-      <select name="mealTypePreference" onChange={handleChange}>
-        <option value="">Choose one</option>
-        <option value="Veg">Vegetarian</option>
-        <option value="Non-Veg">Non-Vegetarian</option>
-        <option value="Vegan">Vegan</option>
-        <option value="Keto">Keto</option>
-      </select>
-
-      <label>Any food allergies?</label>
-      <input type="text" name="foodAllergies" onChange={handleChange} placeholder="e.g., Peanuts, Dairy" />
-
-      <button onClick={() => navigate("/signup2")}>⬅️ Back</button>
-      <button onClick={handleSubmit}>✅ Submit</button>
+        <div className="button-group">
+          <button onClick={() => navigate("/signup2")}>⬅️ Back</button>
+          <button onClick={handleSubmit}>✅ Submit</button>
+        </div>
+      </div>
     </div>
   );
 };

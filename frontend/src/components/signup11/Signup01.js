@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "/DiaBite/frontend/src/components/signup11/styless.css"
+import "./styless.css";
 
 const Signup01 = () => {
   const navigate = useNavigate();
@@ -10,6 +10,8 @@ const Signup01 = () => {
     password: "",
     age: "",
     gender: "",
+    height: "",
+    weight: "",
   });
 
   const handleChange = (e) => {
@@ -18,30 +20,47 @@ const Signup01 = () => {
 
   return (
     <div className="signup-container">
-      <h2>👋 Welcome! Let's get started.</h2>
-      <p>Tell us a little about yourself.</p>
+      {/* Status Bar */}
+      <div className="status-bar">
+        <div className="status-step active">Step 1: Basic Info</div>
+        <div className="status-step">Step 2: Health Details</div>
+        <div className="status-step">Step 3: Preferences</div>
+      </div>
 
-      <label>What is your full name?</label>
-      <input type="text" name="name" onChange={handleChange} placeholder="Enter your name" />
+      <div className="signup-box">
+        <h2>👋 Welcome! Let's get started.</h2>
+        <p>Tell us a little about yourself.</p>
 
-      <label>What is your email?</label>
-      <input type="email" name="email" onChange={handleChange} placeholder="Enter your email" />
+        <label>Full Name:</label>
+        <input type="text" name="name" onChange={handleChange} placeholder="Enter your name" />
 
-      <label>Set a password</label>
-      <input type="password" name="password" onChange={handleChange} placeholder="Choose a strong password" />
+        <label>Email:</label>
+        <input type="email" name="email" onChange={handleChange} placeholder="Enter your email" />
 
-      <label>How old are you?</label>
-      <input type="number" name="age" onChange={handleChange} placeholder="Your age" />
+        <label>Password:</label>
+        <input type="password" name="password" onChange={handleChange} placeholder="Choose a strong password" />
 
-      <label>Select your gender:</label>
-      <select name="gender" onChange={handleChange}>
-        <option value="">Choose one</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Other">Other</option>
-      </select>
+        <label>Age:</label>
+        <input type="number" name="age" onChange={handleChange} placeholder="Your age" />
 
-      <button onClick={() => navigate("/signup2", { state: formData })}>Next ➡️</button>
+        <label>Gender:</label>
+        <select name="gender" onChange={handleChange}>
+          <option value="">Choose one</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+
+        <label>Height (cm):</label>
+        <input type="number" name="height" onChange={handleChange} placeholder="Your height in cm" />
+
+        <label>Weight (kg):</label>
+        <input type="number" name="weight" onChange={handleChange} placeholder="Your weight in kg" />
+
+        <div className="button-group">
+          <button onClick={() => navigate("/signup2", { state: formData })}>Next ➡️</button>
+        </div>
+      </div>
     </div>
   );
 };

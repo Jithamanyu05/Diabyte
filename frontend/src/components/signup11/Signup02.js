@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import "/DiaBite/frontend/src/components/signup11/styless.css"
+import "./styless.css";
+
 const Signup02 = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const prevData = location.state || {};
 
   const [formData, setFormData] = useState({
-    diabetesType: "",
-    fastingSugarLevel: "",
-    preMealSugarLevel: "",
-    postMealSugarLevel: "",
+    fastingSugar: "",
+    premealSugar: "",
+    postmealSugar: "",
+    mealType: "",
     dietaryPreference: "",
+    diabetesType: "",
     ...prevData,
   });
 
@@ -21,31 +23,45 @@ const Signup02 = () => {
 
   return (
     <div className="signup-container">
-      <h2>🔬 Let's talk about your health.</h2>
-      <p>This will help us provide better recommendations.</p>
+      <div className="status-bar">
+        <div className="status-step completed">Step 1: Basic Info</div>
+        <div className="status-step active">Step 2: Health Details</div>
+        <div className="status-step">Step 3: Preferences</div>
+      </div>
 
-      <label>What type of diabetes do you have?</label>
-      <select name="diabetesType" onChange={handleChange}>
-        <option value="">Choose one</option>
-        <option value="Type 1">Type 1</option>
-        <option value="Type 2">Type 2</option>
-        <option value="Gestational">Gestational</option>
-      </select>
+      <div className="signup-box">
+        <h2>🩺 Health Details</h2>
 
-      <label>What is your fasting sugar level?</label>
-      <input type="number" name="fastingSugarLevel" onChange={handleChange} placeholder="mg/dL" />
+        <label>Diabetes Type:</label>
+        <select name="diabetesType" onChange={handleChange}>
+          <option value="">Select Type</option>
+          <option value="Type 1">Type 1</option>
+          <option value="Type 2">Type 2</option>
+          <option value="Gestational">Gestational</option>
+        </select>
 
-      <label>What is your pre-meal sugar level?</label>
-      <input type="number" name="preMealSugarLevel" onChange={handleChange} placeholder="mg/dL" />
+        <label>Fasting Sugar Level (mg/dL):</label>
+        <input type="number" name="fastingSugar" onChange={handleChange} placeholder="e.g., 90" />
 
-      <label>What is your post-meal sugar level?</label>
-      <input type="number" name="postMealSugarLevel" onChange={handleChange} placeholder="mg/dL" />
+        <label>Pre-meal Sugar Level (mg/dL):</label>
+        <input type="number" name="premealSugar" onChange={handleChange} placeholder="e.g., 110" />
 
-      <label>Any dietary preferences?</label>
-      <input type="text" name="dietaryPreference" onChange={handleChange} placeholder="e.g., Vegetarian, Vegan, Keto" />
+        <label>Post-meal Sugar Level (mg/dL):</label>
+        <input type="number" name="postmealSugar" onChange={handleChange} placeholder="e.g., 140" />
 
-      <button onClick={() => navigate("/signup1")}>⬅️ Back</button>
-      <button onClick={() => navigate("/signup3", { state: formData })}>Next ➡️</button>
+        <label>Meal Type:</label>
+        <select name="mealType" onChange={handleChange}>
+          <option value="">Select</option>
+          <option value="Breakfast">Breakfast</option>
+          <option value="Lunch">Lunch</option>
+          <option value="Dinner">Dinner</option>
+        </select>
+
+        <div className="button-group">
+          <button onClick={() => navigate("/signup1")}>⬅️ Back</button>
+          <button onClick={() => navigate("/signup3", { state: formData })}>➡️ Next</button>
+        </div>
+      </div>
     </div>
   );
 };
