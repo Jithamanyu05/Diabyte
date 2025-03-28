@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 function Home() {
   return (
     <div>
-        <NavLink to={'/signin'}>Signin</NavLink>
+      <h1>Home</h1>
     </div>
   )
 }

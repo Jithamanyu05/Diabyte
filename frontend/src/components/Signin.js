@@ -24,7 +24,7 @@ function Signin() {
   }, [isLoggedIn, navigate]);
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100">
+    <div className="d-flex justify-content-center align-items-center mt-5">
       <div className="card shadow p-4" style={{ width: "400px" }}>
         <h2 className="text-center text-primary mb-4">Sign In</h2>
 
@@ -64,7 +64,7 @@ function Signin() {
 
         <p className="text-center">
           New here?{" "}
-          <Link to="/signup" className="text-primary fw-bold">
+          <Link to="/signup1" className="text-primary fw-bold">
             Sign Up Now
           </Link>
         </p>

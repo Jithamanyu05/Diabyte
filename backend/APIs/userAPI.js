@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const expressAsyncHandler = require('express-async-handler');
 const User = require('../models/User');
 const verifyToken = require('../middlewares/verifyToken');
-
+const authMiddlleware = require('../middlewares/authMiddlleware')
 const UserApp = express.Router();
 
 // Registration Route
@@ -89,10 +89,10 @@ UserApp.post('/login', expressAsyncHandler(async (req, res) => {
 }));
 
 // Log the sugar levels after login
-UserApp.post('/log-sugar-levels', verifyToken ,expressAsyncHandler(async(req,res)=>{
+UserApp.post('/log-sugar-levels', authMiddlleware ,expressAsyncHandler(async(req,res)=>{
     try {
 
-        const {userId,fastingSugarLevel,preMealSugarLevel,postMealSugarLevel} = req.body;
+        const {userId,mealType,fastingSugarLevel,preMealSugarLevel,postMealSugarLevel} = req.body;
         const currentUser = await User.findOne({userId});
         if (!currentUser) {
             return res.status(404).json({ error: "User not found" });
@@ -107,7 +107,7 @@ UserApp.post('/log-sugar-levels', verifyToken ,expressAsyncHandler(async(req,res
                 postMealSugarLevel,
                 date
             });
-            await User.save();
+            
         }
         else{
             // remove first
