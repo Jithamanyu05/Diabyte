@@ -13,6 +13,7 @@ app.use(cors());
 const userRoutes = require("./APIs/userAPI");
 app.use("/users", userRoutes);
 app.use("/cgm", require("./APIs/cgmAPI"));
+
 // **MongoDB Connection**
 const connectDB = async () => {
     try {

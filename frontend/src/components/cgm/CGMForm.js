@@ -4,7 +4,9 @@ import CGMAnalysis from "./CGMAnalysis";
 import { Modal, Form, Button, Alert, Card, Container, Row, Col, Table } from "react-bootstrap";
 import { FaUtensils, FaHeartbeat, FaCalendarAlt, FaHistory, FaInfoCircle } from "react-icons/fa";
 
+
 const CGMForm = () => {
+
   const [showGuide, setShowGuide] = useState(false);
   const [formData, setFormData] = useState({
     mealType: "",
@@ -16,13 +18,15 @@ const CGMForm = () => {
   const [analysis, setAnalysis] = useState(null);
   const [message, setMessage] = useState("");
   const [history, setHistory] = useState([]);
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
+      setIsLoggedIn(true);
       fetchAnalysis();
       fetchHistory();
     } else {
+      setIsLoggedIn(false);
       setMessage("Please log in to view and track your sugar levels");
     }
   }, []);
@@ -126,7 +130,7 @@ const CGMForm = () => {
               </Col>
             </Row>
 
-            <Button className="mt-4 w-100" variant="primary" type="submit">
+            <Button className="mt-4 w-100" variant="primary" type="submit" disabled={!isLoggedIn}>
               📩 Submit Data
             </Button>
           </Form>

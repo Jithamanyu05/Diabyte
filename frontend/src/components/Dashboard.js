@@ -5,8 +5,6 @@ import CGMChart from './cgm/CGMChart'
 function Dashboard() {
   return (
     <div>Dashboard
-      <CGMForm/>
-      {/* <CGMChart/> */}
     </div>
     
   )

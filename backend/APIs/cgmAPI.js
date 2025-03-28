@@ -37,7 +37,7 @@ router.post("/save", authMiddleware, async (req, res) => {
         // Perform AI Analysis
         const analysis = await analyzeCGMData(userId);
 
-        res.json({ message: "Data saved successfully in your log!", analysis });
+        res.json({ message: "Data saved successfully!", analysis });
     } catch (error) {
         console.error("Error in /save:", error);
         res.status(500).json({ error: error.message });

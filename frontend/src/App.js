@@ -7,7 +7,7 @@ import Dashboard from "./components/Dashboard";
 import Signup01 from "./components/signup11/Signup01";
 import Signup02 from "./components/signup11/Signup02";
 import Signup03 from "./components/signup11/Signup03";
-
+import CGMForm from "./components/cgm/CGMForm";
 function App() {
   let router = createBrowserRouter([
     {
@@ -26,6 +26,9 @@ function App() {
         {
           path: "/dashboard",
           element: <Dashboard />,
+        },{
+          path:"sugar-tracker",
+          element:<CGMForm/>
         },
         {
           path: "/signup1",
