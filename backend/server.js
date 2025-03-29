@@ -9,10 +9,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Import user routes
-const userRoutes = require("./APIs/userAPI");
-app.use("/users", userRoutes);
-app.use("/cgm", require("./APIs/cgmAPI"));
 
 // **MongoDB Connection**
 const connectDB = async () => {
@@ -27,6 +23,17 @@ const connectDB = async () => {
         process.exit(1); // Stop server if DB connection fails
     }
 };
+
+
+// Import user routes
+const userRoutes = require("./APIs/userAPI");
+app.use("/users", userRoutes);
+app.use("/cgm", require("./APIs/cgmAPI"));
+
+const foodRoutes= require("./APIs/foodAPI")
+app.use("/food", foodRoutes);
+
+
 
 // **Start Server only after DB is connected**
 connectDB().then(() => {

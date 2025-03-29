@@ -2,13 +2,21 @@ POST http://localhost:5000/users/signup
 Content-Type: application/json
 
 {
-    "name": "John Doe",
-    "email": "johndoe1@example.com",
-    "password": "password123",
+    "name": "Hemanth",
+    "email": "h@gmail.com",
+    "password": "123",
     "age": 35,
     "gender": "Male",
     "diabetesType": "Type 2",
-    "sugarLevels": [{"mealType":"yoyoyo","fastingSugarLevel":12,"preMealSugarLevel":12,"postMealSugarLevel":12,"date":1234}],
+    "sugarLevels": [
+        {
+            "mealType": "Breakfast",
+            "fastingSugarLevel": 90,
+            "preMealSugarLevel": 110,
+            "postMealSugarLevel": 140,
+            "date": "2025-03-29T08:00:00.000Z"
+        }
+    ],
     "dietaryPreference": "Vegetarian",
     "dailyCaloricIntake": 2000,
     "foodAllergies": ["Peanuts"],
@@ -21,13 +29,14 @@ Content-Type: application/json
 
 
 
+
 #### User login
 POST http://localhost:5000/users/login
 Content-Type: application/json
 
 {
-    "username":"hemanth",
-    "password":"Hemanth@123"
+    "email":"nsrisanjay03@gmail.com",
+    "password":"123"
 }
 
 ###
@@ -43,3 +52,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTRlY2IyM
     "postMealSugarLevel":"123",
     "date":"2025-03-27T06:14:10.149+00:00"
 }
+
+###
+POST http://localhost:5000/food/log
+Content-Type: application/json
+
+{
+    "userId": "67e7df1a49f50e893c7eec33",
+    "mealType": "Lunch",
+    "foodItems": [
+        { "name": "Egg omelet", "quantity": 3 },
+        { "name": "Brown Rice", "quantity": 1.5 },
+        { "name": "Chicken breast", "quantity": 5 }
+    ],
+    "inputMethod": "text"
+}
+
+

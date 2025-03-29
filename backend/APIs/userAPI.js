@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const expressAsyncHandler = require('express-async-handler');
 const User = require('../models/User');
+const mongoose = require('mongoose');
 const verifyToken = require('../middlewares/verifyToken');
 const authMiddlleware = require('../middlewares/authMiddlleware')
 const UserApp = express.Router();
@@ -11,8 +12,8 @@ const UserApp = express.Router();
 UserApp.post('/signup', expressAsyncHandler(async (req, res) => {
     try {
         const {
-            userId,name, email, password, age, gender, diabetesType,
-            fastingSugarLevel, preMealSugarLevel, postMealSugarLevel,
+            name, email, password, age, gender, diabetesType,
+            sugarLevels, // ✅ Accept sugarLevels from request
             dietaryPreference, dailyCaloricIntake, foodAllergies, 
             mealTypePreference, activityLevel, weight, height
         } = req.body;
@@ -26,34 +27,27 @@ UserApp.post('/signup', expressAsyncHandler(async (req, res) => {
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Calculate BMI (Body Mass Index)
-        const BMI = weight / ((height / 100) ** 2);  // height in cm
-
         // Create new user
         const newUser = new User({
-            userId,name, email, password: hashedPassword, age, gender, diabetesType,
-            fastingSugarLevel, preMealSugarLevel, postMealSugarLevel,
+            _id: new mongoose.Types.ObjectId(),  // ✅ Use `_id` as userId
+            name, email, password: hashedPassword, age, gender, diabetesType,
             dietaryPreference, dailyCaloricIntake, foodAllergies, 
-            mealTypePreference, activityLevel, weight, height, BMI
+            mealTypePreference, activityLevel, weight, height,
+            sugarLevels: sugarLevels || []  // ✅ Allow custom sugar levels on signup
         });
-        // push initial sugar levels
-        const date = new Date();
-        newUser.sugarLevels.push({
-            fastingSugarLevel,
-            preMealSugarLevel,
-            postMealSugarLevel,
-            date
-        })
+
         // Save user to DB
-        // Save user to the database
         await newUser.save();
 
-        res.status(201).json({ message: 'User registered successfully' });
+        res.status(201).json({ message: 'User registered successfully', user: newUser });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 }));
+
+
+
 
 // **User Login**
 UserApp.post('/login', expressAsyncHandler(async (req, res) => {
@@ -88,46 +82,5 @@ UserApp.post('/login', expressAsyncHandler(async (req, res) => {
     }
 }));
 
-// Log the sugar levels after login
-UserApp.post('/log-sugar-levels', authMiddlleware ,expressAsyncHandler(async(req,res)=>{
-    try {
-
-        const {userId,mealType,fastingSugarLevel,preMealSugarLevel,postMealSugarLevel} = req.body;
-        const currentUser = await User.findOne({userId});
-        if (!currentUser) {
-            return res.status(404).json({ error: "User not found" });
-        }
-        const date = new Date();
-        if(currentUser.sugarLevels.length < 30)
-        {
-            currentUser.sugarLevels.push({
-                mealType,
-                fastingSugarLevel,
-                preMealSugarLevel,
-                postMealSugarLevel,
-                date
-            });
-            
-        }
-        else{
-            // remove first
-            currentUser.sugarLevels.shift();
-            // add latest
-            currentUser.sugarLevels.push({
-                mealType,
-                fastingSugarLevel,
-                preMealSugarLevel,
-                postMealSugarLevel,
-                date
-            });
-            await User.save();
-        }
-        return res.status(201).json({message : "sugar levels logged successfully",currentUser});
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal Server Error' });
-    }
-}))
 
 module.exports = UserApp;

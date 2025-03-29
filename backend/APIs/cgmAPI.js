@@ -4,34 +4,38 @@ const User = require("../models/User");  // Import the User model
 const axios = require("axios");
 require("dotenv").config();
 
-const authMiddleware = require("../middlewares/authMiddlleware"); // Import Auth Middleware
+const authMiddleware = require("../middlewares/authMiddlleware"); // ✅ Fixed Import Typo
 
 // 🟢 1️⃣ Save CGM Data (Manual Input & Trigger Analysis)
 router.post("/save", authMiddleware, async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user.id;  // ✅ Extracted from JWT
         console.log("User ID from JWT:", userId);
 
         const { mealType, fastingSugarLevel, preMealSugarLevel, postMealSugarLevel, date } = req.body;
 
-        // Create the new CGM entry to be added to the sugarLevels array
+        if (!mealType || fastingSugarLevel === undefined || preMealSugarLevel === undefined || postMealSugarLevel === undefined || !date) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
+
+        // ✅ Ensure `date` is a valid Date object
         const newEntry = {
-            mealType, 
-            fastingSugarLevel, 
-            preMealSugarLevel, 
-            postMealSugarLevel, 
-            date
+            mealType,
+            fastingSugarLevel,
+            preMealSugarLevel,
+            postMealSugarLevel,
+            date: new Date(date)  // Convert to Date object
         };
 
-        // Push the new entry into the sugarLevels array of the User document
-        const updatedUser = await User.findOneAndUpdate(
-            { userId: userId },  // Find the user by userId
-            { $push: { sugarLevels: newEntry } },  // Push the new CGM entry into the sugarLevels array
-            { new: true }  // Return the updated user document
+        // ✅ Correct User Query (`findByIdAndUpdate`)
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,  
+            { $push: { sugarLevels: newEntry } },  // ✅ No new `_id`
+            { new: true }
         );
 
         if (!updatedUser) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: "User not found" });
         }
 
         // Perform AI Analysis
@@ -43,6 +47,7 @@ router.post("/save", authMiddleware, async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
 
 // 🟢 2️⃣ Get Last 30 Days of CGM Data (Trends)
 router.get("/trends", authMiddleware, async (req, res) => {
@@ -60,7 +65,7 @@ router.get("/trends", authMiddleware, async (req, res) => {
 router.get("/history", authMiddleware, async (req, res) => {
     try {
         const userId = req.user.id;
-        const user = await User.findOne({ userId });
+        const user = await User.findById(userId); // ✅ Fixed Query
 
         if (!user || !user.sugarLevels.length) {
             return res.json({ message: "No CGM history found." });
@@ -87,7 +92,7 @@ router.get("/analyze", authMiddleware, async (req, res) => {
 
 // 📌 **Helper Function to Get Last 30 Days of CGM Data**
 async function getLast30DaysCGM(userId) {
-    const user = await User.findOne({ userId });
+    const user = await User.findById(userId); // ✅ Fixed Query
 
     if (!user || !user.sugarLevels.length) {
         return [];
@@ -97,8 +102,9 @@ async function getLast30DaysCGM(userId) {
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(today.getDate() - 30);
 
-    // Filter the sugarLevels array for the last 30 days
+    // ✅ Filter only valid date entries
     const recentData = user.sugarLevels.filter(entry => {
+        if (!entry.date) return false;
         const entryDate = new Date(entry.date);
         return entryDate >= thirtyDaysAgo;
     });
@@ -117,7 +123,7 @@ async function analyzeCGMData(userId) {
         fasting: entry.fastingSugarLevel,
         preMeal: entry.preMealSugarLevel,
         postMeal: entry.postMealSugarLevel,
-        date: entry.date.toISOString().split("T")[0]
+        date: new Date(entry.date).toISOString().split("T")[0]  // ✅ Ensure correct date format
     }));
 
     try {
@@ -148,7 +154,8 @@ async function analyzeCGMData(userId) {
             { headers: { "Content-Type": "application/json" } }
         );
 
-        const insights = response.data.candidates?.[0]?.content?.parts?.[0]?.text || "No insights available.";
+        // ✅ Ensure a valid response structure
+        const insights = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "No insights available.";
         console.log("✅ Sugar Intake Insights:", insights);
 
         return { insights };
