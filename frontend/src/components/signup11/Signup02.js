@@ -8,17 +8,29 @@ const Signup02 = () => {
   const prevData = location.state || {};
 
   const [formData, setFormData] = useState({
-    fastingSugar: "",
-    premealSugar: "",
-    postmealSugar: "",
-    mealType: "",
-    dietaryPreference: "",
     diabetesType: "",
+    sugarLevels: [
+      {
+        mealType: "",
+        fastingSugarLevel: "",
+        preMealSugarLevel: "",
+        postMealSugarLevel: "",
+        date: new Date().toISOString(),
+      },
+    ],
     ...prevData,
   });
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({
+      ...formData,
+      sugarLevels: [
+        {
+          ...formData.sugarLevels[0],
+          [e.target.name]: e.target.value,
+        },
+      ],
+    });
   };
 
   return (
@@ -33,29 +45,29 @@ const Signup02 = () => {
         <h2>🩺 Health Details</h2>
 
         <label>Diabetes Type:</label>
-        <select name="diabetesType" onChange={handleChange}>
+        <select name="diabetesType" value={formData.diabetesType} onChange={(e) => setFormData({ ...formData, diabetesType: e.target.value })}>
           <option value="">Select Type</option>
           <option value="Type 1">Type 1</option>
           <option value="Type 2">Type 2</option>
           <option value="Gestational">Gestational</option>
         </select>
 
-        <label>Fasting Sugar Level (mg/dL):</label>
-        <input type="number" name="fastingSugar" onChange={handleChange} placeholder="e.g., 90" />
-
-        <label>Pre-meal Sugar Level (mg/dL):</label>
-        <input type="number" name="premealSugar" onChange={handleChange} placeholder="e.g., 110" />
-
-        <label>Post-meal Sugar Level (mg/dL):</label>
-        <input type="number" name="postmealSugar" onChange={handleChange} placeholder="e.g., 140" />
-
         <label>Meal Type:</label>
-        <select name="mealType" onChange={handleChange}>
+        <select name="mealType" value={formData.sugarLevels[0].mealType} onChange={handleChange}>
           <option value="">Select</option>
           <option value="Breakfast">Breakfast</option>
           <option value="Lunch">Lunch</option>
           <option value="Dinner">Dinner</option>
         </select>
+
+        <label>Fasting Sugar Level:</label>
+        <input type="number" name="fastingSugarLevel" value={formData.sugarLevels[0].fastingSugarLevel} onChange={handleChange} required />
+
+        <label>Pre-meal Sugar Level:</label>
+        <input type="number" name="preMealSugarLevel" value={formData.sugarLevels[0].preMealSugarLevel} onChange={handleChange} required />
+
+        <label>Post-meal Sugar Level:</label>
+        <input type="number" name="postMealSugarLevel" value={formData.sugarLevels[0].postMealSugarLevel} onChange={handleChange} required />
 
         <div className="button-group">
           <button onClick={() => navigate("/signup1")}>⬅️ Back</button>

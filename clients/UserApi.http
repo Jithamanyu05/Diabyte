@@ -19,6 +19,37 @@ Content-Type: application/json
 }
 
 
+###
+POST http://localhost:5000/users/signup
+Content-Type: application/json
+
+{
+    "userId": "USR12345",
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "password123",
+    "age": 35,
+    "gender": "Male",
+    "diabetesType": "Type 2",
+    "sugarLevels": [
+        {
+            "mealType": "Breakfast",
+            "fastingSugarLevel": 90,
+            "preMealSugarLevel": 110,
+            "postMealSugarLevel": 140,
+            "date": "2025-03-28T08:00:00Z"
+        }
+    ],
+    "dietaryPreference": "Vegetarian",
+    "dailyCaloricIntake": 2000,
+    "foodAllergies": ["Peanuts"],
+    "mealTypePreference": "Balanced",
+    "activityLevel": "Moderate",
+    "weight": 75,
+    "height": 175
+}
+
+
 
 
 #### User login
