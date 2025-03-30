@@ -5,17 +5,15 @@ import "./styless.css";
 const Signup01 = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    userId: `USR${Math.floor(Math.random() * 100000)}`, // Generate a random userId
     name: "",
     email: "",
     password: "",
     age: "",
     gender: "",
-    height: "",
-    weight: "",
   });
 
   const handleChange = (e) => {
+
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -50,14 +48,9 @@ const Signup01 = () => {
           <option value="Other">Other</option>
         </select>
 
-        <label>Height (cm):</label>
-        <input type="number" name="height" value={formData.height} onChange={handleChange} placeholder="Your height in cm" required />
-
-        <label>Weight (kg):</label>
-        <input type="number" name="weight" value={formData.weight} onChange={handleChange} placeholder="Your weight in kg" required />
 
         <div className="button-group">
-          <button onClick={() => navigate("/signup2", { state: formData })}>Next ➡️</button>
+          <button onClick={() => {console.log(formData);navigate("/signup2", { state: formData })}}>Next ➡️</button>
         </div>
       </div>
     </div>

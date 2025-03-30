@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 
 
 // const sugarLevelsSchema = new mongoose.Schema({
@@ -87,15 +87,15 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
     age: { type: Number, required: true },
     gender: { type: String, required: true },
-    diabetesType: { type: String, required: true },
-    sugarLevels: { type: [sugarLevelsSchema], default: [] },  
-    dietaryPreference: { type: String, required: true },  
-    dailyCaloricIntake: { type: Number, required: true },  
-    foodAllergies: { type: [String], default: [] },  
-    mealTypePreference: { type: String },  
-    activityLevel: { type: String },  
     weight: { type: Number, required: true },
     height: { type: Number, required: true },
+    sugarLevels: { type: [sugarLevelsSchema], default: [] },  
+    foodAllergies: { type: [String], default: [] },  
+    dailyCaloricIntake: { type: Number, required: true },  
+    mealTypePreference: { type: String },  
+    diabetesType: { type: String, required: true },
+    dietaryPreference: { type: String, required: true },  
+    activityLevel: { type: String },  
     foodLogs: { type: [foodLogSchema], default: [] } 
 });
 

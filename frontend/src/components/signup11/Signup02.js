@@ -8,6 +8,7 @@ const Signup02 = () => {
   const prevData = location.state || {};
 
   const [formData, setFormData] = useState({
+    ...prevData,
     diabetesType: "",
     sugarLevels: [
       {
@@ -17,8 +18,7 @@ const Signup02 = () => {
         postMealSugarLevel: "",
         date: new Date().toISOString(),
       },
-    ],
-    ...prevData,
+    ]
   });
 
   const handleChange = (e) => {
@@ -71,7 +71,7 @@ const Signup02 = () => {
 
         <div className="button-group">
           <button onClick={() => navigate("/signup1")}>⬅️ Back</button>
-          <button onClick={() => navigate("/signup3", { state: formData })}>➡️ Next</button>
+          <button onClick={() => {console.log(formData);navigate("/signup3", { state: formData })}}>➡️ Next</button>
         </div>
       </div>
     </div>
