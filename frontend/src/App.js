@@ -3,11 +3,13 @@ import Signin from "./components/Signin";
 import RootLayout from "./components/RootLayout";
 import Home from "./components/Home";
 import ErrorPage from "./components/ErrorPage";
-import Dashboard from "./components/Dashboard";
+// import Dashboard from "./components/Dashboard";
 import Signup01 from "./components/signup11/Signup01";
 import Signup02 from "./components/signup11/Signup02";
 import Signup03 from "./components/signup11/Signup03";
 import CGMForm from "./components/cgm/CGMForm";
+import OverallDashboard from "./components/OverallDashboard";
+
 function App() {
   let router = createBrowserRouter([
     {
@@ -25,7 +27,7 @@ function App() {
         },
         {
           path: "/dashboard",
-          element: <Dashboard />,
+          element: <OverallDashboard/>,
         },{
           path:"sugar-tracker",
           element:<CGMForm/>

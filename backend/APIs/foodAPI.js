@@ -8,10 +8,6 @@ require("dotenv").config();
 const NUTRITIONX_APP_ID = process.env.NUTRITIONX_APP_ID;
 const NUTRITIONX_APP_KEY = process.env.NUTRITIONX_APP_KEY;
 
-/**
- * @route POST /food/log
- * @desc Log a meal inside the user's database
- */
 router.post("/log", async (req, res) => {
     try {
         const { userId, mealType, foodItems, inputMethod } = req.body;
@@ -70,6 +66,9 @@ router.post("/log", async (req, res) => {
         const totalProtein = foodData.reduce((sum, item) => sum + (item.protein || 0), 0);
         const totalCarbs = foodData.reduce((sum, item) => sum + (item.carbs || 0), 0);
         const totalFats = foodData.reduce((sum, item) => sum + (item.fats || 0), 0);
+        const totalSugars = foodData.reduce((sum,item) => sum + (item.sugar || 0),0);
+        const totalFiber = foodData.reduce((sum,item) => sum + (item.fiber || 0),0);
+        
 
         // Create food log entry
         const foodLog = {
@@ -80,6 +79,8 @@ router.post("/log", async (req, res) => {
             totalProtein,
             totalCarbs,
             totalFats,
+            totalSugars,
+            totalFiber,
             dateLogged: new Date()
         };
 
