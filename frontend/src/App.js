@@ -8,6 +8,8 @@ import Signup01 from "./components/signup11/Signup01";
 import Signup02 from "./components/signup11/Signup02";
 import Signup03 from "./components/signup11/Signup03";
 import CGMForm from "./components/cgm/CGMForm";
+import VoiceMealLogger from "./components/VoiceMealLogger";
+import FoodTracking from "./components/FoodTracking";
 function App() {
   let router = createBrowserRouter([
     {
@@ -29,6 +31,9 @@ function App() {
         },{
           path:"sugar-tracker",
           element:<CGMForm/>
+        },{
+          path:"food-logging",
+          element:<FoodTracking/>
         },
         {
           path: "/signup1",

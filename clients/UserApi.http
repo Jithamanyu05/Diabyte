@@ -56,16 +56,31 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTRlY2IyM
 ###
 POST http://localhost:5000/food/log
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTdkZjFhNDlmNTBlODkzYzdlZWMzMyIsImlhdCI6MTc0MzMyMzM0OSwiZXhwIjoxNzQzMzI2OTQ5fQ.324zFK-LOFh9iQ1LV_o4hHuXuA0I5cjNVZON8Ip6yps
 
 {
     "userId": "67e7df1a49f50e893c7eec33",
-    "mealType": "Lunch",
+    "mealType": "BreakFast",
     "foodItems": [
-        { "name": "Egg omelet", "quantity": 3 },
-        { "name": "Brown Rice", "quantity": 1.5 },
-        { "name": "Chicken breast", "quantity": 5 }
+        { "name": "Orange Juice", "quantity": 1 }
     ],
     "inputMethod": "text"
 }
 
+####
+POST http://localhost:5000/food/log/voice
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTdkZjFhNDlmNTBlODkzYzdlZWMzMyIsImlhdCI6MTc0MzI3MjEyNiwiZXhwIjoxNzQzMjc1NzI2fQ.OuXlOgDUMD8takdMeHhu0SVNr-y1L5AlDuS5dsg9I1w
+
+
+{
+    "userId": "67e7df1a49f50e893c7eec33",
+    "mealType": "Lunch",
+    "voiceText": "5 boiled eggs and a glass of orange juice"
+}
+
+
+###
+GET http://localhost:5000/food/logs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTdkZjFhNDlmNTBlODkzYzdlZWMzMyIsImlhdCI6MTc0MzMzMTQ4MiwiZXhwIjoxNzQzMzM1MDgyfQ.FUYUW_MizXmiwR_u5k6ODT0OZocKWlVtf6EXG4qFJa4
 

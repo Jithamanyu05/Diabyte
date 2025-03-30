@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 
 
 const sugarLevelsSchema = new mongoose.Schema({
-    mealType: { type: String, required: true, default: "initial" },
-    fastingSugarLevel: { type: Number, required: true, default: -1 },
-    preMealSugarLevel: { type: Number, required: true, default: -1 },
-    postMealSugarLevel: { type: Number, required: true, default: -1 },
+    mealType: { type: String, default: "initial" },
+    fastingSugarLevel: { type: Number, default: -1 },
+    preMealSugarLevel: { type: Number, default: -1 },
+    postMealSugarLevel: { type: Number, default: -1 },
     date: { type: Date, required: true }
 }, { _id: false }); 
 

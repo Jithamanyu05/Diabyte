@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import CGMAnalysis from "./CGMAnalysis";
-import { Modal, Form, Button, Alert, Card, Container, Row, Col, Table } from "react-bootstrap";
+import { Modal, Form, Button, Alert, Card, Container, Row, Col, Table, Spinner } from "react-bootstrap";
 import { FaUtensils, FaHeartbeat, FaCalendarAlt, FaHistory, FaInfoCircle } from "react-icons/fa";
 
-
 const CGMForm = () => {
-
   const [showGuide, setShowGuide] = useState(false);
   const [formData, setFormData] = useState({
     mealType: "",
     fastingSugarLevel: "",
     preMealSugarLevel: "",
     postMealSugarLevel: "",
-    date: ""
+    date: "",
   });
+
   const [analysis, setAnalysis] = useState(null);
   const [message, setMessage] = useState("");
   const [history, setHistory] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Spinner state
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -33,16 +34,19 @@ const CGMForm = () => {
 
   const fetchAnalysis = async () => {
     try {
+      setIsLoading(true); // Show spinner
       const token = localStorage.getItem("token");
       if (!token) return console.error("No token found, user must log in.");
 
       const response = await axios.get("http://localhost:5000/cgm/analyze", {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       setAnalysis(response.data);
     } catch (error) {
       console.error("Error fetching analysis:", error.response?.data || error.message);
+    } finally {
+      setIsLoading(false); // Hide spinner
     }
   };
 
@@ -52,7 +56,7 @@ const CGMForm = () => {
       if (!token) return console.error("No token found, user must log in.");
 
       const response = await axios.get("http://localhost:5000/cgm/history", {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       setHistory(response.data);
@@ -61,32 +65,29 @@ const CGMForm = () => {
     }
   };
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setIsLoading(true); // Show spinner on submit
       const token = localStorage.getItem("token");
       if (!token) return console.error("No token found, user must log in.");
 
-      const response = await axios.post(
-        "http://localhost:5000/cgm/save",
-        formData,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const response = await axios.post("http://localhost:5000/cgm/save", formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       setMessage(response.data.message);
       setAnalysis(response.data.analysis);
       fetchHistory();
     } catch (error) {
       console.error("Error saving data:", error.response?.data || error.message);
+    } finally {
+      setIsLoading(false); // Hide spinner after fetching data
     }
   };
 
   return (
-    <Container className="d-flex flex-column gap-4 justify-content-center align-items-center mt-4">
+    <Container className="d-flex flex-column gap-4 justify-content-center align-items-center mt-4 ">
       <div className="d-flex gap-2 justify-content-center align-items-center mt-4">
         <Card className="p-4 bg-light" style={{ width: "40rem" }}>
           <h2 className="text-center mb-4 text-primary">Sugar Level Tracking</h2>
@@ -97,14 +98,20 @@ const CGMForm = () => {
             <Row>
               <Col md={6}>
                 <Form.Group controlId="mealType">
-                  <Form.Label><FaUtensils className="me-2" />Meal Type</Form.Label>
-                  <Form.Control type="text" name="mealType" value={formData.mealType} onChange={handleChange} required />
+                  <Form.Label>
+                    <FaUtensils className="me-2" />
+                    Meal Type
+                  </Form.Label>
+                  <Form.Control type="text" name="mealType" value={formData.mealType} onChange={(e) => setFormData({ ...formData, mealType: e.target.value })} />
                 </Form.Group>
               </Col>
               <Col md={6}>
                 <Form.Group controlId="date">
-                  <Form.Label><FaCalendarAlt className="me-2" />Date</Form.Label>
-                  <Form.Control type="date" name="date" value={formData.date} onChange={handleChange} required />
+                  <Form.Label>
+                    <FaCalendarAlt className="me-2" />
+                    Date
+                  </Form.Label>
+                  <Form.Control type="date" name="date" value={formData.date} onChange={(e) => setFormData({ ...formData, date: e.target.value })} />
                 </Form.Group>
               </Col>
             </Row>
@@ -112,20 +119,29 @@ const CGMForm = () => {
             <Row className="mt-3">
               <Col md={4}>
                 <Form.Group controlId="fastingSugarLevel">
-                  <Form.Label><FaHeartbeat className="me-2" />Fasting Sugar</Form.Label>
-                  <Form.Control type="number" name="fastingSugarLevel" value={formData.fastingSugarLevel} onChange={handleChange} required />
+                  <Form.Label>
+                    <FaHeartbeat className="me-2" />
+                    Fasting Sugar
+                  </Form.Label>
+                  <Form.Control type="number" name="fastingSugarLevel" value={formData.fastingSugarLevel} onChange={(e) => setFormData({ ...formData, fastingSugarLevel: e.target.value })} />
                 </Form.Group>
               </Col>
               <Col md={4}>
                 <Form.Group controlId="preMealSugarLevel">
-                  <Form.Label><FaHeartbeat className="me-2" />Pre-Meal Sugar</Form.Label>
-                  <Form.Control type="number" name="preMealSugarLevel" value={formData.preMealSugarLevel} onChange={handleChange} required />
+                  <Form.Label>
+                    <FaHeartbeat className="me-2" />
+                    Pre-Meal Sugar
+                  </Form.Label>
+                  <Form.Control type="number" name="preMealSugarLevel" value={formData.preMealSugarLevel} onChange={(e) => setFormData({ ...formData, preMealSugarLevel: e.target.value })} />
                 </Form.Group>
               </Col>
               <Col md={4}>
                 <Form.Group controlId="postMealSugarLevel">
-                  <Form.Label><FaHeartbeat className="me-2" />Post-Meal Sugar</Form.Label>
-                  <Form.Control type="number" name="postMealSugarLevel" value={formData.postMealSugarLevel} onChange={handleChange} required />
+                  <Form.Label>
+                    <FaHeartbeat className="me-2" />
+                    Post-Meal Sugar
+                  </Form.Label>
+                  <Form.Control type="number" name="postMealSugarLevel" value={formData.postMealSugarLevel} onChange={(e) => setFormData({ ...formData, postMealSugarLevel: e.target.value })} />
                 </Form.Group>
               </Col>
             </Row>
@@ -135,9 +151,19 @@ const CGMForm = () => {
             </Button>
           </Form>
         </Card>
-        {analysis && <CGMAnalysis analysis={analysis} />}
-      </div>
 
+        {/* Show Spinner while loading */}
+        {isLoading ? (
+          <div className="d-flex justify-content-center align-items-center gap-2" style={{ height: "5rem" }}>
+            <Spinner animation="border" variant="primary" />
+            <p style={{ marginTop: "10px", color: "#333" }}>Analyzing your health...</p>
+          </div>
+        ) : (
+          analysis && <CGMAnalysis analysis={analysis} />
+        )}
+
+      </div>
+      <div className="w-100">
       <div className="p-3 w-100 mt-4">
         {history.length > 0 && (
           <Card className="border-0 mt-2 w-100 position-relative">
@@ -179,34 +205,39 @@ const CGMForm = () => {
                 </thead>
                 <tbody>
                   {history.map((entry, index) => (
-                    <tr key={index}>
+                    <tr key={index} className="align-middle justify-content-center">
                       <td>{new Date(entry.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</td>
                       <td>{entry.mealType}</td>
 
                       <td>
-                        <span className={`badge 
-                          ${entry.fastingSugarLevel < 100 ? "bg-success" : 
-                          entry.fastingSugarLevel <= 125 ? "bg-warning" : "bg-danger"}`}>
-                          {entry.fastingSugarLevel} mg/dL
-                        </span>
+                      <span className={`badge 
+                        ${entry.fastingSugarLevel === null || entry.fastingSugarLevel === 0 ? "" : 
+                        entry.fastingSugarLevel < 100 ? "bg-success" : 
+                        entry.fastingSugarLevel <= 125 ? "bg-warning" : "bg-danger"}`}>
+                        {entry.fastingSugarLevel === null || entry.fastingSugarLevel === 0 ? "-" : `${entry.fastingSugarLevel} mg/dL`}
+                      </span>
+
                       </td>
 
                       <td>
-                        <span className={`badge 
-                          ${entry.preMealSugarLevel < 72 ? "bg-danger" : 
-                          entry.preMealSugarLevel <= 99 ? "bg-success" : 
-                          entry.preMealSugarLevel <= 130 ? "bg-warning" : "bg-danger"}`}>
-                          {entry.preMealSugarLevel} mg/dL
-                        </span>
-                      </td>
+                      <span className={`badge 
+                        ${entry.preMealSugarLevel === null || entry.preMealSugarLevel === 0 ? "" : 
+                        entry.preMealSugarLevel < 72 ? "bg-danger" : 
+                        entry.preMealSugarLevel <= 99 ? "bg-success" : 
+                        entry.preMealSugarLevel <= 130 ? "bg-warning" : "bg-danger"}`}>
+                        {entry.preMealSugarLevel === null || entry.preMealSugarLevel === 0 ? "-" : `${entry.preMealSugarLevel} mg/dL`}
+                      </span>
+                    </td>
 
-                      <td>
-                        <span className={`badge 
-                          ${entry.postMealSugarLevel < 140 ? "bg-success" : 
-                          entry.postMealSugarLevel <= 180 ? "bg-warning" : "bg-danger"}`}>
-                          {entry.postMealSugarLevel} mg/dL
-                        </span>
-                      </td>
+                    <td>
+                      <span className={`badge 
+                        ${entry.postMealSugarLevel === null || entry.postMealSugarLevel === 0 ? "" : 
+                        entry.postMealSugarLevel < 140 ? "bg-success" : 
+                        entry.postMealSugarLevel <= 180 ? "bg-warning" : "bg-danger"}`}>
+                        {entry.postMealSugarLevel === null || entry.postMealSugarLevel === 0 ? "-" : `${entry.postMealSugarLevel} mg/dL`}
+                      </span>
+                    </td>
+
                     </tr>
                   ))}
                 </tbody>
@@ -268,7 +299,7 @@ const CGMForm = () => {
             </Button>
           </div>
         </Modal.Body>
-      </Modal>
+      </Modal></div>
     </Container>
   );
 };
