@@ -39,10 +39,10 @@
 const mongoose = require("mongoose");
 
 const sugarLevelsSchema = new mongoose.Schema({
-    mealType: { type: String, required: true, default: "initial" },
-    fastingSugarLevel: { type: Number, required: true, default: -1 ,set: v => (v === null ? -1 : v)},
-    preMealSugarLevel: { type: Number, required: true, default: -1 ,set: v => (v === null ? -1 : v)},
-    postMealSugarLevel: { type: Number, required: true, default: -1 ,set: v => (v === null ? -1 : v)},
+    mealType: { type: String, default: "initial" },
+    fastingSugarLevel: { type: Number, default: -1 ,set: v => (v === null ? -1 : v)},
+    preMealSugarLevel: { type: Number, default: -1 ,set: v => (v === null ? -1 : v)},
+    postMealSugarLevel: { type: Number, default: -1 ,set: v => (v === null ? -1 : v)},
     date: { type: Date, required: true }
 }, { _id: false }); 
 

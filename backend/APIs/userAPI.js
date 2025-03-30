@@ -47,7 +47,7 @@ UserApp.post('/signup', expressAsyncHandler(async (req, res) => {
 }));
 
 
-// *User Login*
+// **User Login**
 UserApp.post('/login', expressAsyncHandler(async (req, res) => {
     try {
         const { email, password } = req.body;

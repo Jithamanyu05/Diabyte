@@ -8,6 +8,8 @@ import Signup01 from "./components/signup11/Signup01";
 import Signup02 from "./components/signup11/Signup02";
 import Signup03 from "./components/signup11/Signup03";
 import CGMForm from "./components/cgm/CGMForm";
+//import VoiceMealLogger from "./components/VoiceMealLogger";
+import FoodTracking from "./components/FoodTracking";
 import OverallDashboard from "./components/OverallDashboard";
 
 function App() {
@@ -17,20 +19,20 @@ function App() {
       element: <RootLayout />,
       errorElement: <ErrorPage />,
       children: [
-        {
-          path: "",
-          element: <Home />,
-        },
+
         {
           path: "/signin",
           element: <Signin />,
         },
         {
-          path: "/dashboard",
+          path: "",
           element: <OverallDashboard/>,
         },{
           path:"sugar-tracker",
           element:<CGMForm/>
+        },{
+          path:"food-logging",
+          element:<FoodTracking/>
         },
         {
           path: "/signup1",
