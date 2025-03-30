@@ -67,7 +67,8 @@ router.post("/log", authMiddleware, async (req, res) => {
       const newTotalProtein = foodData.reduce((sum, item) => sum + (item.protein || 0), 0);
       const newTotalCarbs = foodData.reduce((sum, item) => sum + (item.carbs || 0), 0);
       const newTotalFats = foodData.reduce((sum, item) => sum + (item.fats || 0), 0);
-  
+      const newTotalSugars = foodData.reduce((sum,item) => sum + (item.sugar || 0),0);
+      const newTotalFiber = foodData.reduce((sum,item) => sum + (item.fiber || 0),0);
       // Determine today's date (set hours to 0 for comparison)
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -87,6 +88,8 @@ router.post("/log", authMiddleware, async (req, res) => {
         existingLog.totalProtein += newTotalProtein;
         existingLog.totalCarbs += newTotalCarbs;
         existingLog.totalFats += newTotalFats;
+        existingLog.totalSugars += newTotalSugars;
+        existingLog.totalFiber += newTotalFiber;
         existingLog.dateLogged = new Date(); // Update timestamp
       } else {
         // Create new food log entry
@@ -98,6 +101,8 @@ router.post("/log", authMiddleware, async (req, res) => {
           totalProtein: newTotalProtein,
           totalCarbs: newTotalCarbs,
           totalFats: newTotalFats,
+          totalSugars: newTotalSugars,
+          totalFiber: newTotalFiber,
           dateLogged: new Date()
         };
         user.foodLogs.push(foodLog);

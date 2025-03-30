@@ -27,9 +27,6 @@ Content-Type: application/json
 }
 
 
-
-
-
 #### User login
 POST http://localhost:5000/users/login
 Content-Type: application/json
@@ -56,12 +53,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTRlY2IyM
 ###
 POST http://localhost:5000/food/log
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTdkZjFhNDlmNTBlODkzYzdlZWMzMyIsImlhdCI6MTc0MzMyMzM0OSwiZXhwIjoxNzQzMzI2OTQ5fQ.324zFK-LOFh9iQ1LV_o4hHuXuA0I5cjNVZON8Ip6yps
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTdkZjFhNDlmNTBlODkzYzdlZWMzMyIsImlhdCI6MTc0MzM1MDcxMSwiZXhwIjoxNzQzMzU0MzExfQ.J2gQE-HBZVQG_yVr6TEjcXnqHgQyjqXlKFMQ78P374A
 
 {
     "userId": "67e7df1a49f50e893c7eec33",
-    "mealType": "BreakFast",
+    "mealType": "Lunch",
     "foodItems": [
+        { "name": "Pizza", "quantity": 5 },
+        { "name": "Chicken", "quantity": 1 },
         { "name": "Orange Juice", "quantity": 1 }
     ],
     "inputMethod": "text"

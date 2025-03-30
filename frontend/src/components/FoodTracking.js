@@ -130,7 +130,7 @@ const FoodTracking = () => {
 
       <div className="d-flex gap-4 my-4 justify-content-center">
       {/* Food Logging Form */}
-      <Card style={styles.formCard}>
+      <Card style={styles.formCard} className="p-3">
         <Card.Body>
           <Form>
             <h3 className="fs-4 text-center mb-4 fw-bold">Text-Based Food Logging</h3>
@@ -313,7 +313,7 @@ const FoodTracking = () => {
                           {item.servingQty} {item.servingUnit} | {item.brandName || "Generic"}
                         </p>
                         <p style={styles.foodNutrients}>
-                          <strong>Calories:</strong> {item.calories} kcal | <strong>Protein:</strong> {item.protein}g |{" "}
+                          <strong>Calories:</strong> {item.calories} cal | <strong>Protein:</strong> {item.protein}g |{" "}
                           <strong>Carbs:</strong> {item.carbs}g | <strong>Fats:</strong> {item.fats}g
                         </p>
                       </div>
@@ -321,7 +321,7 @@ const FoodTracking = () => {
                   ))}
                   <div style={styles.summaryContainer}>
                     <p style={styles.summary}>
-                      Total: {log.totalCalories} kcal, {log.totalProtein}g Protein, {log.totalCarbs}g Carbs, {log.totalFats}g Fats
+                      Total: {log.totalCalories} cal, {log.totalProtein}g Protein, {log.totalCarbs}g Carbs, {log.totalFats}g Fats
                     </p>
                   </div>
                 </Card.Body>

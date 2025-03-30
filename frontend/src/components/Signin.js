@@ -19,7 +19,7 @@ function Signin() {
 
  useEffect(() => {
      if (isLoggedIn) {
-        navigate("/dashboard");
+        navigate("/");
     }
   }, [isLoggedIn, navigate]);
 

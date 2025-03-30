@@ -47,8 +47,6 @@ UserApp.post('/signup', expressAsyncHandler(async (req, res) => {
 }));
 
 
-
-
 // **User Login**
 UserApp.post('/login', expressAsyncHandler(async (req, res) => {
     try {
