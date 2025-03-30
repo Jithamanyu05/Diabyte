@@ -43,8 +43,11 @@ const NavBar = () => {
           <Nav>
             {isLoggedIn ? (
               <div className="d-flex align-items-center gap-3">
-                <span className="welcome-text">
-                  Welcome, <span className="highlight-text">{currentUser.username}</span>
+                <Nav.Link as={NavLink} to="/dashboard" className="nav-link-glow">
+                   DashBoard
+                </Nav.Link>
+                <span className="welcome-text text-dark">
+                  Welcome, <span className="highlight-text">{currentUser.name}</span>
                 </span>
                 <Button variant="danger" className="btn-neon border-0" onClick={SignOut}>
                   <FaSignOutAlt className="me-1" /> Logout

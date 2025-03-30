@@ -33,7 +33,7 @@ const FoodTracking = () => {
 
   useEffect(() => {
     fetchFoodLogs();
-  }, []);
+  }, [foodLogs]);
 
   // Add a single food item to the temporary list
   const addFoodItemToList = () => {

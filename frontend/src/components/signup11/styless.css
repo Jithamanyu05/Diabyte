@@ -1,165 +1,48 @@
-/* General Styling */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
-
 body {
-  background-color: #f4f4f4;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-/* Centered Signup Container */
-.signup-container {
-  width: 100%;
-  max-width: 600px;  /* Increased width for better layout */
-  background: #ffffff;
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
-/* Status Bar */
-.status-bar {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: 25px;
+.container {
+  width: 40%;
+  margin: 50px auto;
+  background: white;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
-.status-step {
-  flex: 1;
-  padding: 12px;
-  font-size: 15px;
-  text-align: center;
-  background: #ddd;
-  border-radius: 5px;
-  margin: 0 5px;
-  font-weight: bold;
-}
-
-.status-step.active {
-  background: #4CAF50;
-  color: white;
-}
-
-.status-step.completed {
-  background: #8BC34A;
-  color: white;
-}
-
-/* Signup Box */
-.signup-box h2 {
-  color: #333;
+h2 {
   margin-bottom: 15px;
-  font-size: 24px;
-}
-
-.signup-box p {
-  color: #666;
-  margin-bottom: 25px;
-  font-size: 16px;
-}
-
-/* Form Styling */
-label {
-  display: block;
-  text-align: left;
-  margin-top: 12px;
-  font-weight: bold;
-  color: #333;
-  font-size: 16px;
 }
 
 input, select {
-  width: 100%;
-  padding: 14px;
-  margin-top: 6px;
-  border: 1px solid #bbb;
-  border-radius: 6px;
-  font-size: 16px;
-  transition: 0.3s;
-}
-
-input:focus, select:focus {
-  border-color: #4CAF50;
-  outline: none;
-  box-shadow: 0px 0px 5px rgba(76, 175, 80, 0.3);
-}
-
-/* Dropdown Scroll Styling */
-select {
-  appearance: none;
-  background: white;
-  cursor: pointer;
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-/* Button Group */
-.button-group {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin-top: 25px;
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 button {
-  flex: 1;
-  padding: 14px;
-  font-size: 16px;
-  font-weight: bold;
+  width: 45%;
+  padding: 10px;
+  margin: 10px 5px;
   border: none;
-  border-radius: 6px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: 0.3s;
+  color: white;
 }
 
 button:hover {
-  opacity: 0.85;
+  opacity: 0.8;
 }
 
-button:first-child {
-  background: #ccc;
-  color: #333;
-  margin-right: 8px;
+button:first-of-type {
+  background-color: gray;
 }
 
-button:last-child {
-  background: #4CAF50;
-  color: white;
-  margin-left: 8px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .signup-container {
-      width: 85%;
-      padding: 30px;
-  }
-}
-
-@media (max-width: 480px) {
-  .signup-container {
-      width: 90%;
-      padding: 25px;
-  }
-  
-  .status-bar {
-      flex-direction: column;
-  }
-  
-  .status-step {
-      margin-bottom: 6px;
-  }
+button:last-of-type {
+  background-color: blue;
 }

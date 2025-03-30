@@ -25,7 +25,7 @@ function App() {
           element: <Signin />,
         },
         {
-          path: "",
+          path: "/dashboard",
           element: <OverallDashboard/>,
         },{
           path:"sugar-tracker",

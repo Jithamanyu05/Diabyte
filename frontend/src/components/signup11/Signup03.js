@@ -1,22 +1,21 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./styless.css";
 
 const Signup03 = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const prevData = location.state ?? {}; // Ensure prevData is at least an empty object
+  const prevData = location.state ?? {};
 
   const [formData, setFormData] = useState({
     ...prevData,
-    dietaryPreference: "",  
+    dietaryPreference: "",
     dailyCaloricIntake: "",
     foodAllergies: "",
     mealTypePreference: "",
-    activityLevel: "",      
-    weight:"",
-    height:""
+    activityLevel: "",
+    weight: "",
+    height: ""
   });
 
   const handleChange = (e) => {
@@ -27,11 +26,10 @@ const Signup03 = () => {
     try {
       const finalData = {
         ...formData,
-        foodAllergies: formData.foodAllergies.split(",").map((item) => item.trim()), // Convert string to array
+        foodAllergies: formData.foodAllergies.split(",").map((item) => item.trim()),
       };
 
       console.log("Final Form Data Sent to Backend:", finalData);
-
       const response = await axios.post("http://localhost:5000/users/signup", finalData);
 
       if (response.status === 201) {
@@ -47,24 +45,24 @@ const Signup03 = () => {
   };
 
   return (
-    <div className="signup-container">
-      <div className="status-bar">
-        <div className="status-step completed">Step 1: Basic Info</div>
-        <div className="status-step completed">Step 2: Health Details</div>
-        <div className="status-step active">Step 3: Preferences</div>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh", fontFamily: "Poppins, sans-serif" }}>
+      <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "20px" }}>
+        <div style={{ padding: "10px", borderRadius: "5px", backgroundColor: "#4CAF50", color: "white" }}>Step 1: Basic Info</div>
+        <div style={{ padding: "10px", borderRadius: "5px", backgroundColor: "#4CAF50", color: "white" }}>Step 2: Health Details</div>
+        <div style={{ padding: "10px", borderRadius: "5px", backgroundColor: "#2196F3", color: "white" }}>Step 3: Preferences</div>
       </div>
 
-      <div className="signup-box">
-        <h2>🎯 Final Touches</h2>
-
-        <label>Daily Calorie Intake (kcal):</label>
-        <input type="number" name="dailyCaloricIntake" onChange={handleChange} placeholder="e.g., 2000" />
-
-        <label>Food Allergies (if any):</label>
-        <input type="text" name="foodAllergies" onChange={handleChange} placeholder="e.g., Nuts, Dairy" />
-
-        <label>Meal Type Preference:</label>
-        <select name="mealTypePreference" onChange={handleChange}>
+      <div style={{ width: "350px", padding: "20px", borderRadius: "10px", boxShadow: "0px 4px 10px rgba(0,0,0,0.1)", backgroundColor: "#fff" }}>
+        <h2 style={{ textAlign: "center" }}>🎯 Final Touches</h2>
+        
+        <label style={{ fontWeight: "bold" }}>Daily Calorie Intake (kcal):</label>
+        <input type="number" name="dailyCaloricIntake" onChange={handleChange} placeholder="e.g., 2000" style={{ width: "100%", padding: "8px", marginBottom: "10px", borderRadius: "5px", border: "1px solid #ccc" }} />
+        
+        <label style={{ fontWeight: "bold" }}>Food Allergies (if any):</label>
+        <input type="text" name="foodAllergies" onChange={handleChange} placeholder="e.g., Nuts, Dairy" style={{ width: "100%", padding: "8px", marginBottom: "10px", borderRadius: "5px", border: "1px solid #ccc" }} />
+        
+        <label style={{ fontWeight: "bold" }}>Meal Type Preference:</label>
+        <select name="mealTypePreference" onChange={handleChange} style={{ width: "100%", padding: "8px", marginBottom: "10px", borderRadius: "5px", border: "1px solid #ccc" }}>
           <option value="">Select</option>
           <option value="Indian">Indian</option>
           <option value="Japanese">Japanese</option>
@@ -73,8 +71,8 @@ const Signup03 = () => {
           <option value="Continental">Continental</option>
         </select>
 
-        <label>Dietary Preference:</label>
-        <select name="dietaryPreference" onChange={handleChange}>
+        <label style={{ fontWeight: "bold" }}>Dietary Preference:</label>
+        <select name="dietaryPreference" onChange={handleChange} style={{ width: "100%", padding: "8px", marginBottom: "10px", borderRadius: "5px", border: "1px solid #ccc" }}>
           <option value="">Select</option>
           <option value="Vegetarian">Vegetarian</option>
           <option value="Vegan">Vegan</option>
@@ -83,23 +81,23 @@ const Signup03 = () => {
           <option value="Omnivore">Omnivore</option>
         </select>
 
-        <label>Activity Level:</label>
-        <select name="activityLevel" onChange={handleChange}>
+        <label style={{ fontWeight: "bold" }}>Activity Level:</label>
+        <select name="activityLevel" onChange={handleChange} style={{ width: "100%", padding: "8px", marginBottom: "10px", borderRadius: "5px", border: "1px solid #ccc" }}>
           <option value="">Select</option>
           <option value="Low">Low</option>
           <option value="Moderate">Moderate</option>
           <option value="High">High</option>
         </select>
 
-        <label>Height (cm):</label>
-        <input type="number" name="height" value={formData.height} onChange={handleChange} placeholder="Your height in cm" required />
+        <label style={{ fontWeight: "bold" }}>Height (cm):</label>
+        <input type="number" name="height" value={formData.height} onChange={handleChange} placeholder="Your height in cm" required style={{ width: "100%", padding: "8px", marginBottom: "10px", borderRadius: "5px", border: "1px solid #ccc" }} />
 
-        <label>Weight (kg):</label>
-        <input type="number" name="weight" value={formData.weight} onChange={handleChange} placeholder="Your weight in kg" required />
+        <label style={{ fontWeight: "bold" }}>Weight (kg):</label>
+        <input type="number" name="weight" value={formData.weight} onChange={handleChange} placeholder="Your weight in kg" required style={{ width: "100%", padding: "8px", marginBottom: "10px", borderRadius: "5px", border: "1px solid #ccc" }} />
 
-        <div className="button-group">
-          <button onClick={() => navigate("/signup2")}>⬅️ Back</button>
-          <button onClick={handleSubmit}>✅ Submit</button>
+        <div style={{ display: "flex", justifyContent: "space-between", marginTop: "20px" }}>
+          <button onClick={() => navigate("/signup2")} style={{ padding: "10px 20px", borderRadius: "5px", backgroundColor: "#ccc", border: "none", cursor: "pointer" }}>⬅️ Back</button>
+          <button onClick={handleSubmit} style={{ padding: "10px 20px", borderRadius: "5px", backgroundColor: "#4CAF50", color: "white", border: "none", cursor: "pointer" }}>✅ Submit</button>
         </div>
       </div>
     </div>
