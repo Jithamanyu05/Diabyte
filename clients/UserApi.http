@@ -90,11 +90,9 @@ Content-Type: application/json
 
 {
     "userId": "67e7df1a49f50e893c7eec33",
-    "mealType": "Lunch",
+    "mealType": "Dinner",
     "foodItems": [
-        { "name": "Egg omelet", "quantity": 3 },
-        { "name": "Brown Rice", "quantity": 1.5 },
-        { "name": "Chicken breast", "quantity": 5 }
+        {"name": "candy","quantity": 3}
     ],
     "inputMethod": "text"
 }
