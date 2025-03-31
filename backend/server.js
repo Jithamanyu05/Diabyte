@@ -12,7 +12,7 @@ dotenv.config(); // Load environment variables
 const app = express();
 app.use(express.json());
 app.use(cors({
-    origin: "https://diabite.onrender.com",  // Remove trailing slash `/`
+    origin: "https://diabite.onrender.com",  
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
@@ -64,11 +64,14 @@ app.use("/food", foodRoutes);
 const aiRoutes = require("./APIs/aiAPI");
 app.use("/ai-recom",aiRoutes);
 
-app.use(express.static(path.join(__dirname, "../frontend/build")));
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname, "../frontend/build")));
 
-app.get("/", (req, res) => {
-  res.send("DiaBite API is running successfully!");
-});
+    app.get("*", (req, res) => {
+        res.sendFile(path.resolve(__dirname, "../frontend/build", "index.html"));
+    });
+}
+
 
 // **Start Server only after DB is connected**
 connectDB().then(() => {
