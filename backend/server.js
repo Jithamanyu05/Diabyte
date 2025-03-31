@@ -51,9 +51,15 @@ app.use("/food", foodRoutes);
 const aiRoutes = require("./APIs/aiAPI");
 app.use("/ai-recom",aiRoutes);
 
-// Remove frontend serving logic to keep backend separate
-app.get("/", (req, res) => {
-    res.send("DiaBite API is running successfully!");
+
+
+// Serve Frontend (React Build)
+const frontendPath = path.join(__dirname, "../frontend/build");
+app.use(express.static(frontendPath));
+
+// Handle React Routes (Fix Refresh Issue)
+app.get("*", (req, res) => {
+    res.sendFile(path.join(frontendPath, "index.html"));
 });
 
 
