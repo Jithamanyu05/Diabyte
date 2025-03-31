@@ -36,7 +36,6 @@ function OverallDashboard() {
   const [sugarValues, setSugarValues] = useState([]);
   
   useEffect(() => {
-    currentUser=useSelector((state) => state.userReducer.currentUser);
     if (!currentUser || !currentUser.foodLogs || currentUser.foodLogs.length === 0) {
       console.warn("No food log data available.");
       return;
