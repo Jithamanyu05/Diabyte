@@ -26,13 +26,7 @@ const FoodTracking = () => {
   const [updateFoodItems, setUpdateFoodItems] = useState([]);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsLoggedIn(true);
-      fetchFoodLogs();
-    } else {
-      setIsLoggedIn(false);
-    }
+    fetchFoodLogs();
   }, []);
 
   const fetchFoodLogs = async () => {
@@ -77,6 +71,7 @@ const FoodTracking = () => {
       );
       setFoodLogs([...foodLogs, response.data.foodLog]);
       setSuccessMessage("Food log added successfully!");
+      fetchFoodLogs();
       setMealType("");
       setFoodItems([]);
       setErrorMessage("");
