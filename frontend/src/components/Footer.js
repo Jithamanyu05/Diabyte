@@ -5,11 +5,13 @@ import { FaGithub, FaLinkedin, FaTwitter, FaInstagram } from "react-icons/fa";
 function Footer() {
   // Container/Footer Styles
   const footerStyles = {
-    backgroundColor: "grey",
     padding: "2rem 0",
     fontFamily: "'Poppins', sans-serif",
     marginTop: "10rem",
+    boxShadow: "0 -4px 10px rgba(0, 0, 0, 0.1)", // Shadow only on the top
   };
+  
+  
 
   // Heading Style
   const headingStyle = {
@@ -21,7 +23,7 @@ function Footer() {
 
   // Link Styles
   const linkStyle = {
-    color: "#ffffff",
+    color: "#000000",
     textDecoration: "none",
     fontSize: "1rem",
     fontWeight: "500",

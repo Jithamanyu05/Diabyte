@@ -16,14 +16,14 @@ const Signup01 = () => {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh" }}>
-      <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh"}}>
+      <div style={{ display: "flex", gap: "10px", marginBottom: "40px" }}>
         <div style={{ padding: "10px 15px", background: "#4caf50", color: "white", borderRadius: "5px" }}>Step 1: Basic Info</div>
         <div style={{ padding: "10px 15px", background: "#ccc", color: "black", borderRadius: "5px" }}>Step 2: Health Details</div>
         <div style={{ padding: "10px 15px", background: "#ccc", color: "black", borderRadius: "5px" }}>Step 3: Preferences</div>
       </div>
 
-      <div style={{ background: "white", padding: "30px", borderRadius: "10px", boxShadow: "0px 4px 6px rgba(0,0,0,0.1)", width: "350px" }}>
+      <div style={{ background: "white", padding: "30px", borderRadius: "10px", boxShadow: "0px 4px 6px rgba(0,0,0,0.1)", width: "550px"}}>
         <h2 style={{ textAlign: "center" }}>👋 Welcome! Let's get started.</h2>
 
         <label style={{ fontWeight: "bold" }}>Full Name:</label>

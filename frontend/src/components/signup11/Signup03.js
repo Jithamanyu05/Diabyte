@@ -45,14 +45,14 @@ const Signup03 = () => {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh", fontFamily: "Poppins, sans-serif" }}>
-      <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "20px" }}>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh", fontFamily: "Poppins, sans-serif"}}>
+      <div style={{ display: "flex", justifyContent: "center", gap: "10px",marginBottom:"40px"}}>
         <div style={{ padding: "10px", borderRadius: "5px", backgroundColor: "#4CAF50", color: "white" }}>Step 1: Basic Info</div>
         <div style={{ padding: "10px", borderRadius: "5px", backgroundColor: "#4CAF50", color: "white" }}>Step 2: Health Details</div>
         <div style={{ padding: "10px", borderRadius: "5px", backgroundColor: "#2196F3", color: "white" }}>Step 3: Preferences</div>
       </div>
 
-      <div style={{ width: "350px", padding: "20px", borderRadius: "10px", boxShadow: "0px 4px 10px rgba(0,0,0,0.1)", backgroundColor: "#fff" }}>
+      <div style={{ width: "550px", padding: "30px", borderRadius: "10px", boxShadow: "0px 4px 10px rgba(0,0,0,0.1)", backgroundColor: "#fff"}}>
         <h2 style={{ textAlign: "center" }}>🎯 Final Touches</h2>
         
         <label style={{ fontWeight: "bold" }}>Daily Calorie Intake (kcal):</label>
