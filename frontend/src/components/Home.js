@@ -1,5 +1,6 @@
 import React from 'react';
 import './Home.css';
+import { Link } from 'react-router-dom';
 
 function Home() {
   return (
@@ -11,7 +12,7 @@ function Home() {
           Your all-in-one solution for managing diabetes with smart tracking,
           personalized recommendations, and comprehensive health analytics.
         </p>
-        <a href="#get-started" className="button">Get Started</a>
+        <Link to="/signup1" className="button">Get Started!</Link>
       </section>
 
       <section className="features" id="features">
