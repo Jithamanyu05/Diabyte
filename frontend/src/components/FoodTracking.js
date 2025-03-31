@@ -26,9 +26,15 @@ const FoodTracking = () => {
   const [updateFoodItems, setUpdateFoodItems] = useState([]);
 
   useEffect(() => {
-    fetchFoodLogs();
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+      fetchFoodLogs();
+    } else {
+      setIsLoggedIn(false);
+    }
   }, []);
-  
+
   const fetchFoodLogs = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/food/logs`, {

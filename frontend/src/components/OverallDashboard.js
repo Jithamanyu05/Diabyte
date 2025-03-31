@@ -24,7 +24,7 @@ const ChartCard = ({ title, children }) => (
 );
 
 function OverallDashboard() {
-  const { currentUser } = useSelector((state) => state.userReducer);
+  let { currentUser } = useSelector((state) => state.userReducer);
   const [pieData, setPieChartData] = useState({});
   const [labe, setLabe] = useState([]);
   const [caldata, setCaldata] = useState({});
@@ -120,7 +120,7 @@ function OverallDashboard() {
       )
     );
     setSugarValues(sugarsByDate);
-  }, []);
+  }, [currentUser]);
   
   if (!currentUser) return <Typography>Loading...</Typography>;
   
