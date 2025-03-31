@@ -21,7 +21,10 @@ function App() {
       element: <RootLayout />,
       errorElement: <ErrorPage />,
       children: [
-
+        {
+          path: "/",
+          element: <Home />,
+        },
         {
           path: "/signin",
           element: <Signin />,

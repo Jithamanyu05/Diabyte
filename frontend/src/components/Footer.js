@@ -5,7 +5,7 @@ import { FaGithub, FaLinkedin, FaTwitter, FaInstagram } from "react-icons/fa";
 function Footer() {
   // Container/Footer Styles
   const footerStyles = {
-    background: "linear-gradient(to bottom, #ffffff,rgb(207, 84, 98))",
+    backgroundColor: "grey",
     padding: "2rem 0",
     fontFamily: "'Poppins', sans-serif",
     marginTop: "10rem",

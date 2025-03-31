@@ -20,7 +20,7 @@ const NavBar = () => {
     <Navbar expand="lg" className="navbar-glass-a py-3 ">
       <Container className="">
         {/* Brand Name with Glow Effect */}
-        <Navbar.Brand as={NavLink} to="/" className="brand-glow fs-2 px-3 text-danger">
+        <Navbar.Brand as={NavLink} to="/" className="brand-glow fs-2 px-3 text-dark">
           DiaBite
         </Navbar.Brand>
 

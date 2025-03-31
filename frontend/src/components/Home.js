@@ -4,17 +4,6 @@ import './Home.css';
 function Home() {
   return (
     <div className="app">
-      <nav className="navbar">
-        <div className="nav-content">
-          <div className="logo">DiabetesCare</div>
-          <div className="nav-links">
-            <a href="#features">Features</a>
-            <a href="#dashboard">Dashboard</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
-          </div>
-        </div>
-      </nav>
 
       <section className="hero">
         <h1>Take Control of Your Diabetes</h1>
