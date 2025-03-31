@@ -57,7 +57,7 @@ const CGMAnalysis = ({ analysis }) => {
           }, 300);
         }
       }
-    }, 50);
+    }, 20);
   };
 
   const getIcon = (text) => {

@@ -32,7 +32,8 @@ app.use("/cgm", require("./APIs/cgmAPI"));
 
 const foodRoutes= require("./APIs/foodAPI")
 app.use("/food", foodRoutes);
-
+const aiRoutes = require("./APIs/aiAPI");
+app.use("/ai-recom",aiRoutes);
 
 
 // **Start Server only after DB is connected**

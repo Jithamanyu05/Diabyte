@@ -11,6 +11,7 @@ import CGMForm from "./components/cgm/CGMForm";
 //import VoiceMealLogger from "./components/VoiceMealLogger";
 import FoodTracking from "./components/FoodTracking";
 import OverallDashboard from "./components/OverallDashboard";
+import AiRecommendations from "./components/AiRecommendations";
 
 function App() {
   
@@ -34,6 +35,10 @@ function App() {
         },{
           path:"food-logging",
           element:<FoodTracking/>
+        },
+        {
+          path: "ai-recommendations",
+          element: <AiRecommendations/>
         },
         {
           path: "/signup1",
