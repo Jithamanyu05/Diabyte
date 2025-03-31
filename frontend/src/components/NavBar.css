@@ -2,100 +2,101 @@
 
 
   
-  .navbar-glass-a{
-    background: linear-gradient(to top, #ffffff, #efc3cc);
-    /* background-color: #ecb8c0;
-    
-    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2); */
-  }
+.navbar-glass-a{
+  background: linear-gradient(to top, #ffffff, #efc3cc);
+  /* background-color: #ecb8c0;
+  
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2); */
+}
 
-  
-  /* Brand Name with Neon Glow */
-  .brand-glow {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #ff4b5c;
-    text-shadow: 0px 0px 12px rgba(255, 75, 92, 0.8);
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .brand-glow:hover {
-    text-shadow: 0px 0px 20px rgba(255, 75, 92, 1);
-    transform: scale(1.08);
-  }
-  
-  /* Navigation Links */
-  .nav-link-glow {
-    font-size: 1rem;
-    font-weight: 500;
-    color: #8c2c2c !important;
-    padding: 12px 18px;
-    border-radius: 8px;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .nav-link-glow:hover {
-    background: rgba(255, 75, 92, 0.3);
-    box-shadow: 0px 0px 15px rgba(255, 75, 92, 0.7);
-    transform: translateY(-3px);
-  }
-  
-  /* Navbar Scrolled - Change Text Color */
-  .scrolled .nav-link-glow {
-    color: #ff4b5c !important;
-  }
-  
-  /* Welcome Text */
-  .welcome-text {
-    font-size: 1rem;
-    font-weight: 500;
-    color: #ffffff;
-    padding-right: 15px;
-  }
-  
-  .scrolled .welcome-text {
-    color: #ff4b5c;
-  }
-  
-  /* Highlighted Username */
-  .highlight-text {
-    font-weight: bold;
-    color: #ff4b5c;
-    text-shadow: 0px 0px 6px rgba(255, 75, 92, 0.8);
-  }
-  
-  /* Neon Button */
-  .btn-neon {
-    font-size: 1rem;
-    font-weight: bold;
-    background: linear-gradient(135deg, #ff416c, #ff4b5c);
-    color: white;
-    border: none;
-    padding: 10px 25px;
-    border-radius: 50px;
-    box-shadow: 0px 0px 15px rgba(255, 75, 92, 0.6);
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .btn-neon:hover {
-    box-shadow: 0px 0px 25px rgba(255, 75, 92, 1);
-    transform: scale(1.1);
-  }
-  
-  /* Navbar Toggle Button */
-  .navbar-toggler {
-    border: 2px solid rgba(255, 75, 92, 0.8);
-    border-radius: 8px;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .navbar-toggler:hover {
-    box-shadow: 0px 0px 10px rgba(255, 75, 92, 0.7);
-    background-color: rgba(255, 75, 92, 0.3);
-  }
-  
-  /* Navbar Collapse Animation */
-  .navbar-collapse {
-    transition: max-height 0.5s ease-in-out;
-  }
-  
+
+/* Brand Name with Neon Glow */
+.brand-glow {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #2787e7;
+  /* text-shadow: 0px 0px 12px #2787e7; */
+  transition: all 0.3s ease-in-out;
+}
+
+.brand-glow:hover {
+  text-shadow: 0px 0px 20px #bceaa7;
+  transform: scale(1.08);
+}
+
+/* Navigation Links */
+.nav-link-glow {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #000000 !important;
+  padding: 12px 18px;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+
+.nav-link-glow:hover {
+  color: black;
+  background: #2787e7;
+  box-shadow: 0px 0px 15px #2787e7;
+  transform: translateY(-3px);
+}
+
+/* Navbar Scrolled - Change Text Color */
+.scrolled .nav-link-glow {
+  color: #2787e7 !important;
+}
+
+/* Welcome Text */
+.welcome-text {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ffffff;
+  padding-right: 15px;
+}
+
+.scrolled .welcome-text {
+  color: #2787e7;
+}
+
+/* Highlighted Username */
+.highlight-text {
+  font-weight: bold;
+  color: #fefefe;
+  text-shadow: 0px 0px 6px #2787e7;
+}
+
+/* Neon Button */
+.btn-neon {
+  font-size: 1rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #2787e7, #2787e7);
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 50px;
+  box-shadow: 0px 0px 15px #2787e7;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-neon:hover {
+  box-shadow: 0px 0px 25px #2787e7;
+  transform: scale(1.1);
+}
+
+/* Navbar Toggle Button */
+.navbar-toggler {
+  border: 2px solid #2787e7;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+
+.navbar-toggler:hover {
+  box-shadow: 0px 0px 10px #2787e7;
+  background-color: #2787e7;
+  color: #fefefe;
+}
+
+/* Navbar Collapse Animation */
+.navbar-collapse {
+  transition: max-height 0.5s ease-in-out;
+}
