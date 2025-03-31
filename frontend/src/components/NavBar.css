@@ -1,12 +1,14 @@
 /* Floating Glassmorphism Navbar */
 
+
   
-  /* Navbar when Scrolled */
-  .navbar-glass.scrolled {
-    background: rgba(0, 0, 0, 0.6);
-    box-shadow: 0px 4px 20px rgba(255, 75, 92, 0.5);
-    padding: 10px 15px;
+  .navbar-glass-a{
+    background: linear-gradient(to top, #ffffff, #efc3cc);
+    /* background-color: #ecb8c0;
+    
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2); */
   }
+
   
   /* Brand Name with Neon Glow */
   .brand-glow {

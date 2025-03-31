@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
     "name": "Hemanth",
-    "email": "hiv@gmail.com",
+    "email": "new@gmail.com",
     "password": "123",
     "age": 35,
     "gender": "Male",
@@ -56,10 +56,6 @@ Content-Type: application/json
     "weight": 75,
     "height": 175
 }
-
-
-
-
 
 #### User login
 POST http://localhost:5000/users/login
@@ -114,6 +110,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTdkZjFhN
 
 
 ###
-GET http://localhost:5000/food/logs
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTdkZjFhNDlmNTBlODkzYzdlZWMzMyIsImlhdCI6MTc0MzMzMTQ4MiwiZXhwIjoxNzQzMzM1MDgyfQ.FUYUW_MizXmiwR_u5k6ODT0OZocKWlVtf6EXG4qFJa4
+PUT http://localhost:5000/food/log/67ea5cb93a0dbe1c205380cf
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTdkZjFhNDlmNTBlODkzYzdlZWMzMyIsImlhdCI6MTc0MzQxODM1NywiZXhwIjoxNzQzNDIxOTU3fQ.R2HzdoxcJ8QNdaq8KxK0-OsLaDe0zGp_dRkXon1oMpA
 
+{
+  "mealType": "Lunch",
+  "foodItems": [
+    { "name": "Pasta", "quantity": 2 },
+    { "name": "Salad", "quantity": 1 }
+  ],
+  "inputMethod": "text"
+}

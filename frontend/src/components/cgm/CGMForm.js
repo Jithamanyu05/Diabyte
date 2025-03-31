@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import CGMAnalysis from "./CGMAnalysis";
 import { Modal, Form, Button, Alert, Card, Container, Row, Col, Table, Spinner } from "react-bootstrap";
-import { FaUtensils, FaHeartbeat, FaCalendarAlt, FaHistory, FaInfoCircle } from "react-icons/fa";
+import { FaUtensils, FaHeartbeat, FaCalendarAlt, FaHistory, FaInfoCircle ,FaFilePdf, FaFileExcel} from "react-icons/fa";
+import * as XLSX from "xlsx";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 const CGMForm = () => {
   const [showGuide, setShowGuide] = useState(false);
@@ -19,7 +22,8 @@ const CGMForm = () => {
   const [history, setHistory] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Spinner state
-
+  const [isDownloadingPDF, setIsDownloadingPDF] = useState(false);
+  const [isDownloadingExcel, setIsDownloadingExcel] = useState(false);
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -32,6 +36,7 @@ const CGMForm = () => {
     }
   }, []);
 
+  
   const fetchAnalysis = async () => {
     try {
       setIsLoading(true); // Show spinner
@@ -85,91 +90,187 @@ const CGMForm = () => {
       setIsLoading(false); // Hide spinner after fetching data
     }
   };
+  
+  const downloadExcel = () => {
+    if (isDownloadingExcel) return;
+    if (!history.length) {
+      alert("No data available for download.");
+      return;
+    }
+
+    setIsDownloadingExcel(true);
+
+    const worksheet = XLSX.utils.json_to_sheet(history);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "SugarHistory");
+    XLSX.writeFile(workbook, "Sugar_History.xlsx");
+
+    setTimeout(() => setIsDownloadingExcel(false), 2000);
+  };
+
+  const downloadPDF = () => {
+    if (isDownloadingPDF) return;
+    if (!history.length) {
+      alert("No data available for download.");
+      return;
+    }
+
+    setIsDownloadingPDF(true);
+
+    const doc = new jsPDF();
+    doc.text("Sugar Level History", 14, 10);
+
+    const tableColumn = ["Date", "Meal Type", "Fasting Sugar", "Pre-Meal Sugar", "Post-Meal Sugar"];
+    const tableRows = history.map((entry) => [
+      new Date(entry.date).toLocaleDateString(),
+      entry.mealType,
+      entry.fastingSugarLevel || "-",
+      entry.preMealSugarLevel || "-",
+      entry.postMealSugarLevel || "-",
+    ]);
+
+    autoTable(doc, { head: [tableColumn], body: tableRows, startY: 20 });
+
+    doc.save("Sugar_History.pdf");
+
+    setTimeout(() => setIsDownloadingPDF(false), 2000);
+  };
+
 
   return (
     <Container className="d-flex flex-column gap-4 justify-content-center align-items-center mt-4 ">
-      <div className="d-flex gap-2 justify-content-center align-items-center mt-4">
-        <Card className="p-4 bg-light" style={{ width: "40rem" }}>
-          <h2 className="text-center mb-4 text-primary">Sugar Level Tracking</h2>
+      <div className="container mt-4">
+        <div className="row g-4 justify-content-center align-items-center">
+          {/* Sugar Level Tracking Form */}
+          <div className="col-12 col-md-6">
+            <Card className="p-4 bg-light">
+              <h2 className="text-center mb-4 text-primary">Sugar Level Tracking</h2>
 
-          {message && <Alert variant="success" className="text-center">{message}</Alert>}
+              {message && <Alert variant="success" className="text-center">{message}</Alert>}
 
-          <Form onSubmit={handleSubmit}>
-            <Row>
-              <Col md={6}>
-                <Form.Group controlId="mealType">
-                  <Form.Label>
-                    <FaUtensils className="me-2" />
-                    Meal Type
-                  </Form.Label>
-                  <Form.Control type="text" name="mealType" value={formData.mealType} onChange={(e) => setFormData({ ...formData, mealType: e.target.value })} />
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group controlId="date">
-                  <Form.Label>
-                    <FaCalendarAlt className="me-2" />
-                    Date
-                  </Form.Label>
-                  <Form.Control type="date" name="date" value={formData.date} onChange={(e) => setFormData({ ...formData, date: e.target.value })} />
-                </Form.Group>
-              </Col>
-            </Row>
+              <Form onSubmit={handleSubmit}>
+                <Row>
+                  <Col xs={12} md={6}>
+                    <Form.Group controlId="mealType">
+                      <Form.Label>
+                        <FaUtensils className="me-2" />
+                        Meal Type
+                      </Form.Label>
+                      <Form.Control 
+                        type="text" 
+                        name="mealType" 
+                        value={formData.mealType} 
+                        onChange={(e) => setFormData({ ...formData, mealType: e.target.value })} 
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col xs={12} md={6}>
+                    <Form.Group controlId="date">
+                      <Form.Label>
+                        <FaCalendarAlt className="me-2" />
+                        Date
+                      </Form.Label>
+                      <Form.Control 
+                        type="date" 
+                        name="date" 
+                        value={formData.date} 
+                        onChange={(e) => setFormData({ ...formData, date: e.target.value })} 
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
 
-            <Row className="mt-3">
-              <Col md={4}>
-                <Form.Group controlId="fastingSugarLevel">
-                  <Form.Label>
-                    <FaHeartbeat className="me-2" />
-                    Fasting Sugar
-                  </Form.Label>
-                  <Form.Control type="number" name="fastingSugarLevel" value={formData.fastingSugarLevel} onChange={(e) => setFormData({ ...formData, fastingSugarLevel: e.target.value })} />
-                </Form.Group>
-              </Col>
-              <Col md={4}>
-                <Form.Group controlId="preMealSugarLevel">
-                  <Form.Label>
-                    <FaHeartbeat className="me-2" />
-                    Pre-Meal Sugar
-                  </Form.Label>
-                  <Form.Control type="number" name="preMealSugarLevel" value={formData.preMealSugarLevel} onChange={(e) => setFormData({ ...formData, preMealSugarLevel: e.target.value })} />
-                </Form.Group>
-              </Col>
-              <Col md={4}>
-                <Form.Group controlId="postMealSugarLevel">
-                  <Form.Label>
-                    <FaHeartbeat className="me-2" />
-                    Post-Meal Sugar
-                  </Form.Label>
-                  <Form.Control type="number" name="postMealSugarLevel" value={formData.postMealSugarLevel} onChange={(e) => setFormData({ ...formData, postMealSugarLevel: e.target.value })} />
-                </Form.Group>
-              </Col>
-            </Row>
+                <Row className="mt-3">
+                  <Col xs={12} md={4}>
+                    <Form.Group controlId="fastingSugarLevel">
+                      <Form.Label>
+                        <FaHeartbeat className="me-2" />
+                        Fasting Sugar
+                      </Form.Label>
+                      <Form.Control 
+                        type="number" 
+                        name="fastingSugarLevel" 
+                        value={formData.fastingSugarLevel} 
+                        onChange={(e) => setFormData({ ...formData, fastingSugarLevel: e.target.value })} 
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col xs={12} md={4}>
+                    <Form.Group controlId="preMealSugarLevel">
+                      <Form.Label>
+                        <FaHeartbeat className="me-2" />
+                        Pre-Meal Sugar
+                      </Form.Label>
+                      <Form.Control 
+                        type="number" 
+                        name="preMealSugarLevel" 
+                        value={formData.preMealSugarLevel} 
+                        onChange={(e) => setFormData({ ...formData, preMealSugarLevel: e.target.value })} 
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col xs={12} md={4}>
+                    <Form.Group controlId="postMealSugarLevel">
+                      <Form.Label>
+                        <FaHeartbeat className="me-2" />
+                        Post-Meal Sugar
+                      </Form.Label>
+                      <Form.Control 
+                        type="number" 
+                        name="postMealSugarLevel" 
+                        value={formData.postMealSugarLevel} 
+                        onChange={(e) => setFormData({ ...formData, postMealSugarLevel: e.target.value })} 
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
 
-            <Button className="mt-4 w-100" variant="primary" type="submit" disabled={!isLoggedIn}>
-              📩 Submit Data
-            </Button>
-          </Form>
-        </Card>
-
-        {/* Show Spinner while loading */}
-        {isLoading ? (
-          <div className="d-flex justify-content-center align-items-center gap-2" style={{ height: "5rem" }}>
-            <Spinner animation="border" variant="primary" />
-            <p style={{ marginTop: "10px", color: "#333" }}>Analyzing your health...</p>
+                <Button className="mt-4 w-100" variant="primary" type="submit" disabled={!isLoggedIn}>
+                  📩 Submit Data
+                </Button>
+              </Form>
+            </Card>
           </div>
-        ) : (
-          analysis && <CGMAnalysis analysis={analysis} />
-        )}
 
+          {/* Analysis Section */}
+          <div className="col-12 col-md-6">
+            <Card className="p-4 bg-white shadow-sm">
+              {isLoading ? (
+                <div className="d-flex justify-content-center align-items-center gap-2" style={{ height: "5rem" }}>
+                  <Spinner animation="border" variant="primary" />
+                  <p style={{ marginTop: "10px", color: "#333" }}>Analyzing your health...</p>
+                </div>
+              ) : (
+                analysis && <CGMAnalysis analysis={analysis} />
+              )}
+            </Card>
+          </div>
+        </div>
       </div>
+
+
+
+      
       <div className="w-100">
       <div className="p-3 w-100 mt-4">
         {history.length > 0 && (
           <Card className="border-0 mt-2 w-100 position-relative">
-            <Button
+
+        <div className="d-flex justify-content-end mb-3">
+      {/* PDF Button */}
+      <Button variant="danger" onClick={downloadPDF} disabled={isDownloadingPDF} className="me-2">
+        {isDownloadingPDF ? <Spinner animation="border" size="sm" /> : <FaFilePdf className="me-2" />}Save as PDF
+      </Button>
+
+      {/* Excel Button */}
+      <Button variant="success" onClick={downloadExcel} disabled={isDownloadingExcel}>
+        {isDownloadingExcel ? <Spinner animation="border" size="sm" /> : <FaFileExcel className="me-2 " />}Save as Excel
+      </Button>
+    </div>
+            
+        <Button
               variant="info"
-              className="position-absolute top-0 end-0 m-3 rounded-circle d-flex align-items-center justify-content-center shadow border-0"
+              className="position-absolute top-0 start-0 m-3 rounded-circle d-flex align-items-center justify-content-center shadow border-0"
               onClick={() => setShowGuide(true)}
               style={{
                 width: "40px",
@@ -184,7 +285,7 @@ const CGMForm = () => {
               onMouseUp={(e) => e.target.style.transform = "scale(1)"}
             >
               <FaInfoCircle className="rounded p-0" />
-            </Button>
+        </Button>
 
             <div className="mb-3 text-dark text-center rounded-top">
               <h4 className="fw-bold">

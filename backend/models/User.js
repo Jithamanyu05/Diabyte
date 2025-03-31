@@ -12,6 +12,7 @@ const sugarLevelsSchema = new mongoose.Schema({
 
 
 const foodLogSchema = new mongoose.Schema({
+    _id: { type: mongoose.Schema.Types.ObjectId, required: true, auto: true }, 
     mealType: { type: String, required: true }, // e.g., Breakfast, Lunch, Dinner
     foodItems: [
         {
@@ -41,7 +42,7 @@ const foodLogSchema = new mongoose.Schema({
     totalSugars: Number,
     totalFiber: Number,
     dateLogged: { type: Date, default: Date.now }
-}, { _id: false }); 
+},{ _id: false }); 
 
 // Updated User Schema
 const userSchema = new mongoose.Schema({

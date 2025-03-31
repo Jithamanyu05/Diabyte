@@ -4,12 +4,19 @@ import { Grid, Paper, Typography } from '@mui/material';
 import 'chart.js/auto';
 import { useSelector } from 'react-redux';
 
-
-
 // Reusable Chart Component
 const ChartCard = ({ title, children }) => (
-  <Paper sx={{ p: 2, borderRadius: 3, boxShadow: 3, maxWidth: 350 }}>
-    <Typography variant="subtitle1" gutterBottom>
+  <Paper
+    sx={{
+      p: 2,
+      borderRadius: 3,
+      boxShadow: 3,
+      maxWidth: 350,
+      background: 'linear-gradient(135deg, #ffffff, #f2f2f2)',
+      border: '1px solid #ddd',
+    }}
+  >
+    <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold', color: '#333' }}>
       {title}
     </Typography>
     {children}
@@ -42,8 +49,6 @@ function OverallDashboard() {
     ].sort();
     setLabe(dates);
   
-    
-
     // Daily Calories Aggregation
     const dailyCalories = {};
     dates.forEach((date) => {
@@ -183,7 +188,7 @@ function OverallDashboard() {
     ],
   };
   
-  // Sugar Intake Line Chart (if you need to display sugar intake from food logs)
+  // Sugar Intake Line Chart
   const sugarIntakeData = {
     labels: labe,
     datasets: [
@@ -198,7 +203,7 @@ function OverallDashboard() {
     ],
   };
   
-  // Macro Nutrients Pie Chart (Protein, Carbs, Fats, Fibers)
+  // Macro Nutrients Pie Chart
   const macroData = {
     labels: ["Protein", "Carbs", "Fats", "Fibers"],
     datasets: [
@@ -214,41 +219,40 @@ function OverallDashboard() {
     ],
   };
   
-
   return (
-    <div style={{ padding: '2rem', display: 'flex', justifyContent: 'center' }}>
-      <Grid container spacing={2} justifyContent="center">
-        <Grid item>
+    <div style={styles.dashboardContainer}>
+      <Grid container spacing={3} justifyContent="center">
+        <Grid item xs={12} md={6} lg={4}>
           <ChartCard title="Sugar Levels">
-            <div style={{ height: 200, width: 300 }}>
+            <div style={{ height: 250, width: '100%' }}>
               <Line data={sugarData} options={chartOptions} />
             </div>
           </ChartCard>
         </Grid>
-        <Grid item>
+        <Grid item xs={12} md={6} lg={4}>
           <ChartCard title="Macro Distribution">
-            <div style={{ height: 200, width: 300 }}>
+            <div style={{ height: 250, width: '100%' }}>
               <Pie data={macroData} options={chartOptions} />
             </div>
           </ChartCard>
         </Grid>
-        <Grid item>
+        <Grid item xs={12} md={6} lg={4}>
           <ChartCard title="Daily Calories">
-            <div style={{ height: 200, width: 300 }}>
+            <div style={{ height: 250, width: '100%' }}>
               <Bar data={foodLogData} options={chartOptions} />
             </div>
           </ChartCard>
         </Grid>
-        <Grid item>
+        <Grid item xs={12} md={6} lg={4}>
           <ChartCard title="Protein Intake">
-            <div style={{ height: 200, width: 300 }}>
+            <div style={{ height: 250, width: '100%' }}>
               <Bar data={proteinData} options={chartOptions} />
             </div>
           </ChartCard>
         </Grid>
-        <Grid item>
+        <Grid item xs={12} md={6} lg={4}>
           <ChartCard title="Sugar Intake">
-            <div style={{ height: 200, width: 300 }}>
+            <div style={{ height: 250, width: '100%' }}>
               <Line data={sugarIntakeData} options={chartOptions} />
             </div>
           </ChartCard>
@@ -257,5 +261,14 @@ function OverallDashboard() {
     </div>
   );
 }
+
+const styles = {
+  dashboardContainer: {
+    padding: '2rem',
+    //background: 'linear-gradient(135deg, #e0f7fa, #f1f8e9)',
+    minHeight: '100vh',
+    fontFamily: "'Poppins', sans-serif",
+  },
+};
 
 export default OverallDashboard;

@@ -17,10 +17,10 @@ const NavBar = () => {
   };
 
   return (
-    <Navbar expand="lg" className="navbar-glass py-3">
-      <Container>
+    <Navbar expand="lg" className="navbar-glass-a py-3 ">
+      <Container className="">
         {/* Brand Name with Glow Effect */}
-        <Navbar.Brand as={NavLink} to="/" className="brand-glow fs-2 px-3">
+        <Navbar.Brand as={NavLink} to="/" className="brand-glow fs-2 px-3 text-danger">
           DiaBite
         </Navbar.Brand>
 
@@ -54,7 +54,7 @@ const NavBar = () => {
                 </Button>
               </div>
             ) : (
-              <Button as={NavLink} to="/signin" className="btn-neon">
+              <Button as={NavLink} to="/signin" className="btn-neon border-0">
                 <FaSignInAlt className="me-1" /> Login
               </Button>
             )}

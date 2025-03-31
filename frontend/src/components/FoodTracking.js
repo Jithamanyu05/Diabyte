@@ -17,12 +17,19 @@ const FoodTracking = () => {
   const [loading, setLoading] = useState(true);
   const [successMessage, setSuccessMessage] = useState("");
 
+  // States for update modal
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [updateLogId, setUpdateLogId] = useState("");
+  const [updateMealType, setUpdateMealType] = useState("");
+  const [updateFoodName, setUpdateFoodName] = useState("");
+  const [updateQuantity, setUpdateQuantity] = useState(1);
+  const [updateFoodItems, setUpdateFoodItems] = useState([]);
+
   const fetchFoodLogs = async () => {
     try {
       const response = await axios.get("http://localhost:5000/food/logs", {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
-      console.log("Food logs received:", response.data);
       setFoodLogs(response.data.foodLogs);
     } catch (error) {
       console.error("Error fetching food logs:", error);
@@ -33,9 +40,10 @@ const FoodTracking = () => {
 
   useEffect(() => {
     fetchFoodLogs();
-  }, [foodLogs]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  // Add a single food item to the temporary list
+  // Add a single food item to the temporary list (for new log)
   const addFoodItemToList = () => {
     if (!foodName || quantity <= 0) {
       setErrorMessage("Please enter a valid food name and quantity.");
@@ -48,7 +56,7 @@ const FoodTracking = () => {
     setQuantity(1);
   };
 
-  // Submit the food log (sends mealType and foodItems to backend)
+  // Submit the new food log
   const addFoodLog = async () => {
     if (!mealType || foodItems.length === 0) {
       setErrorMessage("Select a meal type and add at least one food item.");
@@ -61,9 +69,7 @@ const FoodTracking = () => {
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
       setFoodLogs([...foodLogs, response.data.foodLog]);
-
       setSuccessMessage("Food log added successfully!");
-
       setMealType("");
       setFoodItems([]);
       setErrorMessage("");
@@ -83,9 +89,57 @@ const FoodTracking = () => {
     }
   };
 
-  // Placeholder for modify functionality
+  // Implement update functionality: Open modal with pre-filled log details
   const modifyFoodLog = (logId) => {
-    alert(`Modify functionality for log ${logId} is not yet implemented.`);
+    const logToUpdate = foodLogs.find((log) => log._id === logId);
+    if (!logToUpdate) {
+      alert("Food log not found");
+      return;
+    }
+    // Pre-fill the update fields
+    setUpdateLogId(logId);
+    setUpdateMealType(logToUpdate.mealType);
+    // Convert existing foodItems to {name, quantity} format
+    const items = logToUpdate.foodItems.map(item => ({
+      name: item.foodName,
+      quantity: item.servingQty
+    }));
+    setUpdateFoodItems(items);
+    setShowUpdateModal(true);
+  };
+
+  // Add a food item to the update modal list
+  const addFoodItemToUpdateList = () => {
+    if (!updateFoodName || updateQuantity <= 0) {
+      alert("Enter a valid food name and quantity.");
+      return;
+    }
+    const newItem = { name: updateFoodName, quantity: updateQuantity };
+    setUpdateFoodItems([...updateFoodItems, newItem]);
+    setUpdateFoodName("");
+    setUpdateQuantity(1);
+  };
+
+  // Handle the update PUT request
+  const handleUpdateFoodLog = async () => {
+    if (!updateMealType || updateFoodItems.length === 0) {
+      alert("Please select a meal type and add at least one food item.");
+      return;
+    }
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/food/log/${updateLogId}`,
+        { mealType: updateMealType, foodItems: updateFoodItems, inputMethod: "text" },
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+      // Update local foodLogs (or re-fetch)
+      setFoodLogs(response.data.foodLogs);
+      setShowUpdateModal(false);
+      setSuccessMessage("Food log updated successfully!");
+    } catch (error) {
+      console.error("Error updating food log:", error);
+      alert("Error updating food log");
+    }
   };
 
   // Apply filtering by meal type
@@ -96,16 +150,16 @@ const FoodTracking = () => {
     );
   }
 
-  // Group logs by date using the dateLogged field (fallback to current date if missing)
+  // Group logs by date using the dateLogged field
   const groupedLogs = filteredLogs.reduce((acc, log) => {
-    if (!log || !log.dateLogged) return acc; // Skip undefined logs
+    if (!log || !log.dateLogged) return acc;
     const date = moment(log.dateLogged).format("YYYY-MM-DD");
     if (!acc[date]) acc[date] = [];
     acc[date].push(log);
     return acc;
   }, {});
 
-  // Sorting logic: sort by date descending or by meal type alphabetically within each group.
+  // Sorting logic
   let sortedLogs = Object.entries(groupedLogs);
   if (sortBy === "date") {
     sortedLogs.sort(([a], [b]) => new Date(b) - new Date(a));
@@ -129,87 +183,87 @@ const FoodTracking = () => {
       <h2 className="text-center fw-bold">Food Tracker</h2>
 
       <div className="d-flex gap-4 my-4 justify-content-center">
-      {/* Food Logging Form */}
-      <Card style={styles.formCard} className="p-3">
-        <Card.Body>
-          <Form>
-            <h3 className="fs-4 text-center mb-4 fw-bold">Text-Based Food Logging</h3>
-            <Row className="mb-3">
-              <Col md={6}>
-                <Form.Group controlId="mealType">
-                  <Form.Label style={styles.label}>
-                    <FaUtensils className="me-2" /> Meal Type
-                  </Form.Label>
-                  <Form.Control
-                    as="select"
-                    value={mealType}
-                    onChange={(e) => setMealType(e.target.value)}
-                    style={styles.select}
-                  >
-                    <option value="">Select Meal Type</option>
-                    <option value="breakfast">Breakfast</option>
-                    <option value="lunch">Lunch</option>
-                    <option value="dinner">Dinner</option>
-                  </Form.Control>
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group controlId="date">
-                  <Form.Label style={styles.label}>
-                    <FaCalendarAlt className="me-2" /> Date
-                  </Form.Label>
-                  <Form.Control type="date" name="date" style={styles.input} />
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row className="mb-3">
-              <Col md={6}>
-                <Form.Group controlId="foodName">
-                  <Form.Label style={styles.label}>Food Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Food Name"
-                    value={foodName}
-                    onChange={(e) => setFoodName(e.target.value)}
-                    style={styles.input}
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group controlId="quantity">
-                  <Form.Label style={styles.label}>Quantity</Form.Label>
-                  <Form.Control
-                    type="number"
-                    placeholder="Quantity"
-                    value={quantity}
-                    onChange={(e) => setQuantity(Number(e.target.value))}
-                    style={styles.input}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-            {successMessage && <Alert variant="success" style={styles.successText} className="text-center">{successMessage}</Alert>}
-            {errorMessage && <Alert variant="danger" style={styles.errorText}>{errorMessage}</Alert>}
-            <div className="d-flex gap-5" style={{ alignItems: "center", justifyContent: "center", marginTop: "20px" }}>
-            <Button 
-                variant="info" 
-                onClick={addFoodItemToList} 
-                style={{ backgroundColor: "#17a2b8",color: "white",border: "none", padding: "10px 15px", fontSize: "16px", borderRadius: "5px" }}
-            >
-                + Add Food Item
-            </Button>
+        {/* Food Logging Form */}
+        <Card style={styles.formCard} className="p-3">
+          <Card.Body>
+            <Form>
+              <h3 className="fs-4 text-center mb-4 fw-bold">Text-Based Food Logging</h3>
+              <Row className="mb-3">
+                <Col md={6}>
+                  <Form.Group controlId="mealType">
+                    <Form.Label style={styles.label}>
+                      <FaUtensils className="me-2" /> Meal Type
+                    </Form.Label>
+                    <Form.Control
+                      as="select"
+                      value={mealType}
+                      onChange={(e) => setMealType(e.target.value)}
+                      style={styles.select}
+                    >
+                      <option value="">Select Meal Type</option>
+                      <option value="breakfast">Breakfast</option>
+                      <option value="lunch">Lunch</option>
+                      <option value="dinner">Dinner</option>
+                    </Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="date">
+                    <Form.Label style={styles.label}>
+                      <FaCalendarAlt className="me-2" /> Date
+                    </Form.Label>
+                    <Form.Control type="date" name="date" style={styles.input} />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row className="mb-3">
+                <Col md={6}>
+                  <Form.Group controlId="foodName">
+                    <Form.Label style={styles.label}>Food Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Food Name"
+                      value={foodName}
+                      onChange={(e) => setFoodName(e.target.value)}
+                      style={styles.input}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="quantity">
+                    <Form.Label style={styles.label}>Quantity</Form.Label>
+                    <Form.Control
+                      type="number"
+                      placeholder="Quantity"
+                      value={quantity}
+                      onChange={(e) => setQuantity(Number(e.target.value))}
+                      style={styles.input}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              {successMessage && <Alert variant="success" style={styles.successText} className="text-center">{successMessage}</Alert>}
+              {errorMessage && <Alert variant="danger" style={styles.errorText}>{errorMessage}</Alert>}
+              <div className="d-flex gap-5" style={{ alignItems: "center", justifyContent: "center", marginTop: "20px" }}>
+                <Button 
+                  variant="info" 
+                  onClick={addFoodItemToList} 
+                  style={{ backgroundColor: "#17a2b8", color: "white", border: "none", padding: "10px 15px", fontSize: "16px", borderRadius: "5px" }}
+                >
+                  + Add Food Item
+                </Button>
 
-            <Button 
-                variant="primary" 
-                onClick={addFoodLog} 
-                style={{ backgroundColor: "#007bff", border: "none", padding: "10px 15px", fontSize: "16px", borderRadius: "5px" }}
-            >
-                Add Food Log
-            </Button>
-            </div>
-            {foodItems.length > 0 && (
+                <Button 
+                  variant="primary" 
+                  onClick={addFoodLog} 
+                  style={{ backgroundColor: "#007bff", border: "none", padding: "10px 15px", fontSize: "16px", borderRadius: "5px" }}
+                >
+                  Add Food Log
+                </Button>
+              </div>
+              {foodItems.length > 0 && (
                 <ul
-                    style={{
+                  style={{
                     listStyle: "none",
                     padding: 0,
                     margin: "10px 0",
@@ -220,59 +274,59 @@ const FoodTracking = () => {
                     maxWidth: "400px",
                     borderRadius: "8px",
                     padding: "10px",
-                    }}
+                  }}
                 >
-            {foodItems.map((item, index) => (
-            <li
-                key={index}
-                style={{
-                backgroundColor: "#ffffff",
-                padding: "8px 12px",
-                borderRadius: "6px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                border: "1px solid #ddd",
-                transition: "transform 0.2s ease-in-out",
-                cursor: "pointer",
-                }}
-                onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
-                onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
-            >
-                <span style={{ fontSize: "16px", fontWeight: "500", color: "#333" }}>
-                {item.name} - {item.quantity}
-                </span>
-                <Button
-                variant="link"
-                onClick={() => setFoodItems(foodItems.filter((_, i) => i !== index))}
-                style={{
-                    color: "#ff4d4d",
-                    fontSize: "18px",
-                    padding: "2px",
-                    margin: "0px",
-                    border: "none",
-                    background: "none",
-                    cursor: "pointer",
-                    transition: "color 0.2s ease-in-out",
-                }}
-                onMouseOver={(e) => (e.currentTarget.style.color = "#ff0000")}
-                onMouseOut={(e) => (e.currentTarget.style.color = "#ff4d4d")}
-                >
-                ✖
-                </Button>
-            </li>
-            ))}
-            </ul>
-            )}
-          </Form>
-        </Card.Body>
-      </Card>
-      <VoiceMealLogger />
+                  {foodItems.map((item, index) => (
+                    <li
+                      key={index}
+                      style={{
+                        backgroundColor: "#ffffff",
+                        padding: "8px 12px",
+                        borderRadius: "6px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        border: "1px solid #ddd",
+                        transition: "transform 0.2s ease-in-out",
+                        cursor: "pointer",
+                      }}
+                      onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
+                      onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                    >
+                      <span style={{ fontSize: "16px", fontWeight: "500", color: "#333" }}>
+                        {item.name} - {item.quantity}
+                      </span>
+                      <Button
+                        variant="link"
+                        onClick={() => setFoodItems(foodItems.filter((_, i) => i !== index))}
+                        style={{
+                          color: "#ff4d4d",
+                          fontSize: "18px",
+                          padding: "2px",
+                          margin: "0px",
+                          border: "none",
+                          background: "none",
+                          cursor: "pointer",
+                          transition: "color 0.2s ease-in-out",
+                        }}
+                        onMouseOver={(e) => (e.currentTarget.style.color = "#ff0000")}
+                        onMouseOut={(e) => (e.currentTarget.style.color = "#ff4d4d")}
+                      >
+                        ✖
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </Form>
+          </Card.Body>
+        </Card>
+        <VoiceMealLogger />
       </div>
       {/* Food Log List */}
       <h3 style={styles.subHeading} className="fw-bold">Food Logs</h3>
-            {/* Sorting & Filtering Controls */}
-            <div style={styles.controls}  className="w-75 mx-auto">
+      {/* Sorting & Filtering Controls */}
+      <div style={styles.controls} className="w-75 mx-auto">
         <Form.Control as="select" value={sortBy} onChange={(e) => setSortBy(e.target.value)} style={styles.select}>
           <option value="date">Sort by Date</option>
           <option value="mealType">Sort by Meal Type</option>
@@ -283,7 +337,7 @@ const FoodTracking = () => {
           <option value="lunch">Lunch</option>
           <option value="dinner">Dinner</option>
         </Form.Control>
-            </div>
+      </div>
       {sortedLogs.length === 0 ? (
         <p style={styles.noLogs}>No food logs found.</p>
       ) : (
@@ -305,7 +359,7 @@ const FoodTracking = () => {
                     </div>
                   </div>
                   {log.foodItems.map((item, index) => (
-                    <div key={item.id||index} style={styles.foodItem}>
+                    <div key={item.id || index} style={styles.foodItem}>
                       <img src={item.photo} alt={item.foodName} style={styles.foodImage} />
                       <div style={styles.foodDetailsContainer}>
                         <strong style={styles.foodName}>{item.foodName}</strong>
@@ -331,6 +385,144 @@ const FoodTracking = () => {
         ))
       )}
 
+      {/* Update Modal */}
+    <Modal show={showUpdateModal} onHide={() => setShowUpdateModal(false)} centered>
+      <Modal.Header
+        closeButton
+        style={{
+          backgroundColor: "#007bff",
+          color: "#fff",
+          borderBottom: "none",
+          padding: "1rem 1.5rem",
+        }}
+      >
+        <Modal.Title style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
+          Update Food Log
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body style={{ backgroundColor: "#f8f9fa", padding: "2rem" }}>
+        <Form>
+          <Form.Group controlId="updateMealType" className="mb-3">
+            <Form.Label style={{ fontWeight: "bold", color: "#333" }}>
+              Meal Type
+            </Form.Label>
+            <Form.Control
+              as="select"
+              value={updateMealType}
+              onChange={(e) => setUpdateMealType(e.target.value)}
+              style={{ borderRadius: "5px", border: "1px solid #ccc" }}
+            >
+              <option value="">Select Meal Type</option>
+              <option value="breakfast">Breakfast</option>
+              <option value="lunch">Lunch</option>
+              <option value="dinner">Dinner</option>
+            </Form.Control>
+          </Form.Group>
+          <Form.Group controlId="updateFoodName" className="mb-3">
+            <Form.Label style={{ fontWeight: "bold", color: "#333" }}>
+              Food Name
+            </Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Food Name"
+              value={updateFoodName}
+              onChange={(e) => setUpdateFoodName(e.target.value)}
+              style={{ borderRadius: "5px", border: "1px solid #ccc" }}
+            />
+          </Form.Group>
+          <Form.Group controlId="updateQuantity" className="mb-3">
+            <Form.Label style={{ fontWeight: "bold", color: "#333" }}>
+              Quantity
+            </Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Quantity"
+              value={updateQuantity}
+              onChange={(e) => setUpdateQuantity(Number(e.target.value))}
+              style={{ borderRadius: "5px", border: "1px solid #ccc" }}
+            />
+          </Form.Group>
+          <Button
+            variant="info"
+            onClick={addFoodItemToUpdateList}
+            style={{
+              backgroundColor: "#17a2b8",
+              border: "none",
+              marginBottom: "10px",
+              padding: "10px 15px",
+              fontSize: "1rem",
+              borderRadius: "5px",
+            }}
+          >
+            + Add Food Item
+          </Button>
+          {updateFoodItems.length > 0 && (
+            <ul style={{ listStyle: "none", padding: 0, marginTop: "10px" }}>
+              {updateFoodItems.map((item, index) => (
+                <li
+                  key={index}
+                  style={{
+                    backgroundColor: "#e9ecef",
+                    margin: "5px 0",
+                    padding: "8px 12px",
+                    borderRadius: "4px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <span style={{ fontSize: "15px", color: "#333" }}>
+                    {item.name} - {item.quantity}
+                  </span>
+                  <Button
+                    variant="button"
+                    onClick={() =>
+                      setUpdateFoodItems(updateFoodItems.filter((_, i) => i !== index))
+                    }
+                    style={{ color: "#dc3545", padding: "0", fontSize: "18px" }}
+                  >
+                    ✖
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Form>
+      </Modal.Body>
+      <Modal.Footer
+        style={{
+          borderTop: "none",
+          backgroundColor: "#f1f1f1",
+          padding: "1rem 1.5rem",
+        }}
+      >
+        <Button
+          variant="secondary"
+          onClick={() => setShowUpdateModal(false)}
+          style={{
+            backgroundColor: "#6c757d",
+            border: "none",
+            borderRadius: "5px",
+            padding: "10px 15px",
+          }}
+        >
+          Cancel
+        </Button>
+        <Button
+          variant="primary"
+          onClick={handleUpdateFoodLog}
+          style={{
+            backgroundColor: "#007bff",
+            border: "none",
+            borderRadius: "5px",
+            padding: "10px 15px",
+          }}
+        >
+          Update Food Log
+        </Button>
+      </Modal.Footer>
+    </Modal>
+
     </Container>
   );
 };
@@ -344,10 +536,34 @@ const styles = {
     borderRadius: "10px",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
   },
-  heading: {
+  formCard: {
+    width: "400px",
+  },
+  label: {
+    fontWeight: "bold",
+  },
+  select: {
+    padding: "8px",
+    borderRadius: "5px",
+    border: "1px solid #aaa",
+    cursor: "pointer",
+    fontSize: "14px",
+  },
+  input: {
+    padding: "10px",
+    borderRadius: "5px",
+    border: "1px solid #aaa",
+    fontSize: "14px",
+  },
+  successText: {
+    color: "green",
+    fontSize: "14px",
     textAlign: "center",
-    color: "#333",
-    marginBottom: "20px",
+  },
+  errorText: {
+    color: "red",
+    fontSize: "14px",
+    textAlign: "center",
   },
   subHeading: {
     textAlign: "center",
@@ -359,76 +575,6 @@ const styles = {
     gap: "10px",
     marginBottom: "15px",
     justifyContent: "center",
-  },
-  select: {
-    flex: 1,
-    padding: "8px",
-    borderRadius: "5px",
-    border: "1px solid #aaa",
-    cursor: "pointer",
-    fontSize: "14px",
-  },
-  formContainer: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-    padding: "15px",
-    border: "1px solid #ddd",
-    borderRadius: "8px",
-    backgroundColor: "#fff",
-    marginBottom: "20px",
-  },
-  input: {
-    padding: "10px",
-    borderRadius: "5px",
-    border: "1px solid #aaa",
-    fontSize: "14px",
-  },
-  errorText: {
-    color: "red",
-    fontSize: "14px",
-    textAlign: "center",
-  },
-  addItemButton: {
-    padding: "10px",
-    border: "none",
-    borderRadius: "5px",
-    backgroundColor: "#17a2b8",
-    color: "#fff",
-    cursor: "pointer",
-    fontWeight: "bold",
-  },
-  foodItemList: {
-    listStyle: "none",
-    padding: 0,
-    marginTop: "10px",
-  },
-  foodItem: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#e9ecef",
-    padding: "5px 10px",
-    borderRadius: "4px",
-    marginBottom: "5px",
-  },
-  removeButton: {
-    border: "none",
-    backgroundColor: "transparent",
-    color: "#dc3545",
-    fontWeight: "bold",
-    cursor: "pointer",
-    fontSize: "16px",
-  },
-  submitButton: {
-    padding: "12px",
-    border: "none",
-    borderRadius: "5px",
-    backgroundColor: "#28a745",
-    color: "#fff",
-    cursor: "pointer",
-    fontWeight: "bold",
-    marginTop: "10px",
   },
   noLogs: {
     textAlign: "center",

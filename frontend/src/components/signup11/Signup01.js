@@ -16,7 +16,7 @@ const Signup01 = () => {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh", backgroundColor: "#f4f4f4" }}>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh" }}>
       <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
         <div style={{ padding: "10px 15px", background: "#4caf50", color: "white", borderRadius: "5px" }}>Step 1: Basic Info</div>
         <div style={{ padding: "10px 15px", background: "#ccc", color: "black", borderRadius: "5px" }}>Step 2: Health Details</div>
