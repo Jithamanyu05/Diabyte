@@ -20,7 +20,7 @@ const CGMForm = () => {
   const [analysis, setAnalysis] = useState(null);
   const [message, setMessage] = useState("");
   const [history, setHistory] = useState([]);
-  
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Spinner state
   const [isDownloadingPDF, setIsDownloadingPDF] = useState(false);
   const [isDownloadingExcel, setIsDownloadingExcel] = useState(false);
