@@ -1,20 +1,10 @@
 import React from 'react';
 import './Home.css';
+import { Link } from 'react-router-dom';
 
 function Home() {
   return (
     <div className="app">
-      <nav className="navbar">
-        <div className="nav-content">
-          <div className="logo">DiabetesCare</div>
-          <div className="nav-links">
-            <a href="#features">Features</a>
-            <a href="#dashboard">Dashboard</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
-          </div>
-        </div>
-      </nav>
 
       <section className="hero">
         <h1>Take Control of Your Diabetes</h1>
@@ -22,7 +12,7 @@ function Home() {
           Your all-in-one solution for managing diabetes with smart tracking,
           personalized recommendations, and comprehensive health analytics.
         </p>
-        <a href="#get-started" className="button">Get Started</a>
+        <Link to="/signup1" className="button">Get Started!</Link>
       </section>
 
       <section className="features" id="features">
