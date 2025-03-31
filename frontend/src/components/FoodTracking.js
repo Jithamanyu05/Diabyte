@@ -27,7 +27,7 @@ const FoodTracking = () => {
 
   const fetchFoodLogs = async () => {
     try {
-      const response = await axios.get(`${process.env.BACKEND_URL}/food/logs`, {
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/food/logs`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       setFoodLogs(response.data.foodLogs);
@@ -64,7 +64,7 @@ const FoodTracking = () => {
     }
     try {
       const response = await axios.post(
-        `${process.env.BACKEND_URL}/food/log`,
+        `${process.env.REACT_APP_BACKEND_URL}/food/log`,
         { mealType, foodItems, inputMethod: "text" },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
@@ -80,7 +80,7 @@ const FoodTracking = () => {
 
   const deleteFoodLog = async (logId) => {
     try {
-      await axios.delete(`${process.env.BACKEND_URL}/food/log/${logId}`, {
+      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/food/log/${logId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       setFoodLogs(foodLogs.filter((log) => log._id !== logId));
@@ -128,7 +128,7 @@ const FoodTracking = () => {
     }
     try {
       const response = await axios.put(
-        `${process.env.BACKEND_URL}/food/log/${updateLogId}`,
+        `${process.env.REACT_APP_BACKEND_URL}/food/log/${updateLogId}`,
         { mealType: updateMealType, foodItems: updateFoodItems, inputMethod: "text" },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );

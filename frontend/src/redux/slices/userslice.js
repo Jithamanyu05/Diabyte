@@ -7,7 +7,7 @@ export const userLoginThunk = createAsyncThunk(
     "users/login",
     async (userCredObj, thunkApi) => {
         try {
-            const res = await axios.post(`${process.env.BACKEND_URL}/users/login`, userCredObj);
+            const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/login`, userCredObj);
             
             console.log("Login Response:", res.data); // Debugging response
 

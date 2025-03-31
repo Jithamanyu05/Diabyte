@@ -43,7 +43,7 @@ const CGMForm = () => {
       const token = localStorage.getItem("token");
       if (!token) return console.error("No token found, user must log in.");
 
-      const response = await axios.get(`${process.env.BACKEND_URL}/cgm/analyze`, {
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/cgm/analyze`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -60,7 +60,7 @@ const CGMForm = () => {
       const token = localStorage.getItem("token");
       if (!token) return console.error("No token found, user must log in.");
 
-      const response = await axios.get(`${process.env.BACKEND_URL}/cgm/history`, {
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/cgm/history`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -77,7 +77,7 @@ const CGMForm = () => {
       const token = localStorage.getItem("token");
       if (!token) return console.error("No token found, user must log in.");
 
-      const response = await axios.post(`${process.env.BACKEND_URL}/cgm/save`, formData, {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/cgm/save`, formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

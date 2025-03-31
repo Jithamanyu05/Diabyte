@@ -6,7 +6,7 @@ const CGMChart = () => {
     const [chartData, setChartData] = useState({ labels: [], datasets: [] });
 
     useEffect(() => {
-        axios.get("http://localhost:5000/cgm/trends").then(res => {
+        axios.get(`${process.env.REACT_APP_BACKEND_URL}/cgm/trends`).then(res => {
             const dates = res.data.map(entry => entry.date.split("T")[0]);
             const sugarLevels = res.data.map(entry => entry.postMealSugarLevel);
 

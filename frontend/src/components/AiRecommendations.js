@@ -22,7 +22,7 @@ function AiRecommendations() {
 
     try {
       const res = await axios.post(
-        `${process.env.BACKEND_URL}/ai-recom/ai-recommendations`,
+        `${process.env.REACT_APP_BACKEND_URL}/ai-recom/ai-recommendations`,
         { prompt },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );

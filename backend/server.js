@@ -1,22 +1,36 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
+const morgan = require("morgan");
 const cors = require("cors");
+const path = require("path");
+const bodyParser = require("body-parser");
 
 dotenv.config(); // Load environment variables
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: ["https://diabite.onrender.com/"],  // Allow frontend domain
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH","HEAD", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true
+  }));
+  app.use(morgan("dev"));
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(cookieParser());
 
 
 // **MongoDB Connection**
 const connectDB = async () => {
     try {
-        await mongoose.connect(process.env.DB_URL, {
+        const conn = await mongoose.connect(process.env.DB_URL, {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });
+        console.log(`MongoDB Connected: ${conn.connection.host}`);
         console.log("✅ Database Connected");
     } catch (error) {
         console.error("❌ MongoDB Connection Error:", error);
@@ -35,6 +49,11 @@ app.use("/food", foodRoutes);
 const aiRoutes = require("./APIs/aiAPI");
 app.use("/ai-recom",aiRoutes);
 
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+app.get("/", (req, res) => {
+  res.send("DiaBite API is running successfully!");
+});
 
 // **Start Server only after DB is connected**
 connectDB().then(() => {

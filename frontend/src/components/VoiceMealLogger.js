@@ -69,7 +69,7 @@ const VoiceMealLogger = () => {
         setIsSubmitting(true);
         try {
             const response = await axios.post(
-                `${process.env.BACKEND_URL}/food/log/voice`,
+                `${process.env.REACT_APP_BACKEND_URL}/food/log/voice`,
                 { mealType, voiceText: transcript },
                 {
                     headers: {
