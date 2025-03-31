@@ -30,7 +30,7 @@ const Signup03 = () => {
       };
 
       console.log("Final Form Data Sent to Backend:", finalData);
-      const response = await axios.post("http://localhost:5000/users/signup", finalData);
+      const response = await axios.post(`${process.env.BACKEND_URL}/users/signup`, finalData);
 
       if (response.status === 201) {
         alert("🎉 Signup Complete! Your details have been saved.");

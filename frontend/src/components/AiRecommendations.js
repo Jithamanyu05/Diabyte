@@ -22,7 +22,7 @@ function AiRecommendations() {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/ai-recom/ai-recommendations",
+        `${process.env.BACKEND_URL}/ai-recom/ai-recommendations`,
         { prompt },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
