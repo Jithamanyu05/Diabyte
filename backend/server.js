@@ -13,24 +13,11 @@ const app = express();
 app.use(express.json());
 app.use(cors({
     origin: "https://diabite.onrender.com",  
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    methods: "GET,POST,PUT,DELETE,PATCH,OPTIONS",
+    allowedHeaders: "Content-Type,Authorization",
     credentials: true
 }));
 
-// Manually set CORS headers for preflight requests
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "https://diabite.onrender.com");
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
-    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    res.header("Access-Control-Allow-Credentials", "true");
-    
-    if (req.method === "OPTIONS") {
-        return res.sendStatus(200);
-    }
-    
-    next();
-});
 
   app.use(morgan("dev"));
   app.use(bodyParser.json());
@@ -64,13 +51,11 @@ app.use("/food", foodRoutes);
 const aiRoutes = require("./APIs/aiAPI");
 app.use("/ai-recom",aiRoutes);
 
-if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(__dirname, "../frontend/build")));
+// Remove frontend serving logic to keep backend separate
+app.get("/", (req, res) => {
+    res.send("DiaBite API is running successfully!");
+});
 
-    app.get("*", (req, res) => {
-        res.sendFile(path.resolve(__dirname, "../frontend/build", "index.html"));
-    });
-}
 
 
 // **Start Server only after DB is connected**
