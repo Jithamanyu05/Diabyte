@@ -25,6 +25,10 @@ const FoodTracking = () => {
   const [updateQuantity, setUpdateQuantity] = useState(1);
   const [updateFoodItems, setUpdateFoodItems] = useState([]);
 
+  useEffect(() => {
+    fetchFoodLogs();
+  }, []);
+  
   const fetchFoodLogs = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/food/logs`, {
@@ -38,10 +42,7 @@ const FoodTracking = () => {
     }
   };
 
-  useEffect(() => {
-    fetchFoodLogs();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  
 
   // Add a single food item to the temporary list (for new log)
   const addFoodItemToList = () => {

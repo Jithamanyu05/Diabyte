@@ -120,7 +120,7 @@ function OverallDashboard() {
       )
     );
     setSugarValues(sugarsByDate);
-  }, [currentUser]);
+  }, []);
   
   if (!currentUser) return <Typography>Loading...</Typography>;
   
