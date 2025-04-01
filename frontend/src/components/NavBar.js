@@ -64,8 +64,8 @@ const NavBar = () => {
   <Nav className="text-center ">
     {isLoggedIn ? (
       <div className="d-flex gap-3 align-items-center width-100">
-        <Nav.Link as={NavLink} to="/dashboard" className="nav-link-glow">
-       <FaTachometerAlt className="me-1" /> Dashboard 
+        <Nav.Link as={NavLink} to="/dashboard" className="nav-link-glow d-flex">
+       <FaTachometerAlt className="me-1" /><p> Dashboard </p>
         </Nav.Link>
         <span className="welcome-text d-flex gap-2">
           Welcome, <span className="highlight-text d-block">{currentUser.name}</span>
