@@ -41,65 +41,82 @@ function AiRecommendations() {
     }
   }
 
-  // Inline styles for the component
+  // Beautified Styles
   const styles = {
     container: {
       maxWidth: "800px",
       margin: "0 auto",
       padding: "2rem",
       fontFamily: "'Poppins', sans-serif",
+      backgroundColor: "#f9f9fb",
+      borderRadius: "12px",
+      boxShadow: "0 8px 16px rgba(0, 0, 0, 0.15)",
+      marginTop: "3rem",
     },
     header: {
       textAlign: "center",
+      fontSize: "1.8rem",
+      fontWeight: "bold",
       marginBottom: "1rem",
-      color: "#333",
+      color: "#2c3e50",
     },
     chatWindow: {
       height: "400px",
       overflowY: "auto",
       borderRadius: "10px",
-      background: "linear-gradient(135deg, #ffffff, #f0f4f8)",
-      boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-      padding: "1rem",
-      marginBottom: "1rem",
-      border: "1px solid #e0e0e0",
+      background: "linear-gradient(135deg, #f7f9fc, #ecf1f8)",
+      boxShadow: "inset 0 4px 10px rgba(0,0,0,0.05)",
+      padding: "1.2rem",
+      marginBottom: "1.5rem",
+      border: "1px solid #dde2eb",
     },
     userMessage: {
-      backgroundColor: "#d1e7dd",
-      color: "#0f5132",
-      padding: "0.5rem 1rem",
+      backgroundColor: "#007bff",
+      color: "#fff",
+      padding: "0.75rem 1rem",
       borderRadius: "15px",
       maxWidth: "70%",
+      alignSelf: "flex-end",
       marginLeft: "auto",
       marginBottom: "0.5rem",
+      fontSize: "1rem",
+      boxShadow: "0 2px 5px rgba(0,0,0,0.15)",
     },
     aiMessage: {
       backgroundColor: "#fff",
       border: "1px solid #ced4da",
-      padding: "0.5rem 1rem",
+      padding: "0.75rem 1rem",
       borderRadius: "15px",
       maxWidth: "70%",
-      marginBottom: "0.5rem",
+      fontSize: "1rem",
+      boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
     },
     textarea: {
       width: "100%",
       borderRadius: "8px",
       border: "1px solid #ced4da",
-      padding: "0.75rem",
+      padding: "0.8rem",
       fontSize: "1rem",
       resize: "vertical",
       marginBottom: "1rem",
+      outline: "none",
+      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+      transition: "0.3s",
     },
     generateButton: {
-      backgroundColor: "#007bff",
+      backgroundColor: "primary",
       border: "none",
       borderRadius: "8px",
-      padding: "0.75rem 1.5rem",
-      fontSize: "1rem",
+      padding: "0.8rem 1.5rem",
+      fontSize: "1.1rem",
       fontWeight: "bold",
       color: "#fff",
       cursor: "pointer",
-      boxShadow: "0 2px 5px rgba(0,0,0,0.15)",
+      transition: "0.3s",
+      boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+    },
+    buttonHover: {
+      backgroundColor: "primary",
     },
     spinnerContainer: {
       textAlign: "center",
@@ -112,10 +129,7 @@ function AiRecommendations() {
     <div style={styles.container}>
       {/* Error Modal */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-        <Modal.Header
-          closeButton
-          style={{ backgroundColor: "#dc3545", color: "#fff" }}
-        >
+        <Modal.Header closeButton style={{ backgroundColor: "#dc3545", color: "#fff" }}>
           <Modal.Title>Error</Modal.Title>
         </Modal.Header>
         <Modal.Body>{errorMessage}</Modal.Body>
@@ -126,7 +140,7 @@ function AiRecommendations() {
         </Modal.Footer>
       </Modal>
 
-      <h2 style={styles.header}>Personal AI Assistant</h2>
+      <h2 style={styles.header}>✨ Personal AI Assistant</h2>
 
       {loading && (
         <div style={styles.spinnerContainer}>
@@ -139,7 +153,7 @@ function AiRecommendations() {
       <div style={styles.chatWindow}>
         {recommendations.length === 0 ? (
           <p className="text-muted" style={{ textAlign: "center" }}>
-            Please enter your prompt and click "Generate!" to see recommendations.
+            Please enter a prompt with your preferences or just click <span className="fw-bold">Generate!</span> to see AI magic happen! ✨
           </p>
         ) : (
           recommendations.map((item, index) => (
@@ -158,12 +172,17 @@ function AiRecommendations() {
         ref={promptRef}
         style={styles.textarea}
         rows="3"
-        placeholder="Enter your dietary preferences..."
+        placeholder="Tell AI your preferences..."
       />
 
-      {/* Generate Button */}
-      <Button style={styles.generateButton} onClick={generateRecommendations}>
-        Generate!
+      {/* Generate Button with Hover Effect */}
+      <Button
+        style={styles.generateButton}
+        onMouseOver={(e) => (e.target.style.backgroundColor = styles.buttonHover.backgroundColor)}
+        onMouseOut={(e) => (e.target.style.backgroundColor = styles.generateButton.backgroundColor)}
+        onClick={generateRecommendations}
+      >
+       Generate!
       </Button>
     </div>
   );

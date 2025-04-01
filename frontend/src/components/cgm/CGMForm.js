@@ -249,9 +249,6 @@ const CGMForm = () => {
           </div>
         </div>
       </div>
-
-
-
       
       <div className="w-100">
       <div className="p-3 w-100 mt-4">

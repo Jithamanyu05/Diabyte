@@ -182,19 +182,17 @@ const FoodTracking = () => {
   }
 
   return (
-    <Container style={styles.container} className="w-100">
+    <Container style={styles.container} className="w-100 mt-5">
       <h2 className="text-center fw-bold">Food Tracker</h2>
 
-<div className="container">
-  <Row className="justify-content-center mt-4">
+      <div className="container">
+  <Row className="justify-content-center my-4">
     {/* Food Logging Form */}
-    <Col lg={8} md={10} sm={12}>
+    <Col lg={6} md={8} sm={12} className="mb-4 mb-lg-0">
       <Card style={styles.formCard} className="p-3">
         <Card.Body>
           <Form>
             <h3 className="fs-4 text-center mb-4 fw-bold">Text-Based Food Logging</h3>
-
-            {/* First Row - Meal Type & Date */}
             <Row className="mb-3">
               <Col lg={6} md={6} sm={12}>
                 <Form.Group controlId="mealType">
@@ -223,8 +221,6 @@ const FoodTracking = () => {
                 </Form.Group>
               </Col>
             </Row>
-
-            {/* Second Row - Food Name & Quantity */}
             <Row className="mb-3">
               <Col lg={6} md={6} sm={12}>
                 <Form.Group controlId="foodName">
@@ -251,99 +247,46 @@ const FoodTracking = () => {
                 </Form.Group>
               </Col>
             </Row>
-
-            {/* Success & Error Messages */}
             {successMessage && (
               <Alert variant="success" style={styles.successText} className="text-center">
                 {successMessage}
               </Alert>
             )}
-            {errorMessage && (
-              <Alert variant="danger" style={styles.errorText}>
-                {errorMessage}
-              </Alert>
-            )}
-
-            {/* Buttons */}
+            {errorMessage && <Alert variant="danger" style={styles.errorText}>{errorMessage}</Alert>}
             <Row className="justify-content-center mt-3">
-              <Col sm={12} md={6} className="d-grid">
-                <Button
-                  variant="info"
-                  onClick={addFoodItemToList}
-                  style={{
-                    backgroundColor: "#17a2b8",
-                    color: "white",
-                    border: "none",
-                    padding: "10px 15px",
-                    fontSize: "16px",
-                    borderRadius: "5px",
-                  }}
+              <Col lg={5} md={6} sm={12} className="mb-2 d-flex justify-content-center">
+                <Button 
+                  variant="info" 
+                  onClick={addFoodItemToList} 
+                  className="w-100"
+                  style={{ backgroundColor: "#17a2b8", color: "white", border: "none", padding: "10px 15px", fontSize: "16px", borderRadius: "5px" }}
                 >
                   + Add Food Item
                 </Button>
               </Col>
-              <Col sm={12} md={6} className="d-grid mt-2 mt-md-0">
-                <Button
-                  variant="primary"
-                  onClick={addFoodLog}
-                  style={{
-                    backgroundColor: "#007bff",
-                    border: "none",
-                    padding: "10px 15px",
-                    fontSize: "16px",
-                    borderRadius: "5px",
-                  }}
+              <Col lg={5} md={6} sm={12} className="mb-2 d-flex justify-content-center">
+                <Button 
+                  variant="primary" 
+                  onClick={addFoodLog} 
+                  className="w-100"
+                  style={{ backgroundColor: "#007bff", border: "none", padding: "10px 15px", fontSize: "16px", borderRadius: "5px" }}
                 >
                   Add Food Log
                 </Button>
               </Col>
             </Row>
-
-            {/* Food Items List */}
             {foodItems.length > 0 && (
-              <ul
-                className="mt-3 mx-auto"
-                style={{
-                  listStyle: "none",
-                  padding: 0,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "8px",
-                  width: "100%",
-                  maxWidth: "400px",
-                  borderRadius: "8px",
-                  padding: "10px",
-                }}
-              >
+              <ul className="list-unstyled p-3 mt-3 bg-light rounded">
                 {foodItems.map((item, index) => (
                   <li
                     key={index}
-                    className="d-flex align-items-center justify-content-between p-2 border rounded"
-                    style={{
-                      backgroundColor: "#ffffff",
-                      border: "1px solid #ddd",
-                      transition: "transform 0.2s ease-in-out",
-                      cursor: "pointer",
-                    }}
-                    onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
-                    onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                    className="d-flex justify-content-between align-items-center p-2 border rounded mb-2"
                   >
-                    <span style={{ fontSize: "16px", fontWeight: "500", color: "#333" }}>
-                      {item.name} - {item.quantity}
-                    </span>
+                    <span className="fw-bold">{item.name} - {item.quantity}</span>
                     <Button
                       variant="link"
                       onClick={() => setFoodItems(foodItems.filter((_, i) => i !== index))}
-                      style={{
-                        color: "#ff4d4d",
-                        fontSize: "18px",
-                        padding: "2px",
-                        margin: "0px",
-                        border: "none",
-                        background: "none",
-                        cursor: "pointer",
-                        transition: "color 0.2s ease-in-out",
-                      }}
+                      style={{ color: "#ff4d4d", fontSize: "18px", padding: "2px", margin: "0px", border: "none", background: "none", cursor: "pointer" }}
                       onMouseOver={(e) => (e.currentTarget.style.color = "#ff0000")}
                       onMouseOut={(e) => (e.currentTarget.style.color = "#ff4d4d")}
                     >
@@ -357,16 +300,16 @@ const FoodTracking = () => {
         </Card.Body>
       </Card>
     </Col>
-  </Row>
-  <Row className="justify-content-center mt-3">
-    <Col lg={8} md={10} sm={12} className="text-center">
+
+    {/* Voice Meal Logger - Should be Side by Side on Large Screens, Stacked on Small Screens */}
+    <Col lg={6} md={8} sm={12}>
       <VoiceMealLogger />
     </Col>
   </Row>
 </div>
 
 
-
+          
       {/* Food Log List */}
       <h3 style={styles.subHeading} className="fw-bold">Food Logs</h3>
       {/* Sorting & Filtering Controls */}
@@ -581,7 +524,7 @@ const styles = {
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
   },
   formCard: {
-    width: "400px",
+    width: "100%",
   },
   label: {
     fontWeight: "bold",

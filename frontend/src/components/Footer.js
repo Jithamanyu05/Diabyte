@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { FaGithub, FaLinkedin, FaTwitter, FaInstagram } from "react-icons/fa";
-
+import { FaHome, FaInfoCircle, FaPhoneAlt, FaLock } from "react-icons/fa";
 function Footer() {
   // Container/Footer Styles
   const footerStyles = {
@@ -47,7 +47,7 @@ function Footer() {
           <Col xs={12} md={4} className="mb-3">
             <h5 style={headingStyle}>Quick Links</h5>
             <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-              {["🏠 Home", "ℹ️ About", "📞 Contact", "🔒 Privacy Policy"].map(
+              {[" 🏠 Home", "ℹ️ About", "📞 Contact", "🔒 Privacy Policy"].map(
                 (text, index) => (
                   <li key={index} style={{ marginBottom: "0.5rem" }}>
                     <a

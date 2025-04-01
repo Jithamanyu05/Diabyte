@@ -26,7 +26,7 @@ function Signin() {
   return (
     <div className="d-flex justify-content-center align-items-center min-vh-100">
       <div className="card shadow p-4" style={{ width: "400px" }}>
-        <h2 className="text-center text-danger mb-4">Sign In</h2>
+        <h2 className="text-center text-primary mb-4">Sign In</h2>
 
         {errStatus && (
           <div className="alert alert-danger py-2 text-center">{errmsg}</div>
@@ -55,7 +55,7 @@ function Signin() {
         </div>
 
         <button
-          className="btn btn-danger w-100 mb-3"
+          className="btn btn-primary w-100 mb-3"
           onClick={handleSubmit(submit)}
           disabled={isPending}
         >
@@ -64,7 +64,7 @@ function Signin() {
 
         <p className="text-center">
           New here?{" "}
-          <Link to="/signup1" className="text-danger fw-bold">
+          <Link to="/signup1" className="text-primary fw-bold">
             Sign Up Now
           </Link>
         </p>

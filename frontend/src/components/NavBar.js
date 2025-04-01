@@ -24,42 +24,71 @@ const NavBar = () => {
           DiaBite
         </Navbar.Brand>
 
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          {/* Navigation Links */}
-          <Nav className="mx-auto d-flex gap-4">
-            <Nav.Link as={NavLink} to="/sugar-tracker" className="nav-link-glow">
-              <FaHeartbeat className="me-1" /> Sugar Tracker
-            </Nav.Link>
-            <Nav.Link as={NavLink} to="/food-logging" className="nav-link-glow">
-              <FaUtensils className="me-1" /> Food Logging
-            </Nav.Link>
-            <Nav.Link as={NavLink} to="/ai-recommendations" className="nav-link-glow">
-              <FaBrain className="me-1" /> AI Recommendations
-            </Nav.Link>
-          </Nav>
+        <Navbar.Toggle 
+  aria-controls="basic-navbar-nav" 
+  style={{ 
+    border: "none",
+    backgroundColor: "#007bff",
+    color: "#fff",
+    borderRadius: "8px",
+    fontSize: "1.2rem",
+    transition: "all 0.3s ease-in-out",
+  }} 
+/>
 
-          {/* Login / Logout Buttons */}
-          <Nav>
-            {isLoggedIn ? (
-              <div className="d-flex align-items-center gap-3">
-                <Nav.Link as={NavLink} to="/dashboard" className="nav-link-glow">
-                   DashBoard
-                </Nav.Link>
-                <span className="welcome-text text-dark">
-                  Welcome, <span className="highlight-text">{currentUser.name}</span>
-                </span>
-                <Button variant="danger" className="btn-neon border-0" onClick={SignOut}>
-                  <FaSignOutAlt className="me-1" /> Logout
-                </Button>
-              </div>
-            ) : (
-              <Button as={NavLink} to="/signin" className="btn-neon border-0">
-                <FaSignInAlt className="me-1" /> Login
-              </Button>
-            )}
-          </Nav>
-        </Navbar.Collapse>
+<Navbar.Collapse 
+  id="basic-navbar-nav" 
+  style={{
+    background: "rgba(255, 255, 255, 0.9)", // Slightly transparent background
+    backdropFilter: "blur(10px)", // Glassmorphism effect
+    borderRadius: "10px",
+    padding: "10px",
+    transition: "all 0.4s ease-in-out",
+  }}
+>
+  {/* Navigation Links */}
+  <Nav className="mx-auto d-flex fs-6 gap-3 text-center">
+    <Nav.Link as={NavLink} to="/sugar-tracker" className="nav-link-glow">
+      <FaHeartbeat className="me-1" /> Sugar Tracker
+    </Nav.Link>
+    <Nav.Link as={NavLink} to="/food-logging" className="nav-link-glow">
+      <FaUtensils className="me-1" /> Food Logging
+    </Nav.Link>
+    <Nav.Link as={NavLink} to="/ai-recommendations" className="nav-link-glow">
+      <FaBrain className="me-1" /> AI Recommendations
+    </Nav.Link>
+  </Nav>
+
+  {/* Login / Logout Buttons */}
+  <Nav className="text-center ">
+    {isLoggedIn ? (
+      <div className="d-flex flex-column gap-3">
+        <Nav.Link as={NavLink} to="/dashboard" className="nav-link-glow">
+          Dashboard
+        </Nav.Link>
+        <span className="welcome-text text-dark">
+          Welcome, <span className="highlight-text">{currentUser.name}</span>
+        </span>
+        <Button 
+          variant="danger" 
+          className="btn-neon border-0 w-100" 
+          onClick={SignOut}
+        >
+          <FaSignOutAlt className="me-1" /> Logout
+        </Button>
+      </div>
+    ) : (
+      <Button 
+        as={NavLink} 
+        to="/signin" 
+        className="btn-neon border-0 w-100"
+      >
+        <FaSignInAlt className="me-1" /> Login
+      </Button>
+    )}
+  </Nav>
+</Navbar.Collapse>
+
       </Container>
     </Navbar>
   );
