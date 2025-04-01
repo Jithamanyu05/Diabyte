@@ -60,32 +60,40 @@ const NavBar = () => {
 
   {/* Login / Logout Buttons */}
   <Nav className="text-center ">
-    {localStorage.getItem("token") ? (
-      <div className="d-flex gap-3 align-items-center width-100">
-        <Nav.Link as={NavLink} to="/dashboard" className="nav-link-glow d-flex align-items-center justify-content-between">
-       <FaTachometerAlt className="me-1" /><div> Dashboard </div>
-        </Nav.Link>
-        <span className="welcome-text d-flex gap-2">
-          Welcome, <span className="highlight-text d-block">{currentUser.name}</span>
-        </span>
-        <Button 
-          variant="danger" 
-          className="btn-neon border-0 w-100" 
-          onClick={SignOut}
-        >
-          <FaSignOutAlt className="me-1" /> Logout
-        </Button>
-      </div>
-    ) : (
-      <Button 
-        as={NavLink} 
-        to="/signin" 
-        className="btn-neon border-0 w-100"
+  {localStorage.getItem("token") ? (
+    <div className="d-flex gap-3 align-items-center width-100">
+      <Nav.Link
+        as={NavLink}
+        to="/dashboard"
+        className="nav-link-glow d-flex align-items-center justify-content-between"
       >
-        <FaSignInAlt className="me-1" /> Login
+        <FaTachometerAlt className="me-1" />
+        <div>Dashboard</div>
+      </Nav.Link>
+      <span className="welcome-text d-flex gap-2">
+        Welcome,{" "}
+        <span className="highlight-text d-block">
+          {currentUser?.name ||
+            (localStorage.getItem("currentUser")
+              ? JSON.parse(localStorage.getItem("currentUser")).name
+              : "User")}
+        </span>
+      </span>
+      <Button
+        variant="danger"
+        className="btn-neon border-0 w-100"
+        onClick={SignOut}
+      >
+        <FaSignOutAlt className="me-1" /> Logout
       </Button>
-    )}
-  </Nav>
+    </div>
+  ) : (
+    <Button as={NavLink} to="/signin" className="btn-neon border-0 w-100">
+      <FaSignInAlt className="me-1" /> Login
+    </Button>
+  )}
+</Nav>
+
 </Navbar.Collapse>
 
       </Container>

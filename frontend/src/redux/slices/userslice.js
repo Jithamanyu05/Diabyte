@@ -14,6 +14,7 @@ export const userLoginThunk = createAsyncThunk(
             if (res.data.message === "Login successful") {  
                 // Store the token in local storage
                 localStorage.setItem("token", res.data.token);
+                localStorage.setItem("currentUser", JSON.stringify(res.data));
 
                 // Toast notification
                 toast.success("Login Successful!");
