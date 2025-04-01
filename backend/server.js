@@ -51,7 +51,8 @@ app.use("/food", foodRoutes);
 const aiRoutes = require("./APIs/aiAPI");
 app.use("/ai-recom",aiRoutes);
 
-
+const dashboardRoutes= require("./APIs/dashboardAPI")
+app.use("/dash", dashboardRoutes);
 
 // Serve Frontend (React Build)
 const frontendPath = path.join(__dirname, "../frontend/build");

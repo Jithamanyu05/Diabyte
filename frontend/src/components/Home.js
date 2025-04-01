@@ -52,8 +52,8 @@ function Home() {
 
       <section className="cta">
         <h2>Ready to Take Control of Your Health?</h2>
-        <p>Join thousands of users who are successfully managing their diabetes with DiabetesCare.</p>
-        <a href="#signup" className="button">Sign Up Now</a>
+        <p>Join thousands of users who are successfully managing their diabetes with DiaBite.</p>
+        <Link to="/signup1" className="button">Sign Up now</Link>
       </section>
     </div>
   );

@@ -3,7 +3,7 @@ import { Line, Bar, Pie } from 'react-chartjs-2';
 import { Grid, Paper, Typography } from '@mui/material';
 import 'chart.js/auto';
 import { useSelector } from 'react-redux';
-
+import axios from 'axios';
 // Reusable Chart Component
 const ChartCard = ({ title, children }) => (
   <Paper
@@ -24,7 +24,7 @@ const ChartCard = ({ title, children }) => (
 );
 
 function OverallDashboard() {
-  let { currentUser } = useSelector((state) => state.userReducer);
+  let { current } = useSelector((state) => state.userReducer);
   const [pieData, setPieChartData] = useState({});
   const [labe, setLabe] = useState([]);
   const [caldata, setCaldata] = useState({});
@@ -34,8 +34,26 @@ function OverallDashboard() {
   const [postmealsugar, setPostMealSugar] = useState([]);
   const [proteinValues, setProteinValues] = useState([]);
   const [sugarValues, setSugarValues] = useState([]);
+  const [currentUser, setCurrentUser] = useState({});
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return console.error("No token found, user must log in.");
+
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/dash/updated-dashboard/${current._id}`,
+        {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setCurrentUser({...response.data});
+    } catch (error) {
+      console.error("Error fetching history:", error.response?.data || error.message);
+    }
+  }
   
+
   useEffect(() => {
+    fetchData();
     if (!currentUser || !currentUser.foodLogs || currentUser.foodLogs.length === 0) {
       console.warn("No food log data available.");
       return;
@@ -120,7 +138,7 @@ function OverallDashboard() {
       )
     );
     setSugarValues(sugarsByDate);
-  }, [currentUser]);
+  }, []);
   
   if (!currentUser) return <Typography>Loading...</Typography>;
   
