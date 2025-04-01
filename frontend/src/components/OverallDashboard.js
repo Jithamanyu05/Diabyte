@@ -24,7 +24,7 @@ const ChartCard = ({ title, children }) => (
 );
 
 function OverallDashboard() {
-  const { currentUser } = localStorage.getItem("currentUser");
+  const { currentUser } = useSelector((state) => state.userReducer);
   const [pieData, setPieChartData] = useState({});
   const [labe, setLabe] = useState([]);
   const [caldata, setCaldata] = useState({});
@@ -34,7 +34,7 @@ function OverallDashboard() {
   const [postmealsugar, setPostMealSugar] = useState([]);
   const [proteinValues, setProteinValues] = useState([]);
   const [sugarValues, setSugarValues] = useState([]);
-  
+
   useEffect(() => {
     if (!currentUser || !currentUser.foodLogs || currentUser.foodLogs.length === 0) {
       console.warn("No food log data available.");
@@ -186,7 +186,7 @@ function OverallDashboard() {
     }}
   >
     <Avatar sx={{ width: 60, height: 60, bgcolor: "#1976d2", fontSize: "1.5rem" }}>
-      {currentUser.name}
+      {currentUser.name.charAt(0)}
     </Avatar>
     <Box>
       <Typography variant="h5" fontWeight="bold" sx={{ color: "#1a237e" }}>
