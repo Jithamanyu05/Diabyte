@@ -62,11 +62,11 @@ const NavBar = () => {
   {/* Login / Logout Buttons */}
   <Nav className="text-center ">
     {isLoggedIn ? (
-      <div className="d-flex flex-column gap-3">
+      <div className="d-flex gap-3">
         <Nav.Link as={NavLink} to="/dashboard" className="nav-link-glow">
           Dashboard
         </Nav.Link>
-        <span className="welcome-text text-dark">
+        <span className="welcome-text">
           Welcome, <span className="highlight-text">{currentUser.name}</span>
         </span>
         <Button 

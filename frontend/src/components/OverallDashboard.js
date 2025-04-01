@@ -4,6 +4,7 @@ import { Grid, Paper, Typography } from '@mui/material';
 import 'chart.js/auto';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+
 // Reusable Chart Component
 const ChartCard = ({ title, children }) => (
   <Paper
@@ -24,36 +25,44 @@ const ChartCard = ({ title, children }) => (
 );
 
 function OverallDashboard() {
-  let { current } = useSelector((state) => state.userReducer);
-  const [pieData, setPieChartData] = useState({});
+  const { current } = useSelector((state) => state.userReducer);
+  const [currentUser, setCurrentUser] = useState(null);
   const [labe, setLabe] = useState([]);
   const [caldata, setCaldata] = useState({});
+  const [pieData, setPieChartData] = useState({});
   const [sugarlabels, setSugarLabels] = useState([]);
   const [fastingsugar, setFastingSugar] = useState([]);
   const [premealsugar, setPreMealSugar] = useState([]);
   const [postmealsugar, setPostMealSugar] = useState([]);
   const [proteinValues, setProteinValues] = useState([]);
   const [sugarValues, setSugarValues] = useState([]);
-  const [currentUser, setCurrentUser] = useState({});
+
+  // Fetch current user data from backend
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("token");
-      if (!token) return console.error("No token found, user must log in.");
-
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/dash/updated-dashboard/${current._id}`,
+      if (!token) {
+        return console.error("No token found, user must log in.");
+      }
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}/dash/updated-dashboard/${current._id}`,
         {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      setCurrentUser({...response.data});
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setCurrentUser({ ...response.data });
     } catch (error) {
       console.error("Error fetching history:", error.response?.data || error.message);
     }
-  }
-  
+  };
 
+  // Fetch data on component mount
   useEffect(() => {
     fetchData();
+  }, []);
+
+  // Process food logs and sugar levels when currentUser updates
+  useEffect(() => {
     if (!currentUser || !currentUser.foodLogs || currentUser.foodLogs.length === 0) {
       console.warn("No food log data available.");
       return;
@@ -62,9 +71,7 @@ function OverallDashboard() {
     // ---------------------- Food Logs Processing ----------------------
     const foodLogs = currentUser.foodLogs;
     // Extract unique dates (YYYY-MM-DD) and sort them
-    const dates = [
-      ...new Set(foodLogs.map((log) => log.dateLogged.split("T")[0])),
-    ].sort();
+    const dates = [...new Set(foodLogs.map((log) => log.dateLogged.split("T")[0]))].sort();
     setLabe(dates);
   
     // Daily Calories Aggregation
@@ -80,12 +87,7 @@ function OverallDashboard() {
   
     // Macro Nutrients for the Latest Date (Pie Chart Data)
     const latestDate = dates[dates.length - 1];
-    const pieChartData = {
-      totalProtein: 0,
-      totalCarbs: 0,
-      totalFats: 0,
-      totalFiber: 0,
-    };
+    const pieChartData = { totalProtein: 0, totalCarbs: 0, totalFats: 0, totalFiber: 0 };
     foodLogs.forEach((log) => {
       if (log.dateLogged.split("T")[0] === latestDate) {
         pieChartData.totalProtein += log.totalProtein || 0;
@@ -98,11 +100,7 @@ function OverallDashboard() {
   
     // Protein Aggregation per Date (for the Protein Bar Chart)
     const proteinsByDate = dates.map((date) =>
-      foodLogs.reduce(
-        (sum, log) =>
-          sum + (log.dateLogged.split("T")[0] === date ? log.totalProtein || 0 : 0),
-        0
-      )
+      foodLogs.reduce((sum, log) => sum + (log.dateLogged.split("T")[0] === date ? log.totalProtein || 0 : 0), 0)
     );
     setProteinValues(proteinsByDate);
   
@@ -110,9 +108,7 @@ function OverallDashboard() {
     if (currentUser.sugarLevels && currentUser.sugarLevels.length > 0) {
       const sugarLevels = currentUser.sugarLevels;
       // Extract unique sugar dates and sort them
-      const sugarDates = [
-        ...new Set(sugarLevels.map((entry) => entry.date.split("T")[0])),
-      ].sort();
+      const sugarDates = [...new Set(sugarLevels.map((entry) => entry.date.split("T")[0]))].sort();
       setSugarLabels(sugarDates);
   
       // For each date, take the first sugar entry (or adjust to average if needed)
@@ -121,40 +117,38 @@ function OverallDashboard() {
       const postMealSugarArr = [];
       sugarDates.forEach((date) => {
         const entry = sugarLevels.find((e) => e.date.split("T")[0] === date);
-        fastingSugarArr.push(entry.fastingSugarLevel);
-        preMealSugarArr.push(entry.preMealSugarLevel);
-        postMealSugarArr.push(entry.postMealSugarLevel);
+        if (entry) {
+          fastingSugarArr.push(entry.fastingSugarLevel);
+          preMealSugarArr.push(entry.preMealSugarLevel);
+          postMealSugarArr.push(entry.postMealSugarLevel);
+        }
       });
       setFastingSugar(fastingSugarArr);
       setPreMealSugar(preMealSugarArr);
       setPostMealSugar(postMealSugarArr);
     }
-    // sugar intake
+  
+    // Sugar intake from food logs per date
     const sugarsByDate = dates.map((date) =>
-      foodLogs.reduce(
-        (sum, log) =>
-          sum + (log.dateLogged.split("T")[0] === date ? log.totalSugars || 0 : 0),
-        0
-      )
+      foodLogs.reduce((sum, log) => sum + (log.dateLogged.split("T")[0] === date ? log.totalSugars || 0 : 0), 0)
     );
     setSugarValues(sugarsByDate);
-  }, []);
+  
+  }, [currentUser]);
   
   if (!currentUser) return <Typography>Loading...</Typography>;
   
   // ---------------------- Chart Configurations ----------------------
-  
-  // Chart Options
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: { legend: { display: true, position: 'bottom' } },
-    scales: { x: { display: true }, y: { display: true } }
+    scales: { x: { display: true }, y: { display: true } },
   };
   
   // Sugar Levels Line Chart
   const sugarData = {
-    labels: sugarlabels, // X-axis (dates)
+    labels: sugarlabels,
     datasets: [
       {
         label: "Fasting Sugar Level",
@@ -182,7 +176,7 @@ function OverallDashboard() {
   
   // Calories Bar Chart
   const foodLogData = {
-    labels: labe, // X-axis (dates)
+    labels: labe,
     datasets: [
       {
         label: "Total Calories per Day",
@@ -226,12 +220,7 @@ function OverallDashboard() {
     labels: ["Protein", "Carbs", "Fats", "Fibers"],
     datasets: [
       {
-        data: [
-          pieData.totalProtein,
-          pieData.totalCarbs,
-          pieData.totalFats,
-          pieData.totalFiber,
-        ],
+        data: [pieData.totalProtein, pieData.totalCarbs, pieData.totalFats, pieData.totalFiber],
         backgroundColor: ["#4CAF50", "#FF9800", "#F44336", "#673AB7"],
       },
     ],
@@ -283,7 +272,6 @@ function OverallDashboard() {
 const styles = {
   dashboardContainer: {
     padding: '2rem',
-    //background: 'linear-gradient(135deg, #e0f7fa, #f1f8e9)',
     minHeight: '100vh',
     fontFamily: "'Poppins', sans-serif",
   },
