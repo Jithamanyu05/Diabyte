@@ -24,7 +24,7 @@ const ChartCard = ({ title, children }) => (
 );
 
 function OverallDashboard() {
-  const { currentUser } = useSelector(localStorage.getItem("currentUser"));
+  const { currentUser } = localStorage.getItem("currentUser");
   const [pieData, setPieChartData] = useState({});
   const [labe, setLabe] = useState([]);
   const [caldata, setCaldata] = useState({});
