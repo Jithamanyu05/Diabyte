@@ -5,7 +5,6 @@ import { Container, Row, Col, Form, Button, Alert, Card, Table, Spinner, Modal }
 import { FaUtensils, FaCalendarAlt, FaHistory, FaInfoCircle } from "react-icons/fa";
 import VoiceMealLogger from "./VoiceMealLogger";
 
-
 const FoodTracking = () => {
   const [mealType, setMealType] = useState("");
   const [foodName, setFoodName] = useState("");
@@ -182,7 +181,7 @@ const FoodTracking = () => {
   }
 
   return (
-    <Container style={styles.container} className="w-100 mt-5">
+    <Container style={styles.container} className="w-100">
       <h2 className="text-center fw-bold">Food Tracker</h2>
 
       <div className="container">
@@ -307,9 +306,7 @@ const FoodTracking = () => {
     </Col>
   </Row>
 </div>
-
-
-          
+      
       {/* Food Log List */}
       <h3 style={styles.subHeading} className="fw-bold">Food Logs</h3>
       {/* Sorting & Filtering Controls */}
@@ -517,6 +514,7 @@ const FoodTracking = () => {
 const styles = {
   container: {
     margin: "auto",
+    marginTop: "50px",
     padding: "20px",
     fontFamily: "Poppins, sans-serif",
     background: "#f8f9fa",

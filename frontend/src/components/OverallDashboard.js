@@ -69,6 +69,7 @@ function OverallDashboard() {
     }
   };
 
+  // Fetch data on component mount
   useEffect(() => {
     fetchData();
   }, [current]);
@@ -158,7 +159,7 @@ function OverallDashboard() {
     responsive: true,
     maintainAspectRatio: false,
     plugins: { legend: { display: true, position: 'bottom' } },
-    scales: { x: { display: true }, y: { display: true } }
+    scales: { x: { display: true }, y: { display: true } },
   };
   
   // Sugar Levels Line Chart
