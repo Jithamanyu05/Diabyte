@@ -235,18 +235,21 @@ const CGMForm = () => {
           </div>
 
           {/* Analysis Section */}
-          <div className="col-12 col-md-6">
-            <Card className="p-4 bg-white shadow-sm">
-              {isLoading ? (
-                <div className="d-flex justify-content-center align-items-center gap-2" style={{ height: "5rem" }}>
-                  <Spinner animation="border" variant="primary" />
-                  <p style={{ marginTop: "10px", color: "#333" }}>Analyzing your health...</p>
-                </div>
-              ) : (
-                analysis && <CGMAnalysis analysis={analysis} />
-              )}
-            </Card>
-          </div>
+          {isLoggedIn && analysis && (
+  <div className="col-12 col-md-6">
+    <Card className="p-4 bg-white shadow-sm">
+      {isLoading ? (
+        <div className="d-flex justify-content-center align-items-center gap-2" style={{ height: "5rem" }}>
+          <Spinner animation="border" variant="primary" />
+          <p style={{ marginTop: "10px", color: "#333" }}>Analyzing your health...</p>
+        </div>
+      ) : (
+        <CGMAnalysis analysis={analysis} />
+      )}
+    </Card>
+  </div>
+)}
+
         </div>
       </div>
       
@@ -283,7 +286,7 @@ const CGMForm = () => {
               onMouseDown={(e) => e.target.style.transform = "scale(0.9)"}
               onMouseUp={(e) => e.target.style.transform = "scale(1)"}
             >
-              <FaInfoCircle className="rounded p-0" />
+              <FaInfoCircle className="rounded p-0 shadow-0" />
         </Button>
 
             <div className="mb-3 text-dark text-center rounded-top">

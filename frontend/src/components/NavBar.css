@@ -1,14 +1,6 @@
 /* Floating Glassmorphism Navbar */
 
 
-  
-.navbar-glass-a{
-  background: linear-gradient(to top, #ffffff, #efc3cc);
-  /* background-color: #ecb8c0;
-  
-  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2); */
-}
-
 
 /* Brand Name with Neon Glow */
 .brand-glow {
@@ -50,19 +42,19 @@
 .welcome-text {
   font-size: 1rem;
   font-weight: 500;
-  color: #bceaa7;
+  color: #2787e7;
   padding-right: 15px;
 }
 
 .scrolled .welcome-text {
-  color: #bceaa7;
+  color: #2787e7;
 }
 
 /* Highlighted Username */
 .highlight-text {
   font-weight: bold;
-  color: #bceaa7;
-  text-shadow: 0px 0px 6px #bceaa7;
+  color: #74be52;
+  text-shadow: 0px 0px 6px #74be52;
 }
 
 /* Neon Button */

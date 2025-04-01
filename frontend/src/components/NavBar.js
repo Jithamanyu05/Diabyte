@@ -42,8 +42,6 @@ const NavBar = () => {
   style={{
     background: "rgba(255, 255, 255, 0.9)", // Slightly transparent background
     backdropFilter: "blur(10px)", // Glassmorphism effect
-    borderRadius: "10px",
-    padding: "10px",
     transition: "all 0.4s ease-in-out",
   }}
 >
@@ -64,7 +62,7 @@ const NavBar = () => {
   <Nav className="text-center ">
     {isLoggedIn ? (
       <div className="d-flex gap-3 align-items-center width-100">
-        <Nav.Link as={NavLink} to="/dashboard" className="nav-link-glow d-flex">
+        <Nav.Link as={NavLink} to="/dashboard" className="nav-link-glow d-flex align-items-center justify-content-between">
        <FaTachometerAlt className="me-1" /><p> Dashboard </p>
         </Nav.Link>
         <span className="welcome-text d-flex gap-2">

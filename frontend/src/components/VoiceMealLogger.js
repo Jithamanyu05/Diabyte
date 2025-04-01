@@ -124,6 +124,7 @@ const VoiceMealLogger = () => {
                 <option value="Dinner">🍽️ Dinner</option>
             </select>
 
+            <div className="d-flex align-items-center justify-content-between">
             {/* Push-to-Talk Button */}
             <div style={{ marginTop: "20px" }}>
                 <button
@@ -166,7 +167,7 @@ const VoiceMealLogger = () => {
             >
                 🔄 Reset
             </button>
-
+            </div>
             <p
                 style={{
                     marginTop: "15px",
