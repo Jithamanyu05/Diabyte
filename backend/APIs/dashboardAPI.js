@@ -2,7 +2,7 @@ const express = require("express");
 const axios = require("axios");
 const User = require("../models/User");
 const DashApp = express.Router();
-import { authMiddleware } from "../middlewares/authMiddlleware";
+const authMiddleware = require("../middlewares/authMiddlleware");
 require("dotenv").config();
 
 DashApp.get("/updated-dashboard/:_id",authMiddleware,async(req,res)=>{

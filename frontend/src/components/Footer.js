@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { FaGithub, FaLinkedin, FaTwitter, FaInstagram } from "react-icons/fa";
 import { FaHome, FaInfoCircle, FaPhoneAlt, FaLock } from "react-icons/fa";
+
 function Footer() {
   // Container/Footer Styles
   const footerStyles = {
@@ -11,8 +12,6 @@ function Footer() {
     boxShadow: "0 -4px 10px rgba(0, 0, 0, 0.1)", // Shadow only on the top
   };
   
-  
-
   // Heading Style
   const headingStyle = {
     fontSize: "1.3rem",
