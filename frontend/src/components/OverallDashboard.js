@@ -164,31 +164,67 @@ function OverallDashboard() {
   return (
     <div style={{ padding: "2rem", fontFamily: "'Poppins', sans-serif" }}>
       {/* User Overview Section */}
-      <Card sx={{ width: "80%", mb: 3, p: 3, boxShadow: 3, borderRadius: 3, backgroundColor: "#eef7ff", margin: "auto" }}>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <Avatar sx={{ width: 60, height: 60, bgcolor: "#1976d2" }}>
-            {currentUser.name.charAt(0)}
-          </Avatar>
-          <Box>
-            <Typography variant="h5" fontWeight="bold">
-              {currentUser.name}
-            </Typography>
-            <Typography variant="body1" color="textSecondary">
-              {currentUser.email}
-            </Typography>
-          </Box>
-        </Box>
-        <Box mt={2} sx={{ textAlign: "left" }}>
-          <Typography variant="body1"><strong>Age:</strong> {currentUser.age} years</Typography>
-          <Typography variant="body1"><strong>Height:</strong> {currentUser.height} cm</Typography>
-          <Typography variant="body1"><strong>Weight:</strong> {currentUser.weight} kg</Typography>
-          <Typography variant="body1"><strong>Diabetes Type:</strong> {currentUser.diabetesType}</Typography>
-          <Typography variant="body1"><strong>Activity Level:</strong> {currentUser.activityLevel}</Typography>
-          <Typography variant="body1"><strong>Dietary Preference:</strong> {currentUser.dietaryPreference}</Typography>
-          <Typography variant="body1"><strong>Meal Type Preference:</strong> {currentUser.mealTypePreference}</Typography>
-          <Typography variant="body1"><strong>Food Allergies:</strong> {currentUser.foodAllergies.join(", ")}</Typography>
-        </Box>
-      </Card>
+      <Card
+  sx={{
+    width: "80%",
+    mb: 3,
+    p: 3,
+    boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.15)",
+    borderRadius: 4,
+    background: "linear-gradient(135deg, #eef7ff, #ffffff)",
+    margin: "auto",
+  }}
+>
+  <Box
+    sx={{
+      display: "flex",
+      alignItems: "center",
+      gap: 2,
+      borderBottom: "1px solid #cfd8dc",
+      pb: 2,
+      mb: 2,
+    }}
+  >
+    <Avatar sx={{ width: 60, height: 60, bgcolor: "#1976d2", fontSize: "1.5rem" }}>
+      {currentUser.name.charAt(0)}
+    </Avatar>
+    <Box>
+      <Typography variant="h5" fontWeight="bold" sx={{ color: "#1a237e" }}>
+        {currentUser.name}
+      </Typography>
+      <Typography variant="body1" color="text.secondary" sx={{ color: "#455a64" }}>
+        {currentUser.email}
+      </Typography>
+    </Box>
+  </Box>
+  <Box sx={{ textAlign: "left", ml: 1 }}>
+    <Typography variant="body1" sx={{ mb: 0.5 }}>
+      <strong>Age:</strong> {currentUser.age} years
+    </Typography>
+    <Typography variant="body1" sx={{ mb: 0.5 }}>
+      <strong>Height:</strong> {currentUser.height} cm
+    </Typography>
+    <Typography variant="body1" sx={{ mb: 0.5 }}>
+      <strong>Weight:</strong> {currentUser.weight} kg
+    </Typography>
+    <Typography variant="body1" sx={{ mb: 0.5 }}>
+      <strong>Diabetes Type:</strong> {currentUser.diabetesType}
+    </Typography>
+    <Typography variant="body1" sx={{ mb: 0.5 }}>
+      <strong>Activity Level:</strong> {currentUser.activityLevel}
+    </Typography>
+    <Typography variant="body1" sx={{ mb: 0.5 }}>
+      <strong>Dietary Preference:</strong> {currentUser.dietaryPreference}
+    </Typography>
+    <Typography variant="body1" sx={{ mb: 0.5 }}>
+      <strong>Meal Type Preference:</strong> {currentUser.mealTypePreference}
+    </Typography>
+    <Typography variant="body1">
+      <strong>Food Allergies:</strong> {currentUser.foodAllergies.join(", ")}
+    </Typography>
+  </Box>
+</Card>
+
 
       {/* Charts Section */}
       <Grid container spacing={3} justifyContent="center">
