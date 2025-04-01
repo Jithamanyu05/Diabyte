@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 function Home() {
-  const { currentUser } = useSelector((state) => state.userReducer);
+  const { isLoggedIn,currentUser } = useSelector((state) => state.userReducer);
 
   return (
     <div className="app">
@@ -14,12 +14,12 @@ function Home() {
           Your all-in-one solution for managing diabetes with smart tracking,
           personalized recommendations, and comprehensive health analytics.
         </p>
-        {currentUser ? (
+        {isLoggedIn ? (
           <Link to="/dashboard" className="button welcome-button">
             Welcome, {currentUser.name}!
           </Link>
         ) : (
-          <Link to="/signup1" className="button">
+          <Link to="/signup1" className="button welcome-button">
             Get Started!
           </Link>
         )}
