@@ -198,6 +198,8 @@ function OverallDashboard() {
     </Box>
   </Box>
   <Box sx={{ textAlign: "left", ml: 1 }}>
+    <div className="d-flex justify-content-around align-items-center">
+    <div>
     <Typography variant="body1" sx={{ mb: 0.5 }}>
       <strong>Age:</strong> {currentUser.age} years
     </Typography>
@@ -210,6 +212,8 @@ function OverallDashboard() {
     <Typography variant="body1" sx={{ mb: 0.5 }}>
       <strong>Diabetes Type:</strong> {currentUser.diabetesType}
     </Typography>
+    </div>
+    <div>
     <Typography variant="body1" sx={{ mb: 0.5 }}>
       <strong>Activity Level:</strong> {currentUser.activityLevel}
     </Typography>
@@ -222,6 +226,8 @@ function OverallDashboard() {
     <Typography variant="body1">
       <strong>Food Allergies:</strong> {currentUser.foodAllergies.join(", ")}
     </Typography>
+    </div>
+    </div>
   </Box>
 </Card>
 
