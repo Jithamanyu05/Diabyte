@@ -6,6 +6,7 @@ import { Navbar, Nav, Button, Container } from "react-bootstrap";
 import { FaSignInAlt, FaSignOutAlt, FaUtensils, FaBrain, FaHeartbeat } from "react-icons/fa";
 import "./NavBar.css"; // Import styles
 import { useNavigate } from "react-router-dom";
+import { FaTachometerAlt } from "react-icons/fa";
 const NavBar = () => {
   const { isLoggedIn, currentUser } = useSelector((state) => state.userReducer);
   const dispatch = useDispatch();
@@ -62,12 +63,12 @@ const NavBar = () => {
   {/* Login / Logout Buttons */}
   <Nav className="text-center ">
     {isLoggedIn ? (
-      <div className="d-flex gap-3">
+      <div className="d-flex gap-3 align-items-center width-100">
         <Nav.Link as={NavLink} to="/dashboard" className="nav-link-glow">
-          Dashboard
+       <FaTachometerAlt style={{ marginRight: "0.5rem" }} /> Dashboard 
         </Nav.Link>
         <span className="welcome-text">
-          Welcome, <span className="highlight-text">{currentUser.name}</span>
+          Welcome, <span className="highlight-text d-block">{currentUser.name}</span>
         </span>
         <Button 
           variant="danger" 
