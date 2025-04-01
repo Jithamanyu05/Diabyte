@@ -65,9 +65,9 @@ const NavBar = () => {
     {isLoggedIn ? (
       <div className="d-flex gap-3 align-items-center width-100">
         <Nav.Link as={NavLink} to="/dashboard" className="nav-link-glow">
-       <FaTachometerAlt style={{ marginRight: "0.5rem" }} /> Dashboard 
+       <FaTachometerAlt className="me-1" /> Dashboard 
         </Nav.Link>
-        <span className="welcome-text">
+        <span className="welcome-text d-flex gap-2">
           Welcome, <span className="highlight-text d-block">{currentUser.name}</span>
         </span>
         <Button 
