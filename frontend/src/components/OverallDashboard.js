@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Line, Bar, Pie } from "react-chartjs-2";
-import { Grid, Paper, Typography, Avatar, Box, Card } from "@mui/material";
+import { Grid2, Paper, Typography, Avatar, Box, Card } from "@mui/material";
 import "chart.js/auto";
 import { useSelector } from "react-redux";
 
@@ -227,43 +227,46 @@ function OverallDashboard() {
 
 
       {/* Charts Section */}
-      <Grid container spacing={3} justifyContent="center">
-        <Grid item>
+      <Box sx={{ p: 4, display: "flex", justifyContent: "center" }}>
+      <Grid2 container spacing={3} justifyContent="center">
+        <Grid2 xs={12} sm={6} md={4} lg={3}>
           <ChartCard title="Sugar Levels">
-            <div style={{ height: 200, width: 300 }}>
+            <Box sx={{ height: 200, width: 300, mx: "auto" }}>
               <Line data={sugarData} options={chartOptions} />
-            </div>
+            </Box>
           </ChartCard>
-        </Grid>
-        <Grid item>
+        </Grid2>
+        <Grid2 xs={12} sm={6} md={4} lg={3}>
           <ChartCard title="Macro Distribution">
-            <div style={{ height: 200, width: 300 }}>
+            <Box sx={{ height: 200, width: 300, mx: "auto" }}>
               <Pie data={macroData} options={chartOptions} />
-            </div>
+            </Box>
           </ChartCard>
-        </Grid>
-        <Grid item>
+        </Grid2>
+        <Grid2 xs={12} sm={6} md={4} lg={3}>
           <ChartCard title="Daily Calories">
-            <div style={{ height: 200, width: 300 }}>
+            <Box sx={{ height: 200, width: 300, mx: "auto" }}>
               <Bar data={foodLogData} options={chartOptions} />
-            </div>
+            </Box>
           </ChartCard>
-        </Grid>
-        <Grid item>
+        </Grid2>
+        <Grid2 xs={12} sm={6} md={4} lg={3}>
           <ChartCard title="Protein Intake">
-            <div style={{ height: 200, width: 300 }}>
+            <Box sx={{ height: 200, width: 300, mx: "auto" }}>
               <Bar data={proteinData} options={chartOptions} />
-            </div>
+            </Box>
           </ChartCard>
-        </Grid>
-        <Grid item>
+        </Grid2>
+        <Grid2 xs={12} sm={6} md={4} lg={3}>
           <ChartCard title="Sugar Intake">
-            <div style={{ height: 200, width: 300 }}>
+            <Box sx={{ height: 200, width: 300, mx: "auto" }}>
               <Line data={sugarIntakeData} options={chartOptions} />
-            </div>
+            </Box>
           </ChartCard>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
+    </Box>
+
     </div>
   );
 }
