@@ -27,9 +27,6 @@ const ChartCard = ({ title, children }) => (
 function OverallDashboard() {
   const { current } = useSelector((state) => state.userReducer);
   const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  // States for chart data
   const [labe, setLabe] = useState([]);
   const [caldata, setCaldata] = useState({});
   const [pieData, setPieChartData] = useState({});
@@ -45,14 +42,7 @@ function OverallDashboard() {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        console.error("No token found, user must log in.");
-        setLoading(false);
-        return;
-      }
-      if (!current || !current._id) {
-        console.error("User ID is not available in userReducer.");
-        setLoading(false);
-        return;
+        return console.error("No token found, user must log in.");
       }
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/dash/updated-dashboard/${current._id}`,
@@ -60,75 +50,61 @@ function OverallDashboard() {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log("Fetched user data:", response.data);
-      setCurrentUser(response.data);
-      setLoading(false);
+      setCurrentUser({ ...response.data });
     } catch (error) {
       console.error("Error fetching history:", error.response?.data || error.message);
-      setLoading(false);
     }
   };
 
   // Fetch data on component mount
   useEffect(() => {
     fetchData();
-  }, [current]);
+  }, []);
 
-  // Process food logs and sugar levels only after currentUser is available
+  // Process food logs and sugar levels when currentUser updates
   useEffect(() => {
-    if (!currentUser) return; // Wait until currentUser is set
-
-    // Process Food Logs
-    if (currentUser.foodLogs && currentUser.foodLogs.length > 0) {
-      const foodLogs = currentUser.foodLogs;
-      // Extract unique dates (YYYY-MM-DD) and sort them
-      const dates = [...new Set(foodLogs.map((log) => log.dateLogged.split("T")[0]))].sort();
-      setLabe(dates);
-  
-      // Daily Calories Aggregation
-      const dailyCalories = {};
-      dates.forEach((date) => {
-        dailyCalories[date] = 0;
-      });
-      foodLogs.forEach((log) => {
-        const date = log.dateLogged.split("T")[0];
-        dailyCalories[date] += log.totalCalories || 0;
-      });
-      setCaldata(dailyCalories);
-  
-      // Macro Nutrients for the Latest Date (Pie Chart Data)
-      const latestDate = dates[dates.length - 1];
-      const pieChartData = { totalProtein: 0, totalCarbs: 0, totalFats: 0, totalFiber: 0 };
-      foodLogs.forEach((log) => {
-        if (log.dateLogged.split("T")[0] === latestDate) {
-          pieChartData.totalProtein += log.totalProtein || 0;
-          pieChartData.totalCarbs += log.totalCarbs || 0;
-          pieChartData.totalFats += log.totalFats || 0;
-          pieChartData.totalFiber += log.totalFiber || 0;
-        }
-      });
-      setPieChartData(pieChartData);
-  
-      // Protein Aggregation per Date (for the Protein Bar Chart)
-      const proteinsByDate = dates.map((date) =>
-        foodLogs.reduce(
-          (sum, log) => sum + (log.dateLogged.split("T")[0] === date ? log.totalProtein || 0 : 0),
-          0
-        )
-      );
-      setProteinValues(proteinsByDate);
-  
-      // Sugar intake from food logs per date
-      const sugarsByDate = dates.map((date) =>
-        foodLogs.reduce(
-          (sum, log) => sum + (log.dateLogged.split("T")[0] === date ? log.totalSugars || 0 : 0),
-          0
-        )
-      );
-      setSugarValues(sugarsByDate);
+    if (!currentUser || !currentUser.foodLogs || currentUser.foodLogs.length === 0) {
+      console.warn("No food log data available.");
+      return;
     }
   
-    // Process Sugar Levels
+    // ---------------------- Food Logs Processing ----------------------
+    const foodLogs = currentUser.foodLogs;
+    // Extract unique dates (YYYY-MM-DD) and sort them
+    const dates = [...new Set(foodLogs.map((log) => log.dateLogged.split("T")[0]))].sort();
+    setLabe(dates);
+  
+    // Daily Calories Aggregation
+    const dailyCalories = {};
+    dates.forEach((date) => {
+      dailyCalories[date] = 0;
+    });
+    foodLogs.forEach((log) => {
+      const date = log.dateLogged.split("T")[0];
+      dailyCalories[date] += log.totalCalories || 0;
+    });
+    setCaldata(dailyCalories);
+  
+    // Macro Nutrients for the Latest Date (Pie Chart Data)
+    const latestDate = dates[dates.length - 1];
+    const pieChartData = { totalProtein: 0, totalCarbs: 0, totalFats: 0, totalFiber: 0 };
+    foodLogs.forEach((log) => {
+      if (log.dateLogged.split("T")[0] === latestDate) {
+        pieChartData.totalProtein += log.totalProtein || 0;
+        pieChartData.totalCarbs += log.totalCarbs || 0;
+        pieChartData.totalFats += log.totalFats || 0;
+        pieChartData.totalFiber += log.totalFiber || 0;
+      }
+    });
+    setPieChartData(pieChartData);
+  
+    // Protein Aggregation per Date (for the Protein Bar Chart)
+    const proteinsByDate = dates.map((date) =>
+      foodLogs.reduce((sum, log) => sum + (log.dateLogged.split("T")[0] === date ? log.totalProtein || 0 : 0), 0)
+    );
+    setProteinValues(proteinsByDate);
+  
+    // ---------------------- Sugar Levels Processing ----------------------
     if (currentUser.sugarLevels && currentUser.sugarLevels.length > 0) {
       const sugarLevels = currentUser.sugarLevels;
       // Extract unique sugar dates and sort them
@@ -152,8 +128,16 @@ function OverallDashboard() {
       setPostMealSugar(postMealSugarArr);
     }
   
+    // Sugar intake from food logs per date
+    const sugarsByDate = dates.map((date) =>
+      foodLogs.reduce((sum, log) => sum + (log.dateLogged.split("T")[0] === date ? log.totalSugars || 0 : 0), 0)
+    );
+    setSugarValues(sugarsByDate);
+  
   }, [currentUser]);
-
+  
+  if (!currentUser) return <Typography>Loading...</Typography>;
+  
   // ---------------------- Chart Configurations ----------------------
   const chartOptions = {
     responsive: true,
