@@ -60,7 +60,7 @@ const NavBar = () => {
 
   {/* Login / Logout Buttons */}
   <Nav className="text-center ">
-    {currentUser ? (
+    {currentUser.token==localStorage.getItem("token") ? (
       <div className="d-flex gap-3 align-items-center width-100">
         <Nav.Link as={NavLink} to="/dashboard" className="nav-link-glow d-flex align-items-center justify-content-between">
        <FaTachometerAlt className="me-1" /><div> Dashboard </div>
