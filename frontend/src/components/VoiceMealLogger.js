@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import axios from "axios";
-import FoodTracking from "./FoodTracking";
 
 const VoiceMealLogger = () => {
     const [userId, setUserId] = useState(null);
     const [mealType, setMealType] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { transcript, listening, resetTranscript } = useSpeechRecognition();
+    const [isListening, setIsListening] = useState(false);
+
+
+    // Ensure transcript updates
+    useEffect(() => {
+        console.log("Transcript updated:", transcript);
+    }, [transcript]);
 
     // Extract user ID from JWT token
     const getUserIdFromToken = (token) => {
@@ -33,14 +39,21 @@ const VoiceMealLogger = () => {
         return <p>Your browser does not support speech recognition.</p>;
     }
 
-    // Speech recognition handlers
+    
+
     const handlePushToTalkStart = () => {
-        resetTranscript();
-        SpeechRecognition.startListening({ continuous: true, language: "en-US" });
+        if (!isListening) {
+            resetTranscript(); // Clear previous transcript
+            setIsListening(true);
+            SpeechRecognition.startListening({ continuous: true, language: "en-US" });
+        }
     };
 
     const handlePushToTalkEnd = () => {
-        SpeechRecognition.stopListening();
+        if (isListening) {
+            SpeechRecognition.stopListening();
+            setIsListening(false);
+        }
     };
 
     const handleSubmit = async () => {
@@ -80,25 +93,27 @@ const VoiceMealLogger = () => {
             style={{
                 maxWidth: "500px",
                 margin: "auto",
-                padding: "25px",
+                padding: "30px",
                 borderRadius: "12px",
                 boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.15)",
                 textAlign: "center",
                 fontFamily: "'Poppins', sans-serif",
-                background: "#f9f9f9",
+                background: "#ffffff",
+                border: "1px solid #ddd",
             }}
         >
-            <h2 style={{ color: "#333", fontSize: "22px", fontWeight: "bold", marginBottom: "15px" }}>
+            <h2 style={{ color: "#2c3e50", fontSize: "22px", fontWeight: "bold", marginBottom: "20px" }}>
                 🎙 Voice-Based Meal Logging
             </h2>
 
+            {/* Meal Type Dropdown */}
             <label
                 style={{
                     fontSize: "16px",
                     fontWeight: "600",
                     color: "#444",
                     display: "block",
-                    marginBottom: "5px",
+                    marginBottom: "8px",
                 }}
             >
                 Meal Type:
@@ -108,7 +123,7 @@ const VoiceMealLogger = () => {
                 onChange={(e) => setMealType(e.target.value)}
                 style={{
                     width: "100%",
-                    padding: "10px",
+                    padding: "12px",
                     borderRadius: "8px",
                     border: "1px solid #ccc",
                     fontSize: "16px",
@@ -116,62 +131,69 @@ const VoiceMealLogger = () => {
                     color: "#333",
                     fontWeight: "bold",
                     cursor: "pointer",
+                    boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.1)",
                 }}
             >
-                <option value="">Select</option>
+                <option value="">Select Meal Type</option>
                 <option value="Breakfast">🍳 Breakfast</option>
                 <option value="Lunch">🥗 Lunch</option>
                 <option value="Dinner">🍽️ Dinner</option>
             </select>
 
-            <div className="d-flex align-items-center justify-content-between">
-            {/* Push-to-Talk Button */}
-            <div style={{ marginTop: "20px" }}>
+            {/* Buttons Section */}
+            <div className="d-flex justify-content-between align-items-center mt-4">
+                {/* Push-to-Talk Button */}
                 <button
                     onMouseDown={handlePushToTalkStart}
                     onMouseUp={handlePushToTalkEnd}
                     onTouchStart={handlePushToTalkStart}
                     onTouchEnd={handlePushToTalkEnd}
                     style={{
-                        padding: "12px 22px",
+                        flex: 1,
+                        padding: "12px 18px",
                         fontSize: "16px",
                         border: "none",
                         borderRadius: "8px",
                         cursor: "pointer",
                         fontWeight: "600",
-                        background: listening ? "#d9534f" : "#0275d8",
+                        background: isListening ? "#d9534f" : "#0275d8",
                         color: "white",
-                        transition: "0.3s ease-in-out",
-                        boxShadow: listening ? "0 4px 10px rgba(217, 83, 79, 0.3)" : "0 4px 10px rgba(2, 117, 216, 0.3)",
+                        transition: "0.3s",
+                        boxShadow: isListening
+                            ? "0 4px 10px rgba(217, 83, 79, 0.3)"
+                            : "0 4px 10px rgba(2, 117, 216, 0.3)",
                     }}
                 >
-                    {listening ? "🎤 Recording..." : "Press & Hold to Talk"}
+                    {isListening ? "🎤 Recording..." : "Press & Hold to Talk"}
+                </button>
+
+                {/* Reset Button */}
+                <button
+                    onClick={resetTranscript}
+                    style={{
+                        marginLeft: "10px",
+                        flex: 1,
+                        padding: "12px 16px",
+                        fontSize: "14px",
+                        border: "none",
+                        borderRadius: "8px",
+                        cursor: "pointer",
+                        fontWeight: "600",
+                        background: "#f39c12",
+                        color: "white",
+                        transition: "0.3s",
+                        boxShadow: "0px 4px 8px rgba(243, 156, 18, 0.4)",
+                    }}
+                >
+                    🔄 Reset
                 </button>
             </div>
 
-            <button
-                onClick={resetTranscript}
-                style={{
-                    marginTop: "15px",
-                    padding: "10px 16px",
-                    fontSize: "14px",
-                    border: "none",
-                    borderRadius: "8px",
-                    cursor: "pointer",
-                    fontWeight: "600",
-                    background: "#f39c12",
-                    color: "white",
-                    transition: "0.3s ease-in-out",
-                    boxShadow: "0px 4px 8px rgba(243, 156, 18, 0.4)",
-                }}
-            >
-                🔄 Reset
-            </button>
-            </div>
+            {/* Recorded Text Display */}
             <p
                 style={{
-                    marginTop: "15px",
-                    background: "rgba(255, 255, 255, 0.9)",
+                    marginTop: "18px",
+                    background: "#f8f9fa",
                     padding: "12px",
                     borderRadius: "8px",
                     fontWeight: "500",
@@ -183,10 +205,12 @@ const VoiceMealLogger = () => {
                 <strong>📜 Recorded Text:</strong> {transcript || "No input yet"}
             </p>
 
+            {/* Submit Button */}
             <button
                 onClick={handleSubmit}
                 disabled={isSubmitting}
                 style={{
+                    width: "100%",
                     background: isSubmitting ? "#ccc" : "#28a745",
                     color: "white",
                     fontSize: "16px",
@@ -196,11 +220,11 @@ const VoiceMealLogger = () => {
                     border: "none",
                     cursor: isSubmitting ? "not-allowed" : "pointer",
                     fontWeight: "600",
-                    transition: "0.3s ease-in-out",
+                    transition: "0.3s",
                     boxShadow: isSubmitting ? "none" : "0px 4px 8px rgba(40, 167, 69, 0.4)",
                 }}
             >
-                {isSubmitting ? "⌛ Submitting..." : " Submit Meal"}
+                {isSubmitting ? "⌛ Submitting..." : "Submit Meal"}
             </button>
         </div>
     );

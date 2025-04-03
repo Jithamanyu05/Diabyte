@@ -53,7 +53,7 @@ const NavBar = () => {
     <Nav.Link as={NavLink} to="/food-logging" className="nav-link-glow">
       <FaUtensils className="me-1" /> Food Logging
     </Nav.Link>
-    <Nav.Link as={NavLink} to="/ai-recommendations" className="nav-link-glow">
+    <Nav.Link as={NavLink} to="/ai-recommendations" className="nav-link-glow ">
       <FaBrain className="me-1" /> AI Recommendations
     </Nav.Link>
   </Nav>

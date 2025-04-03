@@ -13,7 +13,6 @@ import FoodTracking from "./components/FoodTracking";
 import OverallDashboard from "./components/OverallDashboard";
 import AiRecommendations from "./components/AiRecommendations";
 
-
 function App() {
   
   let router = createBrowserRouter([
