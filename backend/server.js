@@ -59,11 +59,9 @@ const frontendPath = path.join(__dirname, "../frontend/build");
 app.use(express.static(frontendPath));
 
 // Handle React Routes (Fix Refresh Issue)
-app.get("*", (req, res) => {
-    res.sendFile(path.join(frontendPath, "index.html"));
-});
-
-
+app.get("/", (req, res) => {
+    res.send("Diabite API is running successfully!");
+  });
 
 // **Start Server only after DB is connected**
 connectDB().then(() => {
